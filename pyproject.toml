@@ -1,0 +1,34 @@
+[project]
+name = "quantum-foundry"
+version = "0.1.0"
+description = "Open-source reference implementations of quantum algorithms, built with production engineering rigor."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "qiskit>=1.2",
+    "qiskit-aer>=0.15",
+    "numpy>=1.26",
+    "matplotlib>=3.8",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.6",
+    "mypy>=1.10",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["algorithms", "arithmetic", "compiler"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
