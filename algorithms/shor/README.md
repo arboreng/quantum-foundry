@@ -29,5 +29,15 @@ uv run python -m algorithms.shor.implementation
 
 ## Status
 
-Skeleton only — see [RFC-0001](../../docs/rfcs/0001-shors-algorithm.md)
-milestones for what's next (v0.2: core implementation).
+v0.2 core implementation is done: `factor(15)` / `factor(21)` run end to end
+on `AerSimulator` via a general (not hardcoded-per-N) permutation-matrix
+oracle. Two extension seams exist for future RFCs:
+
+- `oracles.Oracle` — swap `PermutationMatrixOracle` for a gate-decomposed
+  (Beauregard/Cuccaro) oracle without touching `circuit.py` or
+  `implementation.py`.
+- `execution.Executor` — swap `AerExecutor` for a real-hardware or
+  noise-aware backend without touching the algorithm.
+
+See [RFC-0001](../../docs/rfcs/0001-shors-algorithm.md) for the v0.5 (feature
+complete: gate-decomposed oracle, richer benchmarks) and later milestones.
