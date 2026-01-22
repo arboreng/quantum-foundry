@@ -1,8 +1,20 @@
 # arithmetic/
 
-Shared quantum arithmetic building blocks (adders, modular exponentiation,
-QFT-based arithmetic, etc.) factored out for reuse across algorithms.
+Shared quantum arithmetic building blocks, factored out for reuse across
+algorithms.
 
-Nothing here yet — the first extraction is expected once
-[algorithms/shor/](../algorithms/shor/) needs modular exponentiation and order
-finding (see [RFC-0001](../docs/rfcs/0001-shors-algorithm.md), Stretch Goals).
+- [qft.py](qft.py) — from-scratch Quantum Fourier Transform (`qft`,
+  `inverse_qft`). Originally written for
+  [algorithms/shor/](../algorithms/shor/)'s phase estimation circuit
+  ([RFC-0001](../docs/rfcs/0001-shors-algorithm.md)); relocated here in
+  [RFC-0002](../docs/rfcs/0002-gate-decomposed-arithmetic.md) once the adders
+  below needed it too.
+- [adders.py](adders.py) — reversible modular arithmetic built on `qft.py`:
+  `add_constant_gate` (Draper's QFT-based constant adder),
+  `add_constant_mod_N_gate` (Beauregard's modular adder),
+  `controlled_mult_mod_N_gate` (controlled multiplication by a classical
+  constant mod `N`). Used by `algorithms.shor.oracles.GateDecomposedOracle`
+  as an elementary-gate alternative to RFC-0001's classically-computed
+  permutation-matrix oracle.
+- [tests/](tests/) — correctness tests, verified against brute-force
+  classical arithmetic at each layer.

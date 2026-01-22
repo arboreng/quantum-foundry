@@ -9,12 +9,14 @@ independently testable:
 """
 
 import random
+from collections.abc import Callable
 from dataclasses import dataclass
 from fractions import Fraction
 from math import gcd, isqrt
 
 from algorithms.shor.circuit import build_order_finding_circuit
 from algorithms.shor.execution import AerExecutor, Executor
+from algorithms.shor.oracles import Oracle, PermutationMatrixOracle
 
 
 @dataclass(frozen=True)
@@ -40,11 +42,12 @@ def find_order(
     *,
     executor: Executor | None = None,
     shots: int = 1,
+    oracle_cls: Callable[[int, int, int], Oracle] = PermutationMatrixOracle,
 ) -> OrderFindingResult:
     """Estimate the multiplicative order of `a` modulo `N` via quantum phase
     estimation on `build_order_finding_circuit`."""
     executor = executor if executor is not None else AerExecutor()
-    circuit = build_order_finding_circuit(N, a)
+    circuit = build_order_finding_circuit(N, a, oracle_cls=oracle_cls)
     n_count = circuit.qregs[0].size
 
     counts = executor.run(circuit, shots)
@@ -106,6 +109,7 @@ def factor(
     max_attempts: int = 20,
     rng: random.Random | None = None,
     executor: Executor | None = None,
+    oracle_cls: Callable[[int, int, int], Oracle] = PermutationMatrixOracle,
 ) -> tuple[int, int]:
     """Factor composite integer `n` into two nontrivial factors using Shor's
     algorithm, with classical short-circuits for even `n` and perfect powers.
@@ -132,7 +136,7 @@ def factor(
         if g > 1:
             return min(g, n // g), max(g, n // g)
 
-        result = find_order(a, n, executor=executor)
+        result = find_order(a, n, executor=executor, oracle_cls=oracle_cls)
         if not result.success or result.order is None:
             continue
 

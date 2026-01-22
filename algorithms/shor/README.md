@@ -1,11 +1,13 @@
 # Shor's Algorithm
 
-Maturity: **experimental** (v0.1 skeleton)
+Maturity: **experimental** (v0.2 core implementation)
 
 Reference implementation of Shor's algorithm for integer factorization,
 built to demonstrate production-quality engineering rather than a toy demo.
-See [RFC-0001](../../docs/rfcs/0001-shors-algorithm.md) for motivation,
-milestones, and success criteria.
+See [RFC-0001](../../docs/rfcs/0001-shors-algorithm.md) (algorithm, default
+permutation-matrix oracle) and [RFC-0002](../../docs/rfcs/0002-gate-decomposed-arithmetic.md)
+(gate-decomposed alternative oracle) for motivation, milestones, and success
+criteria.
 
 ## Quick Start
 
@@ -19,7 +21,9 @@ uv run python -m algorithms.shor.implementation
   finding, why factoring reduces to it)
 - [paper.md](paper.md) — circuit derivation from the math (QFT, modular
   exponentiation)
-- [circuit.py](circuit.py) — circuit construction
+- [oracles.py](oracles.py) — the `Oracle` interface and its two
+  implementations (`PermutationMatrixOracle`, `GateDecomposedOracle`)
+- [circuit.py](circuit.py) — phase estimation circuit construction
 - [implementation.py](implementation.py) — end-to-end factorization routine
 - [benchmark.py](benchmark.py) — resource/performance benchmarks
 - [visualization.py](visualization.py) — circuit and result visualization
@@ -29,15 +33,20 @@ uv run python -m algorithms.shor.implementation
 
 ## Status
 
-v0.2 core implementation is done: `factor(15)` / `factor(21)` run end to end
-on `AerSimulator` via a general (not hardcoded-per-N) permutation-matrix
-oracle. Two extension seams exist for future RFCs:
+**RFC-0001 (v0.2 core implementation)** is done: `factor(15)` / `factor(21)`
+run end to end on `AerSimulator` via a general (not hardcoded-per-N)
+permutation-matrix oracle (`oracles.PermutationMatrixOracle`, the default).
 
-- `oracles.Oracle` — swap `PermutationMatrixOracle` for a gate-decomposed
-  (Beauregard/Cuccaro) oracle without touching `circuit.py` or
-  `implementation.py`.
-- `execution.Executor` — swap `AerExecutor` for a real-hardware or
-  noise-aware backend without touching the algorithm.
+**RFC-0002 (gate-decomposed arithmetic)** is also done: `oracles.
+GateDecomposedOracle` is a drop-in alternative built from actual reversible
+adder circuits (`arithmetic/adders.py` — Draper's QFT-based constant adder,
+Beauregard's modular adder, controlled modular multiplication), available via
+`factor(n, oracle_cls=GateDecomposedOracle)`. It is significantly slower to
+simulate than the default (that's the point — it's the elementary-gate
+construction the default oracle deliberately skips) so it isn't the default
+and its test coverage is narrower; see RFC-0002's own milestones for what's
+next (benchmarks, docs).
 
-See [RFC-0001](../../docs/rfcs/0001-shors-algorithm.md) for the v0.5 (feature
-complete: gate-decomposed oracle, richer benchmarks) and later milestones.
+`execution.Executor` remains a third extension seam — swap `AerExecutor` for
+a real-hardware or noise-aware backend without touching the algorithm (no RFC
+yet).

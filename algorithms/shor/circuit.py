@@ -1,5 +1,5 @@
-"""Circuit construction for Shor's algorithm: a from-scratch QFT plus the
-quantum phase estimation circuit used for order finding.
+"""Circuit construction for Shor's algorithm: the quantum phase estimation
+circuit used for order finding, built on the shared QFT in arithmetic/.
 
 See paper.md for the derivation this module implements.
 """
@@ -7,36 +7,10 @@ See paper.md for the derivation this module implements.
 import math
 from collections.abc import Callable
 
-from qiskit.circuit import ClassicalRegister, QuantumCircuit, QuantumRegister
+from qiskit.circuit import AncillaRegister, ClassicalRegister, QuantumCircuit, QuantumRegister
 
 from algorithms.shor.oracles import Oracle, PermutationMatrixOracle
-
-
-def qft(num_qubits: int) -> QuantumCircuit:
-    """Quantum Fourier Transform on `num_qubits`, built from H, controlled-phase,
-    and swap gates (not `qiskit.circuit.library.QFT`)."""
-    circuit = QuantumCircuit(num_qubits, name="QFT")
-    for target in reversed(range(num_qubits)):
-        circuit.h(target)
-        for control in range(target):
-            angle = math.pi / 2 ** (target - control)
-            circuit.cp(angle, control, target)
-    for i in range(num_qubits // 2):
-        circuit.swap(i, num_qubits - 1 - i)
-    return circuit
-
-
-def inverse_qft(num_qubits: int) -> QuantumCircuit:
-    """Inverse Quantum Fourier Transform, built directly (not via `qft(...).inverse()`)."""
-    circuit = QuantumCircuit(num_qubits, name="QFT_dagger")
-    for i in range(num_qubits // 2):
-        circuit.swap(i, num_qubits - 1 - i)
-    for target in range(num_qubits):
-        for control in reversed(range(target)):
-            angle = -math.pi / 2 ** (target - control)
-            circuit.cp(angle, control, target)
-        circuit.h(target)
-    return circuit
+from arithmetic.qft import inverse_qft
 
 
 def build_order_finding_circuit(
@@ -61,18 +35,27 @@ def build_order_finding_circuit(
     if n_count is None:
         n_count = 2 * n_work
 
+    oracle = oracle_cls(a, N, n_work)
+
     count_reg = QuantumRegister(n_count, name="count")
     work_reg = QuantumRegister(n_work, name="work")
     creg = ClassicalRegister(n_count, name="c")
-    circuit = QuantumCircuit(count_reg, work_reg, creg, name=f"order_finding(N={N},a={a})")
+    registers: list[QuantumRegister] = [count_reg, work_reg]
+    ancilla_reg = None
+    if oracle.num_ancilla_qubits > 0:
+        ancilla_reg = AncillaRegister(oracle.num_ancilla_qubits, name="anc")
+        registers.append(ancilla_reg)
+    circuit = QuantumCircuit(*registers, creg, name=f"order_finding(N={N},a={a})")
 
     circuit.x(work_reg[0])  # work register := |1>
     circuit.h(count_reg)
 
-    oracle = oracle_cls(a, N, n_work)
     for k in range(n_count):
         gate = oracle.controlled_power_gate(2**k)
-        circuit.append(gate, [count_reg[k], *work_reg])
+        qargs = [count_reg[k], *work_reg]
+        if ancilla_reg is not None:
+            qargs += list(ancilla_reg)
+        circuit.append(gate, qargs)
 
     circuit.append(inverse_qft(n_count).to_gate(label="QFT_dagger"), count_reg)
     circuit.measure(count_reg, creg)

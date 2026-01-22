@@ -31,7 +31,9 @@ Python, Qiskit
 
 -   [x] v0.1: Skeleton
 -   [x] v0.2: Core implementation
--   [ ] v0.5: Feature complete
+-   [ ] v0.5: Feature complete (benchmarks, notebooks — the elementary-gate
+    oracle originally sketched for this milestone became its own RFC,
+    [RFC-0002](0002-gate-decomposed-arithmetic.md), so it doesn't block this one)
 -   [ ] v0.8: Documentation
 -   [ ] v1.0: Public release
 
