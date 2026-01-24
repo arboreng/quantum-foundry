@@ -44,8 +44,9 @@ Beauregard's modular adder, controlled modular multiplication), available via
 `factor(n, oracle_cls=GateDecomposedOracle)`. It is significantly slower to
 simulate than the default (that's the point — it's the elementary-gate
 construction the default oracle deliberately skips) so it isn't the default
-and its test coverage is narrower; see RFC-0002's own milestones for what's
-next (benchmarks, docs).
+and its test coverage is narrower — see
+[../../benchmarks/shor.md](../../benchmarks/shor.md) for exactly how much
+(qubit count, gate count, circuit depth, simulation time at N=15/21).
 
 `execution.Executor` remains a third extension seam — swap `AerExecutor` for
 a real-hardware or noise-aware backend without touching the algorithm (no RFC

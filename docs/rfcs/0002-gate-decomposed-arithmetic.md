@@ -65,8 +65,9 @@ Python, Qiskit (same as RFC-0001).
     modular multiplier, `GateDecomposedOracle`, tests at N=15/21) — no
     separate v0.1 skeleton; this RFC starts from RFC-0001's already-scaffolded
     repo structure.
--   [ ] v0.5: Benchmarks comparing qubit/gate count and simulation time
-    against RFC-0001's `PermutationMatrixOracle`.
+-   [x] v0.5: Benchmarks comparing qubit/gate count and simulation time
+    against RFC-0001's `PermutationMatrixOracle` — see
+    [benchmarks/shor.md](../../benchmarks/shor.md).
 -   [ ] v0.8: Documentation (math.md/paper.md equivalents for the adder
     constructions).
 -   [ ] v1.0: Folded into the public release alongside RFC-0001.

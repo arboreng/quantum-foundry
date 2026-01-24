@@ -26,9 +26,9 @@ class AerExecutor:
     name = "aer_simulator"
 
     def __init__(self) -> None:
-        self._backend = AerSimulator()
+        self.backend = AerSimulator()
 
     def run(self, circuit: QuantumCircuit, shots: int) -> dict[str, int]:
-        transpiled = transpile(circuit, self._backend)
-        result = self._backend.run(transpiled, shots=shots).result()
+        transpiled = transpile(circuit, self.backend)
+        result = self.backend.run(transpiled, shots=shots).result()
         return result.get_counts()
