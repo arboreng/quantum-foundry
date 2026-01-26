@@ -3,6 +3,10 @@
 Shared quantum arithmetic building blocks, factored out for reuse across
 algorithms.
 
+- [math.md](math.md) — number-theoretic foundations (why addition is
+  diagonal in the Fourier basis, Beauregard's overflow trick, double-and-add
+  multiplication)
+- [paper.md](paper.md) — circuit derivation for each gate below
 - [qft.py](qft.py) — from-scratch Quantum Fourier Transform (`qft`,
   `inverse_qft`). Originally written for
   [algorithms/shor/](../algorithms/shor/)'s phase estimation circuit

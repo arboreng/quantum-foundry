@@ -68,8 +68,8 @@ Python, Qiskit (same as RFC-0001).
 -   [x] v0.5: Benchmarks comparing qubit/gate count and simulation time
     against RFC-0001's `PermutationMatrixOracle` — see
     [benchmarks/shor.md](../../benchmarks/shor.md).
--   [ ] v0.8: Documentation (math.md/paper.md equivalents for the adder
-    constructions).
+-   [x] v0.8: Documentation — see [arithmetic/math.md](../../arithmetic/math.md)
+    and [arithmetic/paper.md](../../arithmetic/paper.md).
 -   [ ] v1.0: Folded into the public release alongside RFC-0001.
 
 ## Explicit Non-goals (v0.2)
