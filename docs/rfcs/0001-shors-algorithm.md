@@ -31,8 +31,9 @@ Python, Qiskit
 
 -   [x] v0.1: Skeleton
 -   [x] v0.2: Core implementation
--   [ ] v0.5: Feature complete (benchmarks done — see
-    [benchmarks/shor.md](../../benchmarks/shor.md); notebooks still pending.
+-   [x] v0.5: Feature complete (benchmarks — see
+    [benchmarks/shor.md](../../benchmarks/shor.md); demo notebook — see
+    [algorithms/shor/notebooks/shor_demo.ipynb](../../algorithms/shor/notebooks/shor_demo.ipynb).
     The elementary-gate oracle originally sketched for this milestone became
     its own RFC, [RFC-0002](0002-gate-decomposed-arithmetic.md), so it
     doesn't block this one)
