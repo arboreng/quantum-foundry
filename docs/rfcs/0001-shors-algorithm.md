@@ -37,7 +37,8 @@ Python, Qiskit
     The elementary-gate oracle originally sketched for this milestone became
     its own RFC, [RFC-0002](0002-gate-decomposed-arithmetic.md), so it
     doesn't block this one)
--   [ ] v0.8: Documentation
+-   [x] v0.8: Documentation (README/math.md/paper.md polish pass,
+    references.bib fleshed out with the RFC-0002 citations)
 -   [ ] v1.0: Public release
 
 ## Seed GitHub Issues

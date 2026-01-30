@@ -105,3 +105,9 @@ classically-precomputed dense unitary.
   specific Qiskit control-synthesis limitation observed during development,
   not a claim that ripple-carry-style controlled arithmetic is superior in
   general.
+
+## References
+
+See [algorithms/shor/references.bib](../algorithms/shor/references.bib) —
+`draper2000`, `beauregard2002`, `vedral1996` — and [math.md](math.md) for how
+each maps to the constructions above.

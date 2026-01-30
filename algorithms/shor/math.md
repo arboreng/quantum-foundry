@@ -75,3 +75,10 @@ the candidate order, which `find_order` then verifies classically via
   multiplication classically to build the oracle matrix — see paper.md's
   "Known simplifications". The speedup argument is about circuit depth on a
   real quantum computer, not simulator wall-clock time.
+
+## References
+
+See [references.bib](references.bib). The order-finding reduction and
+phase-estimation argument above follow Shor's original paper
+(`shor1994`) and Nielsen & Chuang's textbook treatment (`nielsenchuang2010`,
+particularly Theorem 5.1 for the continued-fraction convergent guarantee).

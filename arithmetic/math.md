@@ -97,3 +97,11 @@ above, just one level up.
   as a bitstring; the adder uses it because addition happens to be diagonal
   (i.e. phase-only) in that basis. Building both from the same `arithmetic/qft.py`
   is a code-reuse convenience, not a mathematical coincidence.
+
+## References
+
+See [algorithms/shor/references.bib](../algorithms/shor/references.bib):
+Draper (`draper2000`) for the QFT-based constant adder, Beauregard
+(`beauregard2002`) for the modular adder and controlled multiplication this
+module's construction follows, and Vedral-Barenco-Ekert (`vedral1996`) for
+the broader reversible-arithmetic literature this builds on.

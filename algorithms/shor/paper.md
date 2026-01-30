@@ -80,3 +80,13 @@ See [RFC-0001](../../docs/rfcs/0001-shors-algorithm.md)'s "Explicit
 Non-goals" section for the full list of what v0.2 deliberately defers, and
 [RFC-0002](../../docs/rfcs/0002-gate-decomposed-arithmetic.md)'s for what its
 gate-decomposed oracle still doesn't address.
+
+## References
+
+See [references.bib](references.bib) for full citations: Shor's original
+paper (`shor1994`) for the algorithm this circuit implements; Draper
+(`draper2000`), Beauregard (`beauregard2002`), and Vedral-Barenco-Ekert
+(`vedral1996`) for the elementary-gate constructions
+`GateDecomposedOracle` is built from — see
+[../../arithmetic/paper.md](../../arithmetic/paper.md) for the derivation of
+those specifically.
