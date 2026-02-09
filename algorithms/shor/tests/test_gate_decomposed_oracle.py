@@ -12,8 +12,10 @@ import random
 import pytest
 from qiskit.quantum_info import Statevector
 
+from algorithms.shor.execution import ConstrainedAerExecutor
 from algorithms.shor.implementation import factor, find_order
 from algorithms.shor.oracles import GateDecomposedOracle
+from compiler.targets import BASIS_GATES, linear_coupling_map
 
 
 def test_gate_decomposed_oracle_matches_permutation_matrix_oracle():
@@ -69,3 +71,22 @@ def test_find_order_with_gate_decomposed_oracle_at_n21():
             assert result.order == expected_order
             return
     raise AssertionError(f"find_order with GateDecomposedOracle didn't succeed for a={a}, N={N}")
+
+
+@pytest.mark.slow
+def test_find_order_survives_hardware_aware_transpilation():
+    """RFC-0003: routing onto a connectivity-constrained linear coupling map
+    (via ConstrainedAerExecutor) must preserve logical correctness, not just
+    satisfy the coupling-map constraint structurally (that part is covered,
+    faster, in compiler/tests/test_transpilation.py). ~50s/attempt measured
+    during development — comparable to the unconstrained oracle, not the
+    order-of-magnitude jump N=21 was."""
+    a, N = 7, 15
+    expected_order = 4
+    executor = ConstrainedAerExecutor(linear_coupling_map(19), BASIS_GATES)
+    for _ in range(3):
+        result = find_order(a, N, oracle_cls=GateDecomposedOracle, executor=executor)
+        if result.success:
+            assert result.order == expected_order
+            return
+    raise AssertionError(f"find_order didn't succeed for a={a}, N={N} under constrained routing")

@@ -58,3 +58,9 @@ from algorithms.shor.oracles import GateDecomposedOracle
 # N=21 with the gate-decomposed oracle: budget ~10 minutes.
 print(_benchmark_single(21, AerExecutor(), GateDecomposedOracle))
 ```
+
+See [shor-transpilation.md](shor-transpilation.md) for what happens when
+`GateDecomposedOracle`'s circuit is additionally transpiled against a
+connectivity-constrained hardware model ([RFC-0003](../docs/rfcs/0003-hardware-aware-transpilation.md))
+— roughly another order of magnitude in gate count and depth, on top of
+these numbers.
