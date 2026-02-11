@@ -2,6 +2,10 @@
 
 Circuit optimization and transpilation passes shared across algorithms.
 
+- [math.md](math.md) — the qubit-mapping problem, SABRE routing, basis
+  translation, what optimization levels trade off
+- [paper.md](paper.md) — derivation of `analyze_transpilation`'s two-pass
+  swap-counting trick and `ConstrainedAerExecutor`'s integration
 - [targets.py](targets.py) — a hand-built, transparent hardware model:
   `linear_coupling_map` (linear nearest-neighbor connectivity) and
   `BASIS_GATES` (`rz`, `sx`, `x`, `cx` — a standard superconducting-qubit gate

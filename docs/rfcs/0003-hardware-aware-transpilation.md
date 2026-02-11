@@ -59,8 +59,8 @@ Python, Qiskit (same as RFC-0001/0002). No new dependencies.
     check that `factor()` still works through the constrained transpilation.
 -   [x] v0.5: Benchmarks written up — see
     [benchmarks/shor-transpilation.md](../../benchmarks/shor-transpilation.md).
--   [ ] v0.8: Documentation (math.md/paper.md-equivalent for the routing
-    problem, if warranted once v0.2 is done).
+-   [x] v0.8: Documentation — see [compiler/math.md](../../compiler/math.md)
+    and [compiler/paper.md](../../compiler/paper.md).
 -   [ ] v1.0: Folded into the public release alongside RFC-0001/0002.
 
 ## Explicit Non-goals (v0.2)
