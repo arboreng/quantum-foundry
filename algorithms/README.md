@@ -6,16 +6,25 @@ same layout:
 ```text
 algorithms/<name>/
   README.md          # Motivation, quick start, current status
-  paper.md            # Level 1: mathematical foundations
-  math.md              # Level 2: circuit derivation
-  implementation.py     # Level 3: software implementation
-  circuit.py             # Circuit construction
-  benchmark.py             # Performance / resource benchmarks
-  visualization.py           # Circuit and result visualization
-  tests/                       # Test suite
-  notebooks/                    # Exploratory / demo notebooks
-  references.bib                 # Citations
+  math.md             # Level 1: mathematical foundations
+  paper.md             # Level 2: circuit derivation
+  oracles.py             # Oracle interface + implementation(s)
+  circuit.py               # Circuit construction
+  execution.py               # Executor interface + implementation(s)
+  implementation.py            # Level 3: end-to-end software implementation
+  benchmark.py                   # Performance / resource benchmarks
+  visualization.py                 # Circuit and result visualization
+  tests/                              # Test suite
+  notebooks/                            # Exploratory / demo notebooks
+  references.bib                          # Citations
 ```
+
+`oracles.py` and `execution.py` are separate `Protocol`-based seams (an
+`Oracle` for whatever the algorithm's "black box" is, an `Executor` for
+circuit execution) — this is what let RFC-0002 and RFC-0003 extend Shor's
+algorithm without touching its core logic; see
+[algorithms/shor/oracles.py](shor/oracles.py) and
+[algorithms/shor/execution.py](shor/execution.py) for the pattern.
 
 See [VISION.md](../VISION.md#levels-of-understanding) for what each level
 (engineer intuition → mathematics → circuit derivation → implementation →
@@ -32,4 +41,5 @@ hardware behavior) is expected to cover.
 
 | Algorithm | Maturity     | RFC                                                     |
 | --------- | ------------ | -------------------------------------------------------- |
-| Shor      | experimental | [RFC-0001](../docs/rfcs/0001-shors-algorithm.md) |
+| Shor      | experimental | [RFC-0001](../docs/rfcs/0001-shors-algorithm.md) (+[0002](../docs/rfcs/0002-gate-decomposed-arithmetic.md), [0003](../docs/rfcs/0003-hardware-aware-transpilation.md)) |
+| Grover    | experimental (v0.1 skeleton) | [RFC-0004](../docs/rfcs/0004-grovers-algorithm.md) |
