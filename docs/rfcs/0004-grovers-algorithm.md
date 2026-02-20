@@ -57,8 +57,8 @@ Python, Qiskit (same as RFC-0001/0002/0003).
 
 ## Milestones
 
--   [ ] v0.1: Skeleton
--   [ ] v0.2: Core implementation
+-   [x] v0.1: Skeleton
+-   [x] v0.2: Core implementation
 -   [ ] v0.5: Feature complete (benchmarks, demo notebook)
 -   [ ] v0.8: Documentation
 -   [ ] v1.0: Public release

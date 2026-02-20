@@ -1,6 +1,6 @@
 # Grover's Algorithm
 
-Maturity: **experimental** (v0.1 skeleton)
+Maturity: **experimental** (v0.2 core implementation)
 
 Reference implementation of Grover's algorithm for unstructured search,
 built to demonstrate production-quality engineering rather than a toy demo.
@@ -32,5 +32,9 @@ uv run python -m algorithms.grover.implementation
 
 ## Status
 
-Skeleton only — see [RFC-0004](../../docs/rfcs/0004-grovers-algorithm.md)
-milestones for what's next (v0.2: core implementation).
+v0.2 core implementation is done: `search(n_qubits, marked)` runs end to
+end on `AerSimulator` via a general (arbitrary marked-set) multi-controlled-Z
+oracle (`oracles.MarkedBitstringOracle`), with iteration count computed
+exactly from `len(marked)`. See
+[RFC-0004](../../docs/rfcs/0004-grovers-algorithm.md) for the v0.5 (feature
+complete: benchmarks, demo notebook) and later milestones.

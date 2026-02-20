@@ -7,7 +7,8 @@ iteration alongside the diffusion operator.
 
 from typing import Protocol
 
-from qiskit.circuit import Gate
+from qiskit.circuit import Gate, QuantumCircuit
+from qiskit.circuit.library import ZGate
 
 
 class Oracle(Protocol):
@@ -20,12 +21,32 @@ class Oracle(Protocol):
 
 class MarkedBitstringOracle:
     """`Oracle` marking an explicit, arbitrary set of bitstrings via
-    multi-controlled-Z gates. Not yet implemented — see RFC-0004 milestone
-    v0.2."""
+    multi-controlled-Z gates.
+
+    Bit-index convention matches measurement bitstrings: qubit `q`
+    corresponds to the character at position `n_qubits - 1 - q` of a marked
+    string (i.e. the same convention Qiskit's own `counts` dict keys use).
+    """
 
     def __init__(self, n_qubits: int, marked: set[str]):
+        for m in marked:
+            if len(m) != n_qubits:
+                raise ValueError(f"marked bitstring {m!r} does not have length n_qubits={n_qubits}")
         self.n_qubits = n_qubits
         self.marked = marked
 
     def phase_flip_gate(self) -> Gate:
-        raise NotImplementedError
+        circuit = QuantumCircuit(self.n_qubits, name="oracle")
+        for m in self.marked:
+            zero_qubits = [q for q in range(self.n_qubits) if m[self.n_qubits - 1 - q] == "0"]
+            for q in zero_qubits:
+                circuit.x(q)
+            if self.n_qubits == 1:
+                circuit.z(0)
+            else:
+                circuit.append(
+                    ZGate().control(self.n_qubits - 1, annotated=False), range(self.n_qubits)
+                )
+            for q in zero_qubits:
+                circuit.x(q)
+        return circuit.to_gate(label="oracle")

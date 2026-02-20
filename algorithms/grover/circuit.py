@@ -4,23 +4,37 @@ See paper.md for the derivation this module implements.
 """
 
 from qiskit.circuit import QuantumCircuit
+from qiskit.circuit.library import ZGate
 
 from algorithms.grover.oracles import Oracle
 
 
 def diffusion_operator(n_qubits: int) -> QuantumCircuit:
     """The Grover diffusion operator: reflection about the uniform
-    superposition's average amplitude.
-
-    Not yet implemented — see RFC-0004 milestone v0.2.
-    """
-    raise NotImplementedError
+    superposition's average amplitude (`2|s><s| - I`)."""
+    circuit = QuantumCircuit(n_qubits, name="diffusion")
+    circuit.h(range(n_qubits))
+    circuit.x(range(n_qubits))
+    if n_qubits == 1:
+        circuit.z(0)
+    else:
+        circuit.append(ZGate().control(n_qubits - 1, annotated=False), range(n_qubits))
+    circuit.x(range(n_qubits))
+    circuit.h(range(n_qubits))
+    return circuit
 
 
 def build_grover_circuit(n_qubits: int, oracle: Oracle, iterations: int) -> QuantumCircuit:
     """Build the full Grover circuit: uniform superposition, then
-    `iterations` rounds of (oracle, diffusion), then measurement.
+    `iterations` rounds of (oracle, diffusion), then measurement."""
+    circuit = QuantumCircuit(n_qubits, n_qubits, name="grover")
+    circuit.h(range(n_qubits))
 
-    Not yet implemented — see RFC-0004 milestone v0.2.
-    """
-    raise NotImplementedError
+    oracle_gate = oracle.phase_flip_gate()
+    diffusion_gate = diffusion_operator(n_qubits).to_gate(label="diffusion")
+    for _ in range(iterations):
+        circuit.append(oracle_gate, range(n_qubits))
+        circuit.append(diffusion_gate, range(n_qubits))
+
+    circuit.measure(range(n_qubits), range(n_qubits))
+    return circuit
