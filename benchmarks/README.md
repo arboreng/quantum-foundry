@@ -11,5 +11,10 @@ regressions over time.
 - [shor-transpilation.md](shor-transpilation.md) — gate count/depth/SWAP-count
   overhead RFC-0003's connectivity-constrained transpilation adds on top of
   RFC-0002's `GateDecomposedOracle`, across Qiskit optimization levels 0-3.
+- [grover.md](grover.md) — iteration count, gate count, circuit depth, and
+  simulation time for RFC-0004's `MarkedBitstringOracle` as the search space
+  grows from `n_qubits=3` to `10`.
 
-No cross-algorithm comparisons yet (only one algorithm implemented so far).
+No cross-algorithm comparisons yet (two algorithms implemented, but at very
+different scales — see [grover.md](grover.md)'s comparison to
+[shor.md](shor.md) for why a direct table wouldn't be very meaningful yet).

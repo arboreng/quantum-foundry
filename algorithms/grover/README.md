@@ -1,6 +1,6 @@
 # Grover's Algorithm
 
-Maturity: **experimental** (v0.2 core implementation)
+Maturity: **experimental** (v0.5 feature complete)
 
 Reference implementation of Grover's algorithm for unstructured search,
 built to demonstrate production-quality engineering rather than a toy demo.
@@ -24,17 +24,20 @@ uv run python -m algorithms.grover.implementation
 - [circuit.py](circuit.py) — circuit construction
 - [execution.py](execution.py) — the `Executor` interface
 - [implementation.py](implementation.py) — end-to-end search routine
-- [benchmark.py](benchmark.py) — resource/performance benchmarks
+- [benchmark.py](benchmark.py) — resource/performance benchmarks (see
+  [../../benchmarks/grover.md](../../benchmarks/grover.md) for results)
 - [visualization.py](visualization.py) — circuit and result visualization
 - [tests/](tests/) — test suite
-- [notebooks/](notebooks/) — exploratory / demo notebooks
+- [notebooks/grover_demo.ipynb](notebooks/grover_demo.ipynb) — end-to-end demo
 - [references.bib](references.bib) — citations
 
 ## Status
 
-v0.2 core implementation is done: `search(n_qubits, marked)` runs end to
-end on `AerSimulator` via a general (arbitrary marked-set) multi-controlled-Z
+Done through v0.5: `search(n_qubits, marked)` runs end to end on
+`AerSimulator` via a general (arbitrary marked-set) multi-controlled-Z
 oracle (`oracles.MarkedBitstringOracle`), with iteration count computed
-exactly from `len(marked)`. See
-[RFC-0004](../../docs/rfcs/0004-grovers-algorithm.md) for the v0.5 (feature
-complete: benchmarks, demo notebook) and later milestones.
+exactly from `len(marked)`; benchmarks
+([benchmarks/grover.md](../../benchmarks/grover.md)) and a demo notebook
+([notebooks/grover_demo.ipynb](notebooks/grover_demo.ipynb)) are both in
+place. See [RFC-0004](../../docs/rfcs/0004-grovers-algorithm.md) for v0.8
+(documentation) and v1.0.

@@ -59,7 +59,9 @@ Python, Qiskit (same as RFC-0001/0002/0003).
 
 -   [x] v0.1: Skeleton
 -   [x] v0.2: Core implementation
--   [ ] v0.5: Feature complete (benchmarks, demo notebook)
+-   [x] v0.5: Feature complete (benchmarks — see
+    [benchmarks/grover.md](../../benchmarks/grover.md); demo notebook — see
+    [algorithms/grover/notebooks/grover_demo.ipynb](../../algorithms/grover/notebooks/grover_demo.ipynb))
 -   [ ] v0.8: Documentation
 -   [ ] v1.0: Public release
 
