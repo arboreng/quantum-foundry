@@ -62,7 +62,8 @@ Python, Qiskit (same as RFC-0001/0002/0003).
 -   [x] v0.5: Feature complete (benchmarks — see
     [benchmarks/grover.md](../../benchmarks/grover.md); demo notebook — see
     [algorithms/grover/notebooks/grover_demo.ipynb](../../algorithms/grover/notebooks/grover_demo.ipynb))
--   [ ] v0.8: Documentation
+-   [x] v0.8: Documentation (References sections added to math.md/paper.md;
+    README/references.bib were already current from v0.2/v0.5)
 -   [ ] v1.0: Public release
 
 ## Seed GitHub Issues

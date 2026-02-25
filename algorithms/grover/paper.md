@@ -66,3 +66,11 @@ gates, dramatically smaller than Shor's circuits at comparable qubit counts.
 
 See [RFC-0004](../../docs/rfcs/0004-grovers-algorithm.md)'s "Explicit
 Non-goals" for the full list of what v0.2 deliberately defers.
+
+## References
+
+See [references.bib](references.bib) for full citations: Grover's original
+paper (`grover1996`) for the algorithm this circuit implements; Nielsen &
+Chuang (`nielsenchuang2010`) for the standard circuit-derivation treatment;
+Brassard-Høyer-Mosca (`brassard2000`) for the amplitude-amplification
+generalization this oracle/diffusion-operator pair is a special case of.

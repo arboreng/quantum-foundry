@@ -64,3 +64,13 @@ fresh shots on failure, rather than adding more iterations.
   hard problem the way RSA/ECC need replacing against Shor).
 - **More iterations is not always better** — see "why ~(pi/4)*sqrt(N/M)"
   above; this is a real, provable failure mode, not a simulator artifact.
+
+## References
+
+See [references.bib](references.bib). The algorithm and its analysis follow
+Grover's original paper (`grover1996`); the geometric/rotation picture and
+the BBBV optimality argument follow Nielsen & Chuang's textbook treatment
+(`nielsenchuang2010`). `brassard2000`'s amplitude amplification generalizes
+Grover's algorithm to arbitrary initial-state rotations and to unknown-`M`
+search (quantum counting) — both out of scope for this RFC's v0.2 (see
+paper.md's "Known simplifications").

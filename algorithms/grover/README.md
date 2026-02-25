@@ -1,6 +1,6 @@
 # Grover's Algorithm
 
-Maturity: **experimental** (v0.5 feature complete)
+Maturity: **experimental** (v0.8 documentation)
 
 Reference implementation of Grover's algorithm for unstructured search,
 built to demonstrate production-quality engineering rather than a toy demo.
@@ -39,5 +39,6 @@ oracle (`oracles.MarkedBitstringOracle`), with iteration count computed
 exactly from `len(marked)`; benchmarks
 ([benchmarks/grover.md](../../benchmarks/grover.md)) and a demo notebook
 ([notebooks/grover_demo.ipynb](notebooks/grover_demo.ipynb)) are both in
-place. See [RFC-0004](../../docs/rfcs/0004-grovers-algorithm.md) for v0.8
-(documentation) and v1.0.
+place. Done through v0.8 (documentation). See
+[RFC-0004](../../docs/rfcs/0004-grovers-algorithm.md) for v1.0 (public
+release, folded in alongside RFC-0001/0002/0003).
