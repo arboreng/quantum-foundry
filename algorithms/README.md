@@ -43,5 +43,5 @@ hardware behavior) is expected to cover.
 | --------- | ------------ | -------------------------------------------------------- |
 | Shor      | experimental | [RFC-0001](../docs/rfcs/0001-shors-algorithm.md) (+[0002](../docs/rfcs/0002-gate-decomposed-arithmetic.md), [0003](../docs/rfcs/0003-hardware-aware-transpilation.md)) |
 | Grover    | experimental | [RFC-0004](../docs/rfcs/0004-grovers-algorithm.md) |
-| Deutsch-Jozsa | experimental (v0.1 skeleton) | [RFC-0005](../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md) |
-| Bernstein-Vazirani | experimental (v0.1 skeleton) | [RFC-0005](../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md) |
+| Deutsch-Jozsa | experimental | [RFC-0005](../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md) |
+| Bernstein-Vazirani | experimental | [RFC-0005](../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md) |

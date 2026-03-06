@@ -8,7 +8,7 @@ of Hadamards.
 
 from typing import Protocol
 
-from qiskit.circuit import Gate
+from qiskit.circuit import Gate, QuantumCircuit
 
 
 class Oracle(Protocol):
@@ -22,13 +22,15 @@ class Oracle(Protocol):
 
 class HiddenStringOracle:
     """`Oracle` for `f(x) = s.x mod 2` (inner product mod 2) for a hidden
-    bitstring `s` — `O(n)` gates (one `CX` per set bit of `s`) for any `s`.
-
-    Not yet implemented — see RFC-0005 milestone v0.2.
-    """
+    bitstring `s` — `O(n)` gates (one `CX` per set bit of `s`) for any `s`."""
 
     def __init__(self, s: str):
         self.s = s
+        self.n_qubits = len(s)
 
     def oracle_gate(self) -> Gate:
-        raise NotImplementedError
+        circuit = QuantumCircuit(self.n_qubits + 1, name=f"s={self.s}")
+        for i, bit in enumerate(reversed(self.s)):
+            if bit == "1":
+                circuit.cx(i, self.n_qubits)
+        return circuit.to_gate(label="oracle")

@@ -3,19 +3,24 @@
 See math.md for the theory and paper.md for the circuit this module drives.
 """
 
-from algorithms.bernstein_vazirani.oracles import Oracle
+from algorithms.bernstein_vazirani.circuit import build_oracle_query_circuit
+from algorithms.bernstein_vazirani.execution import AerExecutor, Executor
+from algorithms.bernstein_vazirani.oracles import HiddenStringOracle, Oracle
 
 
-def find_hidden_string(n_qubits: int, oracle: Oracle) -> str:
+def find_hidden_string(n_qubits: int, oracle: Oracle, *, executor: Executor | None = None) -> str:
     """Recover the hidden bitstring `s` from `oracle`'s `f(x) = s.x mod 2`
     with a single query.
 
-    Not yet implemented — see RFC-0005 milestone v0.2.
+    Exact and deterministic (unlike Shor's/Grover's probabilistic
+    algorithms): the measured bitstring *is* `s` with certainty (see
+    math.md), so a single shot suffices.
     """
-    raise NotImplementedError
+    executor = executor if executor is not None else AerExecutor()
+    circuit = build_oracle_query_circuit(n_qubits, oracle)
+    counts = executor.run(circuit, shots=1)
+    return next(iter(counts))
 
 
 if __name__ == "__main__":
-    raise SystemExit(
-        "algorithms.bernstein_vazirani.implementation is not yet implemented (RFC-0005 v0.2)"
-    )
+    print(find_hidden_string(3, HiddenStringOracle("101")))

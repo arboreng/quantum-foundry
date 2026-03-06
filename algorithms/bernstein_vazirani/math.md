@@ -1,23 +1,44 @@
 # Bernstein-Vazirani Algorithm — Mathematical Foundations
 
+**Math Version 1.0.**
+
 Level 1 of [VISION.md's understanding model](../../VISION.md#levels-of-understanding).
 
-TODO:
+## The hidden-string problem
 
-- The hidden-string problem: given oracle access to `f(x) = s.x mod 2`
-  (inner product mod 2) for an unknown `s` in `{0,1}^n`, recover `s`.
-- Classical query complexity: exactly `n` queries (one per bit of `s`, e.g.
-  querying each standard basis vector `e_i`) — contrast with
-  [algorithms/deutsch_jozsa/math.md](../deutsch_jozsa/math.md)'s
-  *exponential* classical query complexity for the constant/balanced
-  decision problem. Bernstein-Vazirani's quantum-vs-classical gap is
-  `O(1)` vs. `O(n)` queries — a smaller gap than Deutsch-Jozsa's, but the
-  *same circuit* achieves it.
-- Why measuring the input register after `H^n -> oracle -> H^n` gives `s`
-  directly and deterministically (derive via the Hadamard transform of
-  `(-1)^(s.x)`, same phase-kickback mechanism as
-  `algorithms/deutsch_jozsa/math.md`).
-- Historical note: Bernstein-Vazirani is often presented as a special case
-  of / stepping stone to Simon's algorithm and, ultimately, Shor's algorithm
-  (all in the "hidden subgroup problem" family) — see VISION.md's long-term
-  algorithm list.
+Given oracle access to `f(x) = s.x mod 2` (bitwise-AND then parity, i.e.
+inner product mod 2) for an unknown `s` in `{0,1}^n`, recover `s`.
+
+Classically this needs exactly `n` queries: querying the standard basis
+vector `e_i` (all zeros except a `1` in position `i`) returns `f(e_i) = s_i`
+directly, and no fewer than `n` queries can determine `n` independent bits.
+Bernstein-Vazirani solves it with a **single** quantum query — but note the
+gap here (`O(1)` vs. `O(n)`) is far smaller than Deutsch-Jozsa's (`O(1)` vs.
+`O(2^n)`, see [algorithms/deutsch_jozsa/math.md](../deutsch_jozsa/math.md))
+even though it's *the same circuit* achieving both.
+
+## Why measurement gives `s` directly
+
+Exactly the same phase-kickback mechanism as Deutsch-Jozsa (see
+[algorithms/deutsch_jozsa/math.md](../deutsch_jozsa/math.md)): with the
+ancilla in `|->`, the oracle becomes `|x> -> (-1)^(s.x) |x>`. After
+`H^n -> oracle -> H^n`, the amplitude of basis state `|z>` is:
+
+`(1/2^n) * sum_x (-1)^(s.x) (-1)^(x.z) = (1/2^n) * sum_x (-1)^((s XOR z).x)`
+
+This sum is `1` if `s = z` (every term is `+1`) and exactly `0` otherwise
+(the `+1`/`-1` terms cancel in pairs whenever `s XOR z != 0`, the same
+cancellation argument as Deutsch-Jozsa's balanced case). So measuring the
+input register gives `|s>` with certainty — the measured bitstring *is* the
+answer, not just correlated with it. Single-shot, deterministic, no retry
+loop needed (`implementation.find_hidden_string`).
+
+## Historical context
+
+Bernstein-Vazirani is often presented as a stepping stone toward Simon's
+algorithm and, ultimately, the order-finding subroutine at the heart of
+Shor's algorithm (`algorithms/shor/math.md`) — all three belong to the
+"hidden subgroup problem" family, where a hidden algebraic structure (a
+string, a period, a subgroup) is extracted via a similar
+Hadamard-oracle-Hadamard pattern applied to progressively richer oracles.
+See VISION.md's long-term algorithm list.

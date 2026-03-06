@@ -1,6 +1,6 @@
 # Deutsch-Jozsa Algorithm
 
-Maturity: **experimental** (v0.1 skeleton)
+Maturity: **experimental** (v0.2 core implementation)
 
 Reference implementation of the Deutsch-Jozsa algorithm: given a boolean
 function promised to be constant or balanced, determine which with a single
@@ -36,6 +36,10 @@ uv run python -m algorithms.deutsch_jozsa.implementation
 
 ## Status
 
-Skeleton only — see
-[RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md)
-milestones for what's next (v0.2: core implementation).
+v0.2 core implementation is done: `is_constant(n_qubits, oracle)` runs end
+to end on `AerSimulator`, deterministic in a single shot (no retry loop —
+see math.md). Three oracle types: `ConstantOracle`, an efficient
+always-balanced `ParityOracle`, and a general but exponential
+`BalancedOracle`. See
+[RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md) for the
+v0.5 (feature complete: benchmarks, demo notebook) and later milestones.

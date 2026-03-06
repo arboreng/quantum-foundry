@@ -1,21 +1,58 @@
 # Bernstein-Vazirani Algorithm — Circuit Derivation
 
 Level 2 of [VISION.md's understanding model](../../VISION.md#levels-of-understanding).
-Builds on [math.md](math.md).
+Builds on [math.md](math.md) (Math Version 1.0).
 
-TODO:
+## The oracle gate
 
-- The oracle gate: `|x>|y> -> |x>|y XOR (s.x mod 2)>`, implemented as one
-  `CX` per set bit of `s` (input qubit `i` to the ancilla, for each `i`
-  where `s_i = 1`) — `O(n)` gates for any `s`, no multi-controlled gates
-  needed at all (contrast with
-  [algorithms/deutsch_jozsa/oracles.py](../deutsch_jozsa/oracles.py)'s
-  `BalancedOracle`, which needs `O(2^n)`).
-- The circuit is exactly `algorithms/deutsch_jozsa/circuit.py`'s
-  `build_oracle_query_circuit` — no changes, just a different `Oracle`.
-- Why the measured bitstring *is* `s` (not just correlated with it) —
-  derive from math.md's Hadamard-transform argument.
-- Qubit and gate count: `n_qubits + 1` qubits, `O(n_qubits)` gates total —
-  the cheapest circuit in this repo by a wide margin (contrast with
-  [benchmarks/shor.md](../../benchmarks/shor.md) and
-  [benchmarks/grover.md](../../benchmarks/grover.md)).
+`oracles.py`'s `HiddenStringOracle(s).oracle_gate()` implements
+`|x>|y> -> |x>|y XOR (s.x mod 2)>` as one `CX` per set bit of `s` (input
+qubit `i` to the ancilla, wherever `s`'s bit at that position is `1`) — this
+computes `y XOR (s.x mod 2)` directly, since `s.x mod 2` is exactly the XOR
+of `x_i` over the positions where `s_i = 1`, and a chain of CNOTs onto a
+shared target computes exactly that XOR. `O(n)` gates for *any* `s`
+(including the all-zero string, the degenerate case where `f` is constantly
+`0` and the "hidden string" is trivially `000...0`) — no multi-controlled
+gates needed at all, unlike
+[algorithms/deutsch_jozsa/oracles.py](../deutsch_jozsa/oracles.py)'s
+`BalancedOracle`.
+
+Verified against the exact `|x>|y> -> |x>|y XOR (s.x mod 2)>` truth table
+via `Statevector` equivalence in `tests/test_bernstein_vazirani.py`, for
+several `s` including the all-zeros and all-ones cases.
+
+## The circuit
+
+`circuit.py` imports `algorithms.deutsch_jozsa.circuit.build_oracle_query_circuit`
+directly — no changes, no wrapper logic, just a different `Oracle` passed
+in. This *is* the point of RFC-0005 bundling these two algorithms together:
+the circuit shape is identical, only the oracle (and therefore the problem
+being solved) differs.
+
+## Cost
+
+`n_qubits + 1` qubits total, `O(n_qubits)` gates (the oracle) plus a fixed
+`O(n_qubits)` for the two Hadamard layers — the cheapest circuit in this
+repo by a wide margin. Contrast with
+[benchmarks/shor.md](../../benchmarks/shor.md) (thousands to hundreds of
+thousands of gates even at `N=15`) and
+[benchmarks/grover.md](../../benchmarks/grover.md) (tens to hundreds of
+gates, growing with the search space) — Bernstein-Vazirani's circuit size
+doesn't grow with any search space at all, since it isn't searching;
+`O(n_qubits)` gates recovers all `n_qubits` bits of `s` in one shot.
+
+## Known simplifications
+
+- No transpiler-level circuit optimization beyond Qiskit's default
+  `transpile()` pass used by `execution.AerExecutor`.
+- Simulator-oriented: validated against `AerSimulator` only.
+
+See [RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md)'s
+"Explicit Non-goals" for the full list of what v0.2 deliberately defers.
+
+## References
+
+See [references.bib](references.bib): Bernstein & Vazirani's original paper
+(`bernsteinvazirani1993`) for the algorithm; Nielsen & Chuang
+(`nielsenchuang2010`) for the standard circuit-derivation treatment this
+follows.
