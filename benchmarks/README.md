@@ -14,7 +14,12 @@ regressions over time.
 - [grover.md](grover.md) — iteration count, gate count, circuit depth, and
   simulation time for RFC-0004's `MarkedBitstringOracle` as the search space
   grows from `n_qubits=3` to `10`.
+- [deutsch-jozsa-bernstein-vazirani.md](deutsch-jozsa-bernstein-vazirani.md) —
+  gate count, circuit depth, and simulation time for RFC-0005's two
+  algorithms, both scaling linearly in `n_qubits` — the cheapest growth rate
+  of any algorithm here.
 
-No cross-algorithm comparisons yet (two algorithms implemented, but at very
+No cross-algorithm comparisons yet (four algorithms implemented, but at very
 different scales — see [grover.md](grover.md)'s comparison to
-[shor.md](shor.md) for why a direct table wouldn't be very meaningful yet).
+[shor.md](shor.md), and [deutsch-jozsa-bernstein-vazirani.md](deutsch-jozsa-bernstein-vazirani.md)'s
+comparison to both, for why a direct table wouldn't be very meaningful yet).

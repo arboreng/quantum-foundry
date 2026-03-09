@@ -72,7 +72,12 @@ Python, Qiskit (same as RFC-0001/0002/0003/0004).
 
 -   [x] v0.1: Skeleton (both directories)
 -   [x] v0.2: Core implementation (both algorithms working end to end)
--   [ ] v0.5: Feature complete (benchmarks, demo notebooks)
+-   [x] v0.5: Feature complete (benchmarks — see
+    [benchmarks/deutsch-jozsa-bernstein-vazirani.md](../../benchmarks/deutsch-jozsa-bernstein-vazirani.md);
+    demo notebooks — see
+    [algorithms/deutsch_jozsa/notebooks/deutsch_jozsa_demo.ipynb](../../algorithms/deutsch_jozsa/notebooks/deutsch_jozsa_demo.ipynb)
+    and
+    [algorithms/bernstein_vazirani/notebooks/bernstein_vazirani_demo.ipynb](../../algorithms/bernstein_vazirani/notebooks/bernstein_vazirani_demo.ipynb))
 -   [ ] v0.8: Documentation
 -   [ ] v1.0: Public release
 

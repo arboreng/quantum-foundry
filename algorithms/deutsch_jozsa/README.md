@@ -1,6 +1,6 @@
 # Deutsch-Jozsa Algorithm
 
-Maturity: **experimental** (v0.2 core implementation)
+Maturity: **experimental** (v0.5 feature complete)
 
 Reference implementation of the Deutsch-Jozsa algorithm: given a boolean
 function promised to be constant or balanced, determine which with a single
@@ -28,18 +28,21 @@ uv run python -m algorithms.deutsch_jozsa.implementation
   `algorithms/bernstein_vazirani/`
 - [execution.py](execution.py) — the `Executor` interface
 - [implementation.py](implementation.py) — end-to-end `is_constant`
-- [benchmark.py](benchmark.py) — resource/performance benchmarks
+- [benchmark.py](benchmark.py) — resource/performance benchmarks (see
+  [../../benchmarks/deutsch-jozsa-bernstein-vazirani.md](../../benchmarks/deutsch-jozsa-bernstein-vazirani.md)
+  for results)
 - [visualization.py](visualization.py) — circuit and result visualization
 - [tests/](tests/) — test suite
-- [notebooks/](notebooks/) — exploratory / demo notebooks
+- [notebooks/deutsch_jozsa_demo.ipynb](notebooks/deutsch_jozsa_demo.ipynb) —
+  end-to-end demo
 - [references.bib](references.bib) — citations
 
 ## Status
 
-v0.2 core implementation is done: `is_constant(n_qubits, oracle)` runs end
-to end on `AerSimulator`, deterministic in a single shot (no retry loop —
-see math.md). Three oracle types: `ConstantOracle`, an efficient
+Done through v0.5: `is_constant(n_qubits, oracle)` runs end to end on
+`AerSimulator`, deterministic in a single shot (no retry loop — see
+math.md). Three oracle types: `ConstantOracle`, an efficient
 always-balanced `ParityOracle`, and a general but exponential
-`BalancedOracle`. See
-[RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md) for the
-v0.5 (feature complete: benchmarks, demo notebook) and later milestones.
+`BalancedOracle`; benchmarks and a demo notebook are both in place. See
+[RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md) for
+v0.8 (documentation) and v1.0.

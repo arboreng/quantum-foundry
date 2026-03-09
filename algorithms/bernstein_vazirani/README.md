@@ -1,6 +1,6 @@
 # Bernstein-Vazirani Algorithm
 
-Maturity: **experimental** (v0.2 core implementation)
+Maturity: **experimental** (v0.5 feature complete)
 
 Reference implementation of the Bernstein-Vazirani algorithm: given an
 oracle for `f(x) = s.x mod 2` for a hidden bitstring `s`, recover `s` with a
@@ -26,17 +26,20 @@ uv run python -m algorithms.bernstein_vazirani.implementation
 - [circuit.py](circuit.py) — re-exports the shared circuit builder
 - [execution.py](execution.py) — the `Executor` interface
 - [implementation.py](implementation.py) — end-to-end `find_hidden_string`
-- [benchmark.py](benchmark.py) — resource/performance benchmarks
+- [benchmark.py](benchmark.py) — resource/performance benchmarks (see
+  [../../benchmarks/deutsch-jozsa-bernstein-vazirani.md](../../benchmarks/deutsch-jozsa-bernstein-vazirani.md)
+  for results)
 - [visualization.py](visualization.py) — circuit and result visualization
 - [tests/](tests/) — test suite
-- [notebooks/](notebooks/) — exploratory / demo notebooks
+- [notebooks/bernstein_vazirani_demo.ipynb](notebooks/bernstein_vazirani_demo.ipynb)
+  — end-to-end demo
 - [references.bib](references.bib) — citations
 
 ## Status
 
-v0.2 core implementation is done: `find_hidden_string(n_qubits, oracle)`
-runs end to end on `AerSimulator`, deterministic in a single shot (no retry
-loop — see math.md), recovering the hidden string exactly for any `s`
-including the degenerate all-zeros case. See
-[RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md) for the
-v0.5 (feature complete: benchmarks, demo notebook) and later milestones.
+Done through v0.5: `find_hidden_string(n_qubits, oracle)` runs end to end on
+`AerSimulator`, deterministic in a single shot (no retry loop — see
+math.md), recovering the hidden string exactly for any `s` including the
+degenerate all-zeros case; benchmarks and a demo notebook are both in
+place. See [RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md)
+for v0.8 (documentation) and v1.0.
