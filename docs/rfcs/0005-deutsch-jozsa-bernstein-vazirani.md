@@ -78,7 +78,8 @@ Python, Qiskit (same as RFC-0001/0002/0003/0004).
     [algorithms/deutsch_jozsa/notebooks/deutsch_jozsa_demo.ipynb](../../algorithms/deutsch_jozsa/notebooks/deutsch_jozsa_demo.ipynb)
     and
     [algorithms/bernstein_vazirani/notebooks/bernstein_vazirani_demo.ipynb](../../algorithms/bernstein_vazirani/notebooks/bernstein_vazirani_demo.ipynb))
--   [ ] v0.8: Documentation
+-   [x] v0.8: Documentation (References sections added to both math.md
+    files; READMEs/references.bib were already current from v0.2/v0.5)
 -   [ ] v1.0: Public release
 
 ## Seed GitHub Issues

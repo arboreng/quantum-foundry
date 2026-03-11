@@ -42,3 +42,10 @@ Shor's algorithm (`algorithms/shor/math.md`) — all three belong to the
 string, a period, a subgroup) is extracted via a similar
 Hadamard-oracle-Hadamard pattern applied to progressively richer oracles.
 See VISION.md's long-term algorithm list.
+
+## References
+
+See [references.bib](references.bib). The algorithm follows Bernstein &
+Vazirani's original paper (`bernsteinvazirani1993`); the Hadamard-transform
+derivation follows Nielsen & Chuang's textbook treatment
+(`nielsenchuang2010`).

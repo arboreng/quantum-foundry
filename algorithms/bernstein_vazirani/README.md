@@ -1,6 +1,6 @@
 # Bernstein-Vazirani Algorithm
 
-Maturity: **experimental** (v0.5 feature complete)
+Maturity: **experimental** (v0.8 documentation)
 
 Reference implementation of the Bernstein-Vazirani algorithm: given an
 oracle for `f(x) = s.x mod 2` for a hidden bitstring `s`, recover `s` with a
@@ -37,9 +37,9 @@ uv run python -m algorithms.bernstein_vazirani.implementation
 
 ## Status
 
-Done through v0.5: `find_hidden_string(n_qubits, oracle)` runs end to end on
+Done through v0.8: `find_hidden_string(n_qubits, oracle)` runs end to end on
 `AerSimulator`, deterministic in a single shot (no retry loop — see
 math.md), recovering the hidden string exactly for any `s` including the
 degenerate all-zeros case; benchmarks and a demo notebook are both in
 place. See [RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md)
-for v0.8 (documentation) and v1.0.
+for v1.0 (public release, folded in alongside RFC-0001/0002/0003/0004).

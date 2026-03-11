@@ -68,3 +68,10 @@ classical query complexity is *exponential* (`2^(n-1)+1`), while
 Bernstein-Vazirani's is only *linear* (`n`) — so Deutsch-Jozsa demonstrates
 a much larger classical-vs-quantum gap, even though the *quantum* circuit
 solving both is identical.
+
+## References
+
+See [references.bib](references.bib). The algorithm and its analysis follow
+Deutsch & Jozsa's original paper (`deutschjozsa1992`); the phase-kickback
+derivation follows Nielsen & Chuang's textbook treatment
+(`nielsenchuang2010`).
