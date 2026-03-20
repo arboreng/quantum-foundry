@@ -1,6 +1,6 @@
 # Simon's Algorithm
 
-Maturity: **experimental** (v0.1 skeleton)
+Maturity: **experimental** (v0.2 core implementation)
 
 Reference implementation of Simon's algorithm: given an oracle for a
 function `f: {0,1}^n -> {0,1}^n` promised to be one-to-one or exactly
@@ -36,5 +36,11 @@ uv run python -m algorithms.simon.implementation
 
 ## Status
 
-Skeleton only — see [RFC-0006](../../docs/rfcs/0006-simons-algorithm.md)
-milestones for what's next (v0.2: core implementation).
+v0.2 core implementation is done: `find_hidden_period(n_qubits, oracle)`
+runs end to end on `AerSimulator`, collecting independent equations until
+solvable via a from-scratch GF(2) Gaussian elimination — this repo's first
+algorithm needing genuine classical linear algebra rather than a bitstring
+read or a continued fraction. Two oracle types: an efficient `LinearOracle`
+and a general but exponential `PermutationOracle`. See
+[RFC-0006](../../docs/rfcs/0006-simons-algorithm.md) for the v0.5 (feature
+complete: benchmarks, demo notebook) and later milestones.

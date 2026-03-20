@@ -45,4 +45,4 @@ hardware behavior) is expected to cover.
 | Grover    | experimental | [RFC-0004](../docs/rfcs/0004-grovers-algorithm.md) |
 | Deutsch-Jozsa | experimental | [RFC-0005](../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md) |
 | Bernstein-Vazirani | experimental | [RFC-0005](../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md) |
-| Simon     | experimental (v0.1 skeleton) | [RFC-0006](../docs/rfcs/0006-simons-algorithm.md) |
+| Simon     | experimental | [RFC-0006](../docs/rfcs/0006-simons-algorithm.md) |
