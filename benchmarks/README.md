@@ -18,8 +18,13 @@ regressions over time.
   gate count, circuit depth, and simulation time for RFC-0005's two
   algorithms, both scaling linearly in `n_qubits` — the cheapest growth rate
   of any algorithm here.
+- [simon.md](simon.md) — gate count and `find_hidden_period` time for
+  RFC-0006's `LinearOracle` (linear growth) vs. `PermutationOracle`
+  (exponential growth), and the first algorithm here where classical
+  post-processing genuinely competes with circuit execution for wall-clock
+  time.
 
-No cross-algorithm comparisons yet (four algorithms implemented, but at very
+No cross-algorithm comparisons yet (five algorithms implemented, but at very
 different scales — see [grover.md](grover.md)'s comparison to
 [shor.md](shor.md), and [deutsch-jozsa-bernstein-vazirani.md](deutsch-jozsa-bernstein-vazirani.md)'s
 comparison to both, for why a direct table wouldn't be very meaningful yet).

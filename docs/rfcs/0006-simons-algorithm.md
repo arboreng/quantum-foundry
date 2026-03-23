@@ -80,8 +80,12 @@ dependency).
 
 -   [x] v0.1: Skeleton
 -   [x] v0.2: Core implementation
--   [ ] v0.5: Feature complete (benchmarks, demo notebook)
--   [ ] v0.8: Documentation
+-   [x] v0.5: Feature complete (benchmarks — see
+    [benchmarks/simon.md](../../benchmarks/simon.md); demo notebook — see
+    [algorithms/simon/notebooks/simon_demo.ipynb](../../algorithms/simon/notebooks/simon_demo.ipynb))
+-   [x] v0.8: Documentation (References sections were already added to
+    math.md/paper.md during v0.2 this time, learning from the retrofit
+    needed in prior RFCs; README/references.bib were already current)
 -   [ ] v1.0: Public release
 
 ## Seed GitHub Issues
