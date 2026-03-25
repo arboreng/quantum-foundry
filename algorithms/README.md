@@ -46,3 +46,4 @@ hardware behavior) is expected to cover.
 | Deutsch-Jozsa | experimental | [RFC-0005](../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md) |
 | Bernstein-Vazirani | experimental | [RFC-0005](../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md) |
 | Simon     | experimental | [RFC-0006](../docs/rfcs/0006-simons-algorithm.md) |
+| Quantum Phase Estimation | experimental (v0.1 skeleton) | [RFC-0007](../docs/rfcs/0007-quantum-phase-estimation.md) |
