@@ -5,9 +5,10 @@ same shape as `algorithms.shor.oracles.Oracle`, but for an arbitrary
 unitary rather than modular multiplication specifically — see paper.md).
 """
 
+import math
 from typing import Protocol
 
-from qiskit.circuit import Gate
+from qiskit.circuit import Gate, QuantumCircuit
 
 
 class Oracle(Protocol):
@@ -22,14 +23,13 @@ class Oracle(Protocol):
 
 class PhaseGateOracle:
     """`Oracle` for the single-qubit phase gate `U = P(2*pi*theta)`, whose
-    eigenstate is `|1>` with eigenvalue `e^(2*pi*i*theta)`.
-
-    Not yet implemented — see RFC-0007 milestone v0.2.
-    """
+    eigenstate is `|1>` with eigenvalue `e^(2*pi*i*theta)`."""
 
     def __init__(self, theta: float):
         self.theta = theta
         self.num_qubits = 1
 
     def controlled_power_gate(self, power: int) -> Gate:
-        raise NotImplementedError
+        circuit = QuantumCircuit(1, name=f"P({self.theta}*{power})")
+        circuit.p(2 * math.pi * self.theta * power, 0)
+        return circuit.to_gate(label="U^k").control(1)

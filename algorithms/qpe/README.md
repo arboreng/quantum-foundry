@@ -1,6 +1,6 @@
 # Quantum Phase Estimation
 
-Maturity: **experimental** (v0.1 skeleton)
+Maturity: **experimental** (v0.2 core implementation)
 
 Reference implementation of Quantum Phase Estimation (QPE): given a unitary
 `U` and one of its eigenstates `|psi>` with eigenvalue `e^(2*pi*i*theta)`,
@@ -36,6 +36,12 @@ uv run python -m algorithms.qpe.implementation
 
 ## Status
 
-Skeleton only — see
-[RFC-0007](../../docs/rfcs/0007-quantum-phase-estimation.md) milestones for
-what's next (v0.2: core implementation).
+v0.2 core implementation is done: `estimate_phase(oracle, eigenstate_prep,
+n_count)` runs end to end on `AerSimulator`, exactly recovering `theta`
+when it has a terminating `n_count`-bit binary expansion, and within
+`1/2**n_count` otherwise (with the probabilistic guarantee math.md
+describes). `build_qpe_circuit` reuses `arithmetic/qft.py`'s `inverse_qft`
+directly — the same construction `algorithms/shor/circuit.py` uses, now
+independently validated by a second consumer. See
+[RFC-0007](../../docs/rfcs/0007-quantum-phase-estimation.md) for the v0.5
+(feature complete: benchmarks, demo notebook) and later milestones.
