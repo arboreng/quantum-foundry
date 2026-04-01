@@ -1,6 +1,6 @@
 # Quantum Phase Estimation
 
-Maturity: **experimental** (v0.2 core implementation)
+Maturity: **experimental** (v0.8 documentation)
 
 Reference implementation of Quantum Phase Estimation (QPE): given a unitary
 `U` and one of its eigenstates `|psi>` with eigenvalue `e^(2*pi*i*theta)`,
@@ -28,20 +28,22 @@ uv run python -m algorithms.qpe.implementation
   `arithmetic/qft.py`'s `inverse_qft`)
 - [execution.py](execution.py) — the `Executor` interface
 - [implementation.py](implementation.py) — end-to-end `estimate_phase`
-- [benchmark.py](benchmark.py) — resource/performance benchmarks
+- [benchmark.py](benchmark.py) — resource/performance benchmarks (see
+  [../../benchmarks/qpe.md](../../benchmarks/qpe.md) for results)
 - [visualization.py](visualization.py) — circuit and result visualization
 - [tests/](tests/) — test suite
-- [notebooks/](notebooks/) — exploratory / demo notebooks
+- [notebooks/qpe_demo.ipynb](notebooks/qpe_demo.ipynb) — end-to-end demo
 - [references.bib](references.bib) — citations
 
 ## Status
 
-v0.2 core implementation is done: `estimate_phase(oracle, eigenstate_prep,
-n_count)` runs end to end on `AerSimulator`, exactly recovering `theta`
-when it has a terminating `n_count`-bit binary expansion, and within
-`1/2**n_count` otherwise (with the probabilistic guarantee math.md
-describes). `build_qpe_circuit` reuses `arithmetic/qft.py`'s `inverse_qft`
-directly — the same construction `algorithms/shor/circuit.py` uses, now
-independently validated by a second consumer. See
-[RFC-0007](../../docs/rfcs/0007-quantum-phase-estimation.md) for the v0.5
-(feature complete: benchmarks, demo notebook) and later milestones.
+Done through v0.5: `estimate_phase(oracle, eigenstate_prep, n_count)` runs
+end to end on `AerSimulator`, exactly recovering `theta` when it has a
+terminating `n_count`-bit binary expansion, and within `1/2**n_count`
+otherwise (with the probabilistic guarantee math.md describes).
+`build_qpe_circuit` reuses `arithmetic/qft.py`'s `inverse_qft` directly —
+the same construction `algorithms/shor/circuit.py` uses, now independently
+validated by a second consumer. Benchmarks and a demo notebook are both in
+place. Done through v0.8 (documentation). See
+[RFC-0007](../../docs/rfcs/0007-quantum-phase-estimation.md) for v1.0
+(public release, folded in alongside RFC-0001/0002/0003/0004/0005/0006).

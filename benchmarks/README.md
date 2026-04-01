@@ -23,8 +23,11 @@ regressions over time.
   (exponential growth), and the first algorithm here where classical
   post-processing genuinely competes with circuit execution for wall-clock
   time.
+- [qpe.md](qpe.md) — estimation error vs. counting-qubit count for
+  RFC-0007's `PhaseGateOracle`, the only benchmark here whose interesting
+  axis is precision rather than search-space/oracle size.
 
-No cross-algorithm comparisons yet (five algorithms implemented, but at very
+No cross-algorithm comparisons yet (six algorithms implemented, but at very
 different scales — see [grover.md](grover.md)'s comparison to
 [shor.md](shor.md), and [deutsch-jozsa-bernstein-vazirani.md](deutsch-jozsa-bernstein-vazirani.md)'s
 comparison to both, for why a direct table wouldn't be very meaningful yet).

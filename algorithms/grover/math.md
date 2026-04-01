@@ -65,6 +65,18 @@ fresh shots on failure, rather than adding more iterations.
 - **More iterations is not always better** — see "why ~(pi/4)*sqrt(N/M)"
   above; this is a real, provable failure mode, not a simulator artifact.
 
+## The degenerate `n_qubits=1` case
+
+At the smallest possible scale (`N=2`, `M=1`), `sin(theta) = sqrt(1/2)`, so
+`theta = pi/4` exactly. `_iteration_count(1, 1)` rounds to `k=1`, giving
+success probability `sin^2(3*theta) = sin^2(3*pi/4) = 0.5` — exactly a coin
+flip, not the near-certain success Grover's algorithm typically achieves at
+larger `N`. This is an inherent property of this specific tiny instance
+(confirmed empirically: 10,000 shots split ~50/50), not a bug — but it does
+mean `search`'s retry loop needs more attempts here than elsewhere to reach
+a comparably low failure rate, which is why `max_attempts` defaults to `20`
+rather than a smaller number (see `implementation.search`'s docstring).
+
 ## References
 
 See [references.bib](references.bib). The algorithm and its analysis follow

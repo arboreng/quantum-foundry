@@ -24,13 +24,18 @@ def search(
     *,
     executor: Executor | None = None,
     shots: int = 100,
-    max_attempts: int = 5,
+    max_attempts: int = 20,
 ) -> str:
     """Find a marked bitstring among `2**n_qubits` possibilities.
 
     With the optimal iteration count the success probability per shot is
     high but not exactly 1 (over/under-rotation — see math.md), so this
     retries (fresh shots each time) up to `max_attempts` before raising.
+    `max_attempts=20` rather than a smaller number specifically to cover the
+    degenerate `n_qubits=1` case, where the per-shot success probability is
+    exactly 0.5 (see math.md) — 5 attempts there fails ~3% of the time
+    (`0.5**5`), a real flake observed in `tests/test_grover.py` during
+    development; 20 attempts reduces that to `0.5**20 ~ 1e-6`.
     """
     if not marked:
         raise ValueError("marked must be non-empty")
