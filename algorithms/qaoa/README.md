@@ -1,6 +1,6 @@
 # Quantum Approximate Optimization Algorithm (QAOA)
 
-Maturity: **experimental** (v0.1 skeleton)
+Maturity: **experimental** (v0.2 core implementation)
 
 Reference implementation of QAOA: a hybrid classical-quantum algorithm
 approximating solutions to combinatorial optimization problems, targeting
@@ -37,5 +37,11 @@ uv run python -m algorithms.qaoa.implementation
 
 ## Status
 
-Skeleton only — see [RFC-0008](../../docs/rfcs/0008-qaoa.md) milestones for
-what's next (v0.2: core implementation).
+v0.2 core implementation is done: `solve_maxcut(n_qubits, edges, p=1)` runs
+end to end on `AerSimulator`, using `scipy.optimize.minimize` (COBYLA) to
+tune the QAOA parameters against the sampled expectation value, then
+returns the best-measured cut. Finds the true optimal cut for the small
+test graphs in `tests/test_qaoa.py` (a triangle, a 4-cycle, a path) — not a
+guarantee for larger instances, since QAOA is approximate by construction
+(see math.md). See [RFC-0008](../../docs/rfcs/0008-qaoa.md) for the v0.5
+(feature complete: benchmarks, demo notebook) and later milestones.

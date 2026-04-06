@@ -1,11 +1,26 @@
-"""Circuit and result visualization for QAOA."""
+"""Circuit and result visualization for QAOA.
+
+Data computation is kept separate from matplotlib rendering, mirroring
+`algorithms/shor/visualization.py`.
+"""
+
+from typing import Any
 
 from qiskit.circuit import QuantumCircuit
+from qiskit.visualization import plot_histogram
 
 
-def draw_circuit(circuit: QuantumCircuit):
-    """Render a QAOA circuit diagram.
+def circuit_figure(circuit: QuantumCircuit) -> Any:
+    """Render a circuit diagram (matplotlib figure)."""
+    return circuit.draw("mpl")
 
-    Not yet implemented — see RFC-0008 milestone v0.2.
-    """
-    raise NotImplementedError
+
+def histogram_data(counts: dict[str, int]) -> dict[str, float]:
+    """Convert raw measurement counts into normalized probabilities."""
+    total = sum(counts.values())
+    return {bitstring: count / total for bitstring, count in counts.items()}
+
+
+def plot_measurement_histogram(counts: dict[str, int]) -> Any:
+    """Render measurement counts as a matplotlib histogram."""
+    return plot_histogram(counts)
