@@ -26,8 +26,11 @@ regressions over time.
 - [qpe.md](qpe.md) — estimation error vs. counting-qubit count for
   RFC-0007's `PhaseGateOracle`, the only benchmark here whose interesting
   axis is precision rather than search-space/oracle size.
+- [qaoa.md](qaoa.md) — optimal-cut recovery and classical-optimization-loop
+  wall-clock cost for RFC-0008's `MaxCutProblem`, the only benchmark here
+  measuring a hybrid classical-quantum loop rather than a single circuit.
 
-No cross-algorithm comparisons yet (six algorithms implemented, but at very
-different scales — see [grover.md](grover.md)'s comparison to
+No cross-algorithm comparisons yet (seven algorithms implemented, but at
+very different scales — see [grover.md](grover.md)'s comparison to
 [shor.md](shor.md), and [deutsch-jozsa-bernstein-vazirani.md](deutsch-jozsa-bernstein-vazirani.md)'s
 comparison to both, for why a direct table wouldn't be very meaningful yet).

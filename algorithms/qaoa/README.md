@@ -1,6 +1,6 @@
 # Quantum Approximate Optimization Algorithm (QAOA)
 
-Maturity: **experimental** (v0.2 core implementation)
+Maturity: **experimental** (v0.8 documentation)
 
 Reference implementation of QAOA: a hybrid classical-quantum algorithm
 approximating solutions to combinatorial optimization problems, targeting
@@ -29,19 +29,21 @@ uv run python -m algorithms.qaoa.implementation
 - [execution.py](execution.py) — the `Executor` interface
 - [implementation.py](implementation.py) — end-to-end `solve_maxcut`
   (includes the `scipy.optimize`-driven classical loop)
-- [benchmark.py](benchmark.py) — resource/performance benchmarks
+- [benchmark.py](benchmark.py) — resource/performance benchmarks (see
+  [../../benchmarks/qaoa.md](../../benchmarks/qaoa.md) for results)
 - [visualization.py](visualization.py) — circuit and result visualization
 - [tests/](tests/) — test suite
-- [notebooks/](notebooks/) — exploratory / demo notebooks
+- [notebooks/qaoa_demo.ipynb](notebooks/qaoa_demo.ipynb) — end-to-end demo
 - [references.bib](references.bib) — citations
 
 ## Status
 
-v0.2 core implementation is done: `solve_maxcut(n_qubits, edges, p=1)` runs
-end to end on `AerSimulator`, using `scipy.optimize.minimize` (COBYLA) to
-tune the QAOA parameters against the sampled expectation value, then
-returns the best-measured cut. Finds the true optimal cut for the small
-test graphs in `tests/test_qaoa.py` (a triangle, a 4-cycle, a path) — not a
-guarantee for larger instances, since QAOA is approximate by construction
-(see math.md). See [RFC-0008](../../docs/rfcs/0008-qaoa.md) for the v0.5
-(feature complete: benchmarks, demo notebook) and later milestones.
+Done through v0.5: `solve_maxcut(n_qubits, edges, p=1)` runs end to end on
+`AerSimulator`, using `scipy.optimize.minimize` (COBYLA) to tune the QAOA
+parameters against the sampled expectation value, then returns the
+best-measured cut. Finds the true optimal cut for the small test graphs in
+`tests/test_qaoa.py` (a triangle, a 4-cycle, a path) — not a guarantee for
+larger instances, since QAOA is approximate by construction (see math.md).
+Benchmarks and a demo notebook are both in place. Done through v0.8
+(documentation). See [RFC-0008](../../docs/rfcs/0008-qaoa.md) for v1.0
+(public release, folded in alongside RFC-0001/0002/0003/0004/0005/0006/0007).
