@@ -48,3 +48,4 @@ hardware behavior) is expected to cover.
 | Simon     | experimental | [RFC-0006](../docs/rfcs/0006-simons-algorithm.md) |
 | Quantum Phase Estimation | experimental | [RFC-0007](../docs/rfcs/0007-quantum-phase-estimation.md) |
 | QAOA      | experimental | [RFC-0008](../docs/rfcs/0008-qaoa.md) |
+| VQE       | experimental | [RFC-0009](../docs/rfcs/0009-vqe.md) |
