@@ -1,11 +1,26 @@
-"""Circuit and result visualization for VQE."""
+"""Circuit and result visualization for VQE.
+
+Data computation is kept separate from matplotlib rendering, mirroring
+`algorithms/qaoa/visualization.py`.
+"""
+
+from typing import Any
 
 from qiskit.circuit import QuantumCircuit
+from qiskit.visualization import plot_histogram
 
 
-def draw_circuit(circuit: QuantumCircuit):
-    """Render a VQE circuit diagram.
+def circuit_figure(circuit: QuantumCircuit) -> Any:
+    """Render a circuit diagram (matplotlib figure)."""
+    return circuit.draw("mpl")
 
-    Not yet implemented — see RFC-0009 milestone v0.2.
-    """
-    raise NotImplementedError
+
+def histogram_data(counts: dict[str, int]) -> dict[str, float]:
+    """Convert raw measurement counts into normalized probabilities."""
+    total = sum(counts.values())
+    return {bitstring: count / total for bitstring, count in counts.items()}
+
+
+def plot_measurement_histogram(counts: dict[str, int]) -> Any:
+    """Render measurement counts as a matplotlib histogram."""
+    return plot_histogram(counts)

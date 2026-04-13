@@ -1,6 +1,6 @@
 # Variational Quantum Eigensolver (VQE)
 
-Maturity: **experimental** (v0.1 skeleton)
+Maturity: **experimental** (v0.2 core implementation)
 
 Reference implementation of VQE: a hybrid classical-quantum algorithm
 estimating a Hamiltonian's ground-state energy via a parameterized ansatz
@@ -38,5 +38,13 @@ uv run python -m algorithms.vqe.implementation
 
 ## Status
 
-Skeleton only — see [RFC-0009](../../docs/rfcs/0009-vqe.md) milestones for
-what's next (v0.2: core implementation).
+v0.2 core implementation is done: `solve_ground_state(hamiltonian,
+reps=1)` runs end to end on `AerSimulator`, using `scipy.optimize.minimize`
+(COBYLA) to tune the hardware-efficient ansatz's parameters against the
+sampled expectation value, then returns a ground-state energy estimate.
+Validated against exact diagonalization (`numpy`) of small transverse-
+field Ising chains in `tests/test_vqe.py` — not a guarantee of reaching
+the true ground energy for larger instances, since VQE is variational/
+approximate by construction (see math.md). See
+[RFC-0009](../../docs/rfcs/0009-vqe.md) for the v0.5 (feature complete:
+benchmarks, demo notebook) and later milestones.
