@@ -29,8 +29,14 @@ regressions over time.
 - [qaoa.md](qaoa.md) — optimal-cut recovery and classical-optimization-loop
   wall-clock cost for RFC-0008's `MaxCutProblem`, the only benchmark here
   measuring a hybrid classical-quantum loop rather than a single circuit.
+- [vqe.md](vqe.md) — ground-state energy recovery and classical-
+  optimization-loop wall-clock cost for RFC-0009's
+  `TransverseFieldIsingHamiltonian`, including the counterintuitive
+  finding that a more expressive ansatz (`reps=2`) doesn't recover a
+  better energy than `reps=1` here, since the classical loop's fixed
+  initial guess and iteration budget don't scale with the parameter count.
 
-No cross-algorithm comparisons yet (seven algorithms implemented, but at
+No cross-algorithm comparisons yet (eight algorithms implemented, but at
 very different scales — see [grover.md](grover.md)'s comparison to
 [shor.md](shor.md), and [deutsch-jozsa-bernstein-vazirani.md](deutsch-jozsa-bernstein-vazirani.md)'s
 comparison to both, for why a direct table wouldn't be very meaningful yet).
