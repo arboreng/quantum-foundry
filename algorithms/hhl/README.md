@@ -1,6 +1,6 @@
 # HHL (Harrow-Hassidim-Lloyd)
 
-Maturity: **experimental** (v0.1 skeleton)
+Maturity: **experimental** (v0.2 core implementation)
 
 Reference implementation of HHL: given a Hermitian matrix `A` and
 efficient preparation of `|b>`, produce (conditioned on a postselected
@@ -35,5 +35,14 @@ uv run python -m algorithms.hhl.implementation
 
 ## Status
 
-Skeleton only — see [RFC-0010](../../docs/rfcs/0010-hhl.md) milestones for
-what's next (v0.2: core implementation).
+v0.2 core implementation is done: `solve_linear_system(oracle, t,
+n_clock, c_constant, b_state_prep)` runs end to end on `AerSimulator` for
+the `A = a*I + b*X` demo system, returning the postselected (ancilla `1`)
+success probability and the b-register's conditional measurement
+distribution. Validated three ways in `tests/test_hhl.py`: the oracle's
+controlled time-evolution gate against `scipy.linalg.expm`'s exact matrix
+exponential, the clock register's exact uncomputation against the
+circuit's statevector (no shot noise), and the full postselected output
+against both a single-eigenvalue closed form and `numpy.linalg.solve`'s
+classical solution. See [RFC-0010](../../docs/rfcs/0010-hhl.md) for the
+v0.5 (feature complete: benchmarks, demo notebook) and later milestones.
