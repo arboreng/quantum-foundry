@@ -35,8 +35,13 @@ regressions over time.
   finding that a more expressive ansatz (`reps=2`) doesn't recover a
   better energy than `reps=1` here, since the classical loop's fixed
   initial guess and iteration budget don't scale with the parameter count.
+- [hhl.md](hhl.md) — clock-register precision (`n_clock`) vs. gate count
+  and postselected success probability for RFC-0010's `DiagonalXOracle`,
+  showing that more precision costs more circuit *and* makes a successful
+  shot rarer, since the multiplexed rotation's safety margin must shrink
+  as `n_clock` grows.
 
-No cross-algorithm comparisons yet (eight algorithms implemented, but at
+No cross-algorithm comparisons yet (nine algorithms implemented, but at
 very different scales — see [grover.md](grover.md)'s comparison to
 [shor.md](shor.md), and [deutsch-jozsa-bernstein-vazirani.md](deutsch-jozsa-bernstein-vazirani.md)'s
 comparison to both, for why a direct table wouldn't be very meaningful yet).

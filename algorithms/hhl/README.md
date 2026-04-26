@@ -1,6 +1,6 @@
 # HHL (Harrow-Hassidim-Lloyd)
 
-Maturity: **experimental** (v0.2 core implementation)
+Maturity: **experimental** (v0.8 documentation)
 
 Reference implementation of HHL: given a Hermitian matrix `A` and
 efficient preparation of `|b>`, produce (conditioned on a postselected
@@ -27,10 +27,11 @@ uv run python -m algorithms.hhl.implementation
 - [circuit.py](circuit.py) — `build_hhl_circuit`
 - [execution.py](execution.py) — the `Executor` interface
 - [implementation.py](implementation.py) — end-to-end `solve_linear_system`
-- [benchmark.py](benchmark.py) — resource/performance benchmarks
+- [benchmark.py](benchmark.py) — resource/performance benchmarks (see
+  [../../benchmarks/hhl.md](../../benchmarks/hhl.md) for results)
 - [visualization.py](visualization.py) — circuit and result visualization
 - [tests/](tests/) — test suite
-- [notebooks/](notebooks/) — exploratory / demo notebooks
+- [notebooks/hhl_demo.ipynb](notebooks/hhl_demo.ipynb) — end-to-end demo
 - [references.bib](references.bib) — citations
 
 ## Status
@@ -44,5 +45,11 @@ controlled time-evolution gate against `scipy.linalg.expm`'s exact matrix
 exponential, the clock register's exact uncomputation against the
 circuit's statevector (no shot noise), and the full postselected output
 against both a single-eigenvalue closed form and `numpy.linalg.solve`'s
-classical solution. See [RFC-0010](../../docs/rfcs/0010-hhl.md) for the
-v0.5 (feature complete: benchmarks, demo notebook) and later milestones.
+classical solution. Benchmarks and a demo notebook are both in place —
+notably, [benchmarks/hhl.md](../../benchmarks/hhl.md) found that adding
+clock-register precision (`n_clock`) doesn't just cost more circuit: it
+also makes a successful (ancilla-`1`) shot rarer, since the multiplexed
+rotation's safety margin (`c_constant`) must shrink as `n_clock` grows.
+Done through v0.8 (documentation). See
+[RFC-0010](../../docs/rfcs/0010-hhl.md) for v1.0 (public release, folded
+in alongside RFC-0001/0002/0003/0004/0005/0006/0007/0008/0009).
