@@ -17,6 +17,12 @@ Circuit optimization and transpilation passes shared across algorithms.
   qubit count, gate count, circuit depth, and SWAP-gate count (routing
   overhead) for a circuit transpiled against a given coupling map and
   optimization level.
+- [cross_algorithm_study.py](cross_algorithm_study.py) — applies
+  `analyze_transpilation` to a representative circuit from every algorithm
+  in this repo (not just Shor), comparing routing overhead across
+  genuinely different circuit shapes — see
+  [../benchmarks/cross-algorithm-transpilation.md](../benchmarks/cross-algorithm-transpilation.md)
+  for results.
 - [tests/](tests/) — coupling-map-compliance and report-sanity tests.
 
 Used by `algorithms.shor.execution.ConstrainedAerExecutor`

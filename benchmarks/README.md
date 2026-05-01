@@ -41,7 +41,18 @@ regressions over time.
   shot rarer, since the multiplexed rotation's safety margin must shrink
   as `n_clock` grows.
 
-No cross-algorithm comparisons yet (nine algorithms implemented, but at
-very different scales — see [grover.md](grover.md)'s comparison to
-[shor.md](shor.md), and [deutsch-jozsa-bernstein-vazirani.md](deutsch-jozsa-bernstein-vazirani.md)'s
-comparison to both, for why a direct table wouldn't be very meaningful yet).
+No cross-algorithm *simulation-cost* comparison yet (ten algorithms
+implemented, but at very different scales — see
+[grover.md](grover.md)'s comparison to [shor.md](shor.md), and
+[deutsch-jozsa-bernstein-vazirani.md](deutsch-jozsa-bernstein-vazirani.md)'s
+comparison to both, for why a direct table wouldn't be very meaningful
+yet). There is, however, a cross-algorithm *transpilation* comparison:
+
+- [cross-algorithm-transpilation.md](cross-algorithm-transpilation.md) —
+  `compiler.transpilation.analyze_transpilation` applied to a
+  representative, similarly-sized circuit from every algorithm except
+  Shor (which has its own dedicated study above), showing that
+  multi-controlled-gate-heavy circuits (Grover, HHL) cost far more
+  routing overhead than CNOT/single-control circuits (Deutsch-Jozsa,
+  Bernstein-Vazirani, Simon, VQE, QAOA) at similar qubit counts — even
+  when the multi-controlled circuit has *fewer* qubits.
