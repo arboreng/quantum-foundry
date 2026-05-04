@@ -26,7 +26,7 @@ dev = [
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
-testpaths = ["algorithms", "arithmetic", "compiler"]
+testpaths = ["algorithms", "arithmetic", "compiler", "validation"]
 addopts = "-m 'not slow'"
 markers = [
     "slow: excluded by default (addopts); run explicitly with `pytest -m slow`",
