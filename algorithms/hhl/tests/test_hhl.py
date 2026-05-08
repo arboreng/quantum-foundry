@@ -8,8 +8,12 @@ from qiskit.circuit import QuantumCircuit
 from qiskit.quantum_info import Operator, Statevector
 from scipy.linalg import expm
 
-from algorithms.hhl.circuit import build_hhl_circuit
-from algorithms.hhl.implementation import solve_linear_system
+from algorithms.hhl.circuit import build_amplified_hhl_circuit, build_hhl_circuit
+from algorithms.hhl.implementation import (
+    amplify_and_solve_linear_system,
+    optimal_amplification_iterations,
+    solve_linear_system,
+)
 from algorithms.hhl.oracles import DiagonalXOracle
 
 _I2 = np.eye(2, dtype=complex)
@@ -108,3 +112,85 @@ def test_solve_linear_system_matches_classical_solution():
     total = sum(b_counts.values())
     assert b_counts.get("0", 0) / total == pytest.approx(expected_probs[0], abs=0.05)
     assert b_counts.get("1", 0) / total == pytest.approx(expected_probs[1], abs=0.05)
+
+
+def test_clock_register_uncomputes_to_zero_with_amplification():
+    """Extends `test_clock_register_uncomputes_to_zero` through one or
+    more amplitude-amplification rounds: `A`, `A^-1`, and the `S_0`
+    reflection all act on the clock register too, so this checks the
+    exact uncomputation property still holds with amplification in the
+    mix, not just for the plain circuit."""
+    oracle = DiagonalXOracle(_A, _B, _T)
+    b_state_prep = QuantumCircuit(1)
+    mask = 2**_N_CLOCK - 1
+
+    for num_iterations in (0, 1, 2):
+        circuit = build_amplified_hhl_circuit(
+            oracle, _T, _N_CLOCK, _C, b_state_prep, num_iterations
+        )
+        unitary_part = circuit.remove_final_measurements(inplace=False)
+        state = Statevector(unitary_part)
+        for index, amplitude in enumerate(state.data):
+            if abs(amplitude) > 1e-9:
+                assert index & mask == 0
+
+
+def test_amplified_success_probability_matches_closed_form():
+    """b = |+>, the exact single-eigenvalue branch: the amplified success
+    probability should match `sin((2k+1)*theta)**2` exactly (via
+    `Statevector`, no shot noise), for `theta = arcsin(sqrt(p))` and `p`
+    the unamplified success probability."""
+    oracle = DiagonalXOracle(_A, _B, _T)
+    b_state_prep = QuantumCircuit(1)
+    b_state_prep.h(0)
+
+    lambda_1 = _A + _B
+    p = (_C / lambda_1) ** 2
+    theta = math.asin(math.sqrt(p))
+    ancilla_mask = 1 << (_N_CLOCK + oracle.num_qubits)
+
+    for num_iterations in (0, 1, 2, 3):
+        circuit = build_amplified_hhl_circuit(
+            oracle, _T, _N_CLOCK, _C, b_state_prep, num_iterations
+        )
+        unitary_part = circuit.remove_final_measurements(inplace=False)
+        state = Statevector(unitary_part)
+
+        success = sum(
+            abs(amplitude) ** 2
+            for index, amplitude in enumerate(state.data)
+            if index & ancilla_mask
+        )
+        expected = math.sin((2 * num_iterations + 1) * theta) ** 2
+        assert success == pytest.approx(expected, abs=1e-6)
+
+
+def test_amplify_and_solve_linear_system_boosts_success_probability():
+    """b = |0>, the mixed instance: amplification should raise the
+    success probability while leaving the b-register's conditional
+    distribution (the actual solution) unchanged."""
+    oracle = DiagonalXOracle(_A, _B, _T)
+    b_state_prep = QuantumCircuit(1)
+
+    lambda_1, lambda_2 = _A + _B, _A - _B
+    unamplified_success = 0.5 * ((_C / lambda_1) ** 2 + (_C / lambda_2) ** 2)
+    num_iterations = optimal_amplification_iterations(unamplified_success)
+    assert num_iterations >= 1
+
+    success_probability, b_counts = amplify_and_solve_linear_system(
+        oracle, _T, _N_CLOCK, _C, b_state_prep, num_iterations, shots=4000
+    )
+    assert success_probability > unamplified_success + 0.1
+
+    matrix_a = np.array([[_A, _B], [_B, _A]])
+    x = np.linalg.solve(matrix_a, np.array([1.0, 0.0]))
+    expected_probs = (x**2) / np.sum(x**2)
+    total = sum(b_counts.values())
+    assert b_counts.get("0", 0) / total == pytest.approx(expected_probs[0], abs=0.05)
+    assert b_counts.get("1", 0) / total == pytest.approx(expected_probs[1], abs=0.05)
+
+
+def test_optimal_amplification_iterations_matches_expected_value():
+    lambda_1, lambda_2 = _A + _B, _A - _B
+    p = 0.5 * ((_C / lambda_1) ** 2 + (_C / lambda_2) ** 2)
+    assert optimal_amplification_iterations(p) == 1

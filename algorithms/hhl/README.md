@@ -24,9 +24,11 @@ uv run python -m algorithms.hhl.implementation
 - [paper.md](paper.md) — circuit derivation (state prep -> QPE ->
   multiplexed rotation -> inverse QPE -> measure)
 - [oracles.py](oracles.py) — the `Oracle` interface and `DiagonalXOracle`
-- [circuit.py](circuit.py) — `build_hhl_circuit`
+- [circuit.py](circuit.py) — `build_hhl_circuit`,
+  `build_amplified_hhl_circuit` (amplitude amplification)
 - [execution.py](execution.py) — the `Executor` interface
 - [implementation.py](implementation.py) — end-to-end `solve_linear_system`
+  and `amplify_and_solve_linear_system`
 - [benchmark.py](benchmark.py) — resource/performance benchmarks (see
   [../../benchmarks/hhl.md](../../benchmarks/hhl.md) for results)
 - [visualization.py](visualization.py) — circuit and result visualization
@@ -53,3 +55,13 @@ rotation's safety margin (`c_constant`) must shrink as `n_clock` grows.
 Done through v0.8 (documentation). See
 [RFC-0010](../../docs/rfcs/0010-hhl.md) for v1.0 (public release, folded
 in alongside RFC-0001/0002/0003/0004/0005/0006/0007/0008/0009).
+
+**Beyond v0.8**: RFC-0010's "amplitude amplification" stretch goal is now
+implemented — `build_amplified_hhl_circuit` / `amplify_and_solve_
+linear_system` run Brassard-Hoyer-Mosca-Tapp amplitude amplification
+before measuring, boosting the postselection success probability
+(`optimal_amplification_iterations` picks the iteration count from an
+estimated success probability) without changing the b-register's
+conditional solution distribution — verified exactly (via `Statevector`,
+no shot noise) against the closed-form `sin((2k+1)*theta)**2` formula in
+`tests/test_hhl.py`. See math.md's "Amplitude amplification" section.

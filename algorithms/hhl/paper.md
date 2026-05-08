@@ -50,6 +50,28 @@ and a full mixed instance (`|b> = |0>`), where the b-register's
 conditional distribution matches `|A^-1 b|^2` computed via plain
 `numpy.linalg.solve`.
 
+## `build_amplified_hhl_circuit` and `amplify_and_solve_linear_system`
+
+`circuit._build_state_prep` extracts steps 1-4 above (everything up to
+measurement) into a shared helper, so both `build_hhl_circuit` and
+`build_amplified_hhl_circuit` build the same "A" operator without
+duplicating it (refactored from the original single-function version;
+`tests/test_hhl.py`'s existing `build_hhl_circuit` tests all still pass
+unchanged, confirming the refactor didn't alter its behavior).
+`build_amplified_hhl_circuit` composes `A` once, then for each of
+`num_iterations` rounds: `Z` on the ancilla (`S_chi`), `A^-1` (`A`'s
+circuit, `.inverse()`'d and wrapped as a gate), an `X`-`multi-controlled-
+Z`-`X` reflection about `|0...0>` over *all* qubits (`S_0`, the same
+construction as `algorithms.grover.circuit.diffusion_operator`'s phase
+flip), then `A` again — before finally measuring. Verified against the
+exact closed form `sin((2k+1)*theta)**2` via `Statevector` (no shot
+noise) for the single-eigenvalue-branch instance, across several
+`num_iterations`, in `tests/test_hhl.py`; `optimal_amplification_
+iterations` implements the standard formula for choosing `num_iterations`
+from an estimated success probability. `implementation.amplify_and_
+solve_linear_system` mirrors `solve_linear_system`'s postselection logic
+exactly (both now call a shared `_postselect_on_ancilla` helper).
+
 ## Qubit and gate count
 
 `n_clock + oracle.num_qubits + 1` qubits total. The multiplexed rotation
@@ -65,9 +87,10 @@ shape as the rest of QPE-based estimation.
 -   `t`/`n_clock` chosen for exact eigenvalue-to-clock-register mapping,
     not derived for a general instance (mirrors RFC-0007's
     `PhaseGateOracle` choice).
--   No amplitude amplification to boost the postselection success
-    probability (`c_constant` trades off success probability against how
-    close it can safely get to the smallest eigenvalue).
+-   `c_constant` trades off (unamplified) success probability against how
+    close it can safely get to the smallest eigenvalue; amplitude
+    amplification (`build_amplified_hhl_circuit`) helps but still needs
+    `c_constant` in the `arcsin` domain to begin with.
 -   No condition-number analysis or success-probability bound derivation
     beyond citing Harrow-Hassidim-Lloyd's original result.
 -   Simulator-oriented: validated against `AerSimulator` (via shots) and

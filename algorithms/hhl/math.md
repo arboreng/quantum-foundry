@@ -68,12 +68,38 @@ final answer both *exact* (verified directly against the statevector in
 `tests/test_hhl.py`, with no shot noise), rather than only approximately
 correct as QPE generally is for an arbitrary eigenvalue.
 
+## Amplitude amplification
+
+The postselection success probability above needn't be accepted as-is:
+Brassard-Hoyer-Mosca-Tapp (1998)'s amplitude amplification (the
+generalization of Grover's algorithm to an arbitrary state-preparation
+operator `A`, rather than only the uniform-superposition-plus-oracle
+case) boosts it. Writing `A|0> = sqrt(p)|good> + sqrt(1-p)|bad>` for the
+state right before measurement (`|good>` = ancilla `|1>` branch,
+`p` = the unamplified success probability, `theta = arcsin(sqrt(p))`),
+one round of `Q = A . S_0 . A^-1 . S_chi` — `S_chi` flips the sign of
+`|good>` (a single `Z` on the ancilla), `S_0` reflects about `|0...0>`
+(the same construction as [algorithms/grover/math.md](../grover/math.md)'s
+diffusion operator, applied to *every* qubit here) — rotates the state
+by `2*theta` in the `{|good>, |bad>}` plane, exactly like a Grover
+iteration rotates within its own two-dimensional subspace. After `k`
+rounds the success probability becomes `sin((2k+1)*theta)**2`, maximized
+(nearest integer) at `k = round(pi/(4*theta) - 1/2)` —
+`implementation.optimal_amplification_iterations`. Critically, `Q` only
+ever mixes `|good>` and `|bad>` as whole subspaces: the *relative*
+amplitudes within `|good>` (i.e. the b-register's solution-state
+proportions) are untouched, so amplification changes *how often* a shot
+lands in the ancilla-`1` branch without changing *what's there* when it
+does (verified directly in `tests/test_hhl.py`).
+
 ## Known limitations (v0.2)
 
 No condition-number analysis or success-probability bound beyond citing
 Harrow-Hassidim-Lloyd's original result (see paper.md's "Known
-simplifications"); no amplitude amplification to boost the postselection
-success probability; only a 2x2 system (`A = a*I + b*X`) is implemented.
+simplifications"); only a 2x2 system (`A = a*I + b*X`) is implemented;
+`optimal_amplification_iterations` requires already knowing (or having
+separately estimated, e.g. via quantum counting — not implemented here)
+the unamplified success probability.
 
 ## References
 
