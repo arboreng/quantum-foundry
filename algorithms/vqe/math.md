@@ -65,15 +65,36 @@ non-diagonal `X` terms), so `expectation_value` runs one circuit
 execution *per non-identity Pauli term* per parameter setting, each
 requiring its own basis rotation before measurement.
 
+## Measurement grouping
+
+Two Pauli terms *qubit-wise commute* if, at every qubit, their single-
+qubit operators are equal or at least one is `I` — exactly the condition
+under which both can be read off the *same* measurement (after a shared
+basis rotation), rather than needing separate circuit executions.
+`hamiltonians.group_qwc_terms` greedily partitions a Hamiltonian's terms
+into such groups; `circuit.group_measurement_circuit` builds one shared
+measurement circuit per group (rotating each qubit into whichever
+non-identity Pauli the group uses there, if any); `implementation.
+expectation_value_grouped` computes every term's expectation value from
+its group's shared counts. For `TransverseFieldIsingHamiltonian`, this
+collapses `2*n_qubits - 1` circuit executions (one per term) down to
+exactly **2** (all `ZZ` terms mutually qubit-wise commute, and likewise
+all `X` terms — but a `ZZ` term and an `X` term never do, since they
+disagree at their shared qubit), regardless of `n_qubits` — verified
+directly in `tests/test_vqe.py`, both that the grouping is correct and
+that it produces the same expectation value (up to shot noise) with
+fewer circuit executions.
+
 ## Known limitations (v0.2)
 
 No convergence-rate analysis — only the variational principle's basic
 guarantee (`<psi|H|psi> >= E_0`) is invoked, not a bound on how close
-COBYLA gets in practice (see paper.md's "Known simplifications"); no
-measurement grouping (qubit-wise-commuting terms could in principle share
-a measurement basis and circuit execution, but don't here); only the
-transverse-field Ising model is implemented (a future RFC could
-generalize `Hamiltonian` further, per RFC-0009's non-goals).
+COBYLA gets in practice (see paper.md's "Known simplifications"); only
+the transverse-field Ising model is implemented (a future RFC could
+generalize `Hamiltonian` further, per RFC-0009's non-goals);
+`group_qwc_terms`' greedy grouping isn't optimal (minimizing the number
+of groups is itself an NP-hard graph-coloring problem), though it is
+exact for this Hamiltonian's structure.
 
 ## References
 

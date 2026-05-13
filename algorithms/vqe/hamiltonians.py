@@ -54,3 +54,34 @@ class TransverseFieldIsingHamiltonian:
             paulis[i] = "X"
             terms.append(PauliTerm(coefficient=-self.h_field, paulis="".join(paulis)))
         return terms
+
+
+def _qubit_wise_commutes(term_a: PauliTerm, term_b: PauliTerm) -> bool:
+    """Two Pauli terms qubit-wise commute if, at every qubit, their
+    single-qubit operators are equal or at least one is `I` — the
+    condition under which both can be read off the same computational-
+    basis measurement (after a shared basis rotation), rather than
+    needing separate circuit executions."""
+    return all(
+        pa == pb or pa == "I" or pb == "I"
+        for pa, pb in zip(term_a.paulis, term_b.paulis, strict=True)
+    )
+
+
+def group_qwc_terms(terms: list[PauliTerm]) -> list[list[PauliTerm]]:
+    """Greedily partition `terms` into qubit-wise-commuting groups: each
+    group is measurable with a single circuit execution (one shared basis
+    rotation per qubit, see `circuit.group_measurement_circuit`) instead
+    of one execution per term. Not optimal (greedy, first-fit; minimizing
+    the number of groups is itself an NP-hard graph-coloring problem) but
+    exact — every term in a returned group is pairwise qubit-wise
+    commuting with every other term in that group."""
+    groups: list[list[PauliTerm]] = []
+    for term in terms:
+        for group in groups:
+            if all(_qubit_wise_commutes(term, other) for other in group):
+                group.append(term)
+                break
+        else:
+            groups.append([term])
+    return groups

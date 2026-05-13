@@ -5,9 +5,15 @@ import pytest
 from qiskit.circuit import QuantumCircuit
 from qiskit.quantum_info import Operator
 
-from algorithms.vqe.circuit import ansatz_circuit, measurement_circuit
-from algorithms.vqe.hamiltonians import PauliTerm, TransverseFieldIsingHamiltonian
-from algorithms.vqe.implementation import expectation_value, solve_ground_state
+from algorithms.vqe.circuit import ansatz_circuit, group_measurement_circuit, measurement_circuit
+from algorithms.vqe.execution import AerExecutor
+from algorithms.vqe.hamiltonians import PauliTerm, TransverseFieldIsingHamiltonian, group_qwc_terms
+from algorithms.vqe.implementation import (
+    expectation_value,
+    expectation_value_grouped,
+    solve_ground_state,
+    solve_ground_state_grouped,
+)
 
 _PAULI_MATRICES = {
     "I": np.eye(2, dtype=complex),
@@ -49,6 +55,22 @@ class _ExplodingExecutor:
 
     def run(self, circuit, shots):
         raise AssertionError("should not execute a circuit for a pure-identity term")
+
+
+class _CountingExecutor:
+    """Wraps a real `Executor`, counting how many circuits were run — to
+    prove measurement grouping actually reduces circuit executions, not
+    just to check the returned numbers."""
+
+    name = "counting"
+
+    def __init__(self):
+        self._inner = AerExecutor()
+        self.call_count = 0
+
+    def run(self, circuit, shots):
+        self.call_count += 1
+        return self._inner.run(circuit, shots)
 
 
 def test_transverse_field_ising_terms():
@@ -143,3 +165,81 @@ def test_solve_ground_state_approaches_exact_ground_energy(n_qubits, j, h):
         if found_energy <= exact + 0.5:
             return
     pytest.fail(f"solve_ground_state never approached exact ground energy {exact}")
+
+
+def test_group_qwc_terms_separates_z_and_x_terms():
+    """For the transverse-field Ising model, every ZZ term qubit-wise
+    commutes with every other ZZ term (they only ever share `Z` or `I` at
+    any qubit), and likewise for the X terms — but a ZZ term and an X
+    term never qubit-wise commute if they share a qubit (`Z` vs `X`
+    there). So greedy grouping should find exactly 2 groups: all ZZ terms,
+    all X terms."""
+    hamiltonian = TransverseFieldIsingHamiltonian(4, j_coupling=1.0, h_field=0.5)
+    groups = group_qwc_terms(hamiltonian.terms)
+    assert len(groups) == 2
+    paulis_by_group = [{term.paulis for term in group} for group in groups]
+    assert {"ZZII", "IZZI", "IIZZ"} in paulis_by_group
+    assert {"XIII", "IXII", "IIXI", "IIIX"} in paulis_by_group
+
+
+def test_group_measurement_circuit_applies_shared_basis_rotation():
+    n = 3
+    params = [0.1, 0.2, 0.3]
+    group = [PauliTerm(1.0, "XII"), PauliTerm(1.0, "IIX")]
+    built = group_measurement_circuit(n, params, reps=0, group=group)
+    unitary_part = built.remove_final_measurements(inplace=False)
+
+    expected = ansatz_circuit(n, params, reps=0)
+    expected.h(0)
+    expected.h(2)
+
+    assert Operator(unitary_part).equiv(Operator(expected))
+
+
+def test_expectation_value_grouped_matches_expectation_value():
+    """Same physics, fewer circuits: grouped and ungrouped expectation
+    values should agree up to shot noise."""
+    hamiltonian = TransverseFieldIsingHamiltonian(3, j_coupling=1.0, h_field=0.5)
+    params = [0.3, 0.6, 0.9, 0.2, 0.5, 0.8]
+
+    ungrouped = expectation_value(hamiltonian, params, reps=1, shots=8000)
+    grouped = expectation_value_grouped(hamiltonian, params, reps=1, shots=8000)
+    assert grouped == pytest.approx(ungrouped, abs=0.15)
+
+
+def test_expectation_value_grouped_uses_fewer_circuit_executions():
+    """The actual point of grouping: for the transverse-field Ising model
+    (2 qwc groups regardless of n_qubits), `expectation_value_grouped`
+    should run exactly 2 circuits, vs. `expectation_value`'s one per
+    non-identity term (2*n_qubits - 1)."""
+    hamiltonian = TransverseFieldIsingHamiltonian(4, j_coupling=1.0, h_field=0.5)
+    params = [0.5] * (4 * 2)
+
+    ungrouped_executor = _CountingExecutor()
+    expectation_value(hamiltonian, params, reps=1, executor=ungrouped_executor, shots=100)
+    assert ungrouped_executor.call_count == 2 * 4 - 1
+
+    grouped_executor = _CountingExecutor()
+    expectation_value_grouped(hamiltonian, params, reps=1, executor=grouped_executor, shots=100)
+    assert grouped_executor.call_count == 2
+
+
+def test_expectation_value_grouped_skips_circuit_execution_for_identity_term():
+    hamiltonian = _FixedHamiltonian(2, [PauliTerm(2.0, "II")])
+    value = expectation_value_grouped(
+        hamiltonian, params=[0.0, 0.0], reps=0, executor=_ExplodingExecutor(), shots=100
+    )
+    assert value == pytest.approx(2.0)
+
+
+@pytest.mark.parametrize("n_qubits,j,h", [(2, 1.0, 0.5), (3, 1.0, 0.3)])
+def test_solve_ground_state_grouped_approaches_exact_ground_energy(n_qubits, j, h):
+    """Mirrors `test_solve_ground_state_approaches_exact_ground_energy`
+    for the grouped-measurement version."""
+    hamiltonian = TransverseFieldIsingHamiltonian(n_qubits, j_coupling=j, h_field=h)
+    exact = _exact_ground_state_energy(hamiltonian)
+    for _ in range(3):
+        _, found_energy = solve_ground_state_grouped(hamiltonian)
+        if found_energy <= exact + 0.5:
+            return
+    pytest.fail(f"solve_ground_state_grouped never approached exact ground energy {exact}")

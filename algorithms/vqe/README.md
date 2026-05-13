@@ -24,12 +24,15 @@ uv run python -m algorithms.vqe.implementation
   QAOA's diagonal cost function
 - [paper.md](paper.md) — circuit derivation (hardware-efficient ansatz,
   per-term basis rotation) and the classical optimization loop
-- [hamiltonians.py](hamiltonians.py) — the `Hamiltonian` interface and
-  `TransverseFieldIsingHamiltonian`
-- [circuit.py](circuit.py) — `ansatz_circuit`, `measurement_circuit`
+- [hamiltonians.py](hamiltonians.py) — the `Hamiltonian` interface,
+  `TransverseFieldIsingHamiltonian`, and `group_qwc_terms` (measurement
+  grouping)
+- [circuit.py](circuit.py) — `ansatz_circuit`, `measurement_circuit`,
+  `group_measurement_circuit`
 - [execution.py](execution.py) — the `Executor` interface
 - [implementation.py](implementation.py) — end-to-end `solve_ground_state`
-  (includes the `scipy.optimize`-driven classical loop)
+  / `solve_ground_state_grouped` (includes the `scipy.optimize`-driven
+  classical loop)
 - [benchmark.py](benchmark.py) — resource/performance benchmarks (see
   [../../benchmarks/vqe.md](../../benchmarks/vqe.md) for results)
 - [visualization.py](visualization.py) — circuit and result visualization
@@ -53,3 +56,13 @@ since the classical loop's fixed initial guess and iteration budget don't
 scale with the parameter count. Done through v0.8 (documentation). See
 [RFC-0009](../../docs/rfcs/0009-vqe.md) for v1.0 (public release, folded
 in alongside RFC-0001/0002/0003/0004/0005/0006/0007/0008).
+
+**Beyond v0.8**: RFC-0009's "measurement grouping" stretch goal is now
+implemented — `hamiltonians.group_qwc_terms` batches qubit-wise-commuting
+Pauli terms so `implementation.expectation_value_grouped` /
+`solve_ground_state_grouped` run one circuit per group instead of one per
+term, cutting `TransverseFieldIsingHamiltonian`'s circuit executions from
+`2*n_qubits - 1` down to exactly 2, regardless of `n_qubits` — verified
+both for correctness (same expectation value as the ungrouped path) and
+for the actual execution-count reduction in `tests/test_vqe.py`. See
+math.md's "Measurement grouping" section.

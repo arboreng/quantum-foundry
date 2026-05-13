@@ -38,23 +38,43 @@ minimizes over the ansatz `params`; a final, higher-shot-count
 `expectation_value` call re-estimates the energy at the optimized
 parameters.
 
+## `group_qwc_terms` and `group_measurement_circuit`
+
+`hamiltonians.group_qwc_terms` greedily partitions a Hamiltonian's terms:
+a term joins the first existing group where it qubit-wise commutes with
+*every* term already there, else it starts a new group. `circuit.
+group_measurement_circuit` builds one shared measurement circuit for a
+group — for each qubit, it scans the group for the (unique, by
+qubit-wise-commutativity) non-identity Pauli acting there, if any, and
+applies that Pauli's basis rotation — rather than `measurement_circuit`'s
+one-rotation-set-per-term. `implementation.expectation_value_grouped`
+runs one circuit per group instead of one per term, computing each
+group's terms' expectation values from that group's shared counts.
+Verified against `measurement_circuit`/`expectation_value` two ways in
+`tests/test_vqe.py`: the grouped and ungrouped expectation values agree
+(same physics), and an instrumented `Executor` confirms the grouped path
+actually issues fewer circuit executions (not just returns a similar
+number).
+
 ## Qubit and gate count
 
 `n_qubits` qubits total. The ansatz costs `n_qubits * (reps + 1)` `RY`
-gates plus `(n_qubits - 1) * reps` `CX` gates. Each `expectation_value`
-call costs one full circuit execution *per non-identity Hamiltonian
-term* — for `TransverseFieldIsingHamiltonian`, `2*n_qubits - 1` terms
-(`n_qubits - 1` `ZZ` terms, `n_qubits` `X` terms), all non-identity, so
-`2*n_qubits - 1` circuit executions per optimizer iteration.
+gates plus `(n_qubits - 1) * reps` `CX` gates. `expectation_value` costs
+one full circuit execution *per non-identity Hamiltonian term* — for
+`TransverseFieldIsingHamiltonian`, `2*n_qubits - 1` terms (`n_qubits - 1`
+`ZZ` terms, `n_qubits` `X` terms), all non-identity, so `2*n_qubits - 1`
+circuit executions per optimizer iteration. `expectation_value_grouped`
+costs exactly **2** circuit executions instead, regardless of `n_qubits`
+(one for the `ZZ` group, one for the `X` group) — see math.md's
+"Measurement grouping".
 
 ## Known simplifications
 
 -   No convergence-rate analysis — only the variational principle's basic
     guarantee (see math.md).
--   No measurement grouping: qubit-wise-commuting Pauli terms aren't
-    batched into shared circuit executions, even though several terms
-    here (e.g. all the `X_i` terms) commute and could in principle share
-    a measurement basis.
+-   `group_qwc_terms`' greedy grouping isn't optimal (minimizing group
+    count is itself NP-hard graph coloring) — exact for this
+    Hamiltonian's structure, but not guaranteed minimal in general.
 -   No gradient-based optimization (e.g. the parameter-shift rule) —
     `scipy.optimize.minimize`'s COBYLA only, matching RFC-0008.
 -   A fixed hardware-efficient ansatz (`RY` + `CX` ladder) — no

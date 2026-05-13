@@ -50,3 +50,27 @@ def measurement_circuit(
             circuit.h(q)
     circuit.measure(range(n_qubits), range(n_qubits))
     return circuit
+
+
+def group_measurement_circuit(
+    n_qubits: int, params: list[float], reps: int, group: list[PauliTerm]
+) -> QuantumCircuit:
+    """Like `measurement_circuit`, but for a qubit-wise-commuting group of
+    terms (`hamiltonians.group_qwc_terms`): one shared basis rotation per
+    qubit — the group's non-identity Pauli at that position, if any
+    (qubit-wise commutativity guarantees every term in the group agrees
+    on it) — then a single measurement of every qubit, usable to compute
+    every term in the group's expectation value."""
+    circuit = QuantumCircuit(n_qubits, n_qubits, name="measure_group")
+    circuit.append(
+        ansatz_circuit(n_qubits, params, reps).to_gate(label="ansatz"), range(n_qubits)
+    )
+    for q in range(n_qubits):
+        pauli = next((term.paulis[q] for term in group if term.paulis[q] != "I"), "I")
+        if pauli == "X":
+            circuit.h(q)
+        elif pauli == "Y":
+            circuit.sdg(q)
+            circuit.h(q)
+    circuit.measure(range(n_qubits), range(n_qubits))
+    return circuit
