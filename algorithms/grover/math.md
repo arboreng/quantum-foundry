@@ -77,12 +77,45 @@ mean `search`'s retry loop needs more attempts here than elsewhere to reach
 a comparably low failure rate, which is why `max_attempts` defaults to `20`
 rather than a smaller number (see `implementation.search`'s docstring).
 
+## Quantum counting
+
+`search` needs `M` (the number of marked items) in advance, to compute
+the iteration count. `counting.count` removes that requirement: QPE
+(`algorithms/qpe/`'s pattern) applied to the Grover iteration operator
+`Q = diffusion_operator . oracle.phase_flip_gate()` estimates `Q`'s
+eigenvalue phase, which — per the geometric picture above — encodes
+`theta`, and hence `M = N * sin(theta)^2`. Unlike ordinary QPE, the input
+state (`H^n_qubits`, the uniform superposition `|s>`) isn't a single
+eigenstate of `Q`; it's a real combination of `Q`'s two eigenvectors (the
+same 2D rotation subspace `|s_marked>`/`|s_unmarked>` spans above), so QPE
+returns *one of two* symmetric estimates — both give the same `M` back
+out, since `sin(pi - x) = sin(x)` (see paper.md).
+
+**A subtlety this surfaced**: paper.md's "diffusion operator" section
+already notes `diffusion_operator` implements `I - 2|s><s|`, not the
+textbook `2|s><s| - I` — an unobservable global-phase difference *for
+plain Grover search*, where global phase never affects measurement
+probabilities. Quantum counting applies `Q` **under control** (as QPE
+requires), and a controlled operation exposes global phase as a
+real, relative phase — exactly the same mechanism `algorithms/hhl/
+oracles.py`'s `DiagonalXOracle` deliberately *uses* (there, a chosen
+global phase becomes a controlled-phase correction on purpose). Here it's
+incidental: the extra `-1` flips `Q`'s eigenvalues from `e^(+-2i*theta)`
+to `-e^(+-2i*theta)`, so the measured phase estimates `0.5 +- theta/pi`
+rather than `+-theta/pi` directly. `counting.count` corrects for this
+(`theta = pi * abs(y/2**n_count - 0.5)`); confirmed empirically against
+both the exact eigenvalues (`np.linalg.eigvals`) and the full statevector
+in `tests/test_counting.py`, the same "validate the actual construction,
+don't just trust the textbook formula" discipline this repo has followed
+since RFC-0001's QFT bit-ordering. `diffusion_operator` itself is left
+unchanged — it's correct for the purpose it already serves.
+
 ## References
 
 See [references.bib](references.bib). The algorithm and its analysis follow
 Grover's original paper (`grover1996`); the geometric/rotation picture and
 the BBBV optimality argument follow Nielsen & Chuang's textbook treatment
-(`nielsenchuang2010`). `brassard2000`'s amplitude amplification generalizes
-Grover's algorithm to arbitrary initial-state rotations and to unknown-`M`
-search (quantum counting) — both out of scope for this RFC's v0.2 (see
-paper.md's "Known simplifications").
+(`nielsenchuang2010`). Brassard-Høyer-Mosca (`brassard2000`)'s amplitude
+amplification generalizes Grover's algorithm to arbitrary initial-state
+rotations and to unknown-`M` search (quantum counting, now implemented in
+`counting.py`, beyond v0.8 — see "Quantum counting" above).

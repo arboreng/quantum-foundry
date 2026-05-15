@@ -51,6 +51,33 @@ gates once Qiskit's transpiler decomposes it) plus a fixed `O(n_qubits)` for
 the diffusion operator — overall `O(n_qubits * (iterations + |marked|))`
 gates, dramatically smaller than Shor's circuits at comparable qubit counts.
 
+## Quantum counting (`counting.py`)
+
+`_grover_iteration_gate` wraps one `(oracle.phase_flip_gate(),
+diffusion_operator)` pair as a single gate `Q` — the same construction
+`build_grover_circuit`'s loop body applies, reused rather than
+re-derived. `controlled_grover_iteration_power_gate` builds controlled
+`Q^power` by literally repeating `Q` `power` times before adding one
+control (`Q` has no closed-form exponentiation the way
+`algorithms.hhl.oracles.DiagonalXOracle` does) — verified via `Operator`
+against `numpy.linalg.matrix_power` of `Q`'s own matrix, for several
+`power` values including the larger powers `build_counting_circuit`
+actually needs (up to `2**(n_count-1)`), since this is exactly the kind
+of deeply-nested, heavily-repeated composite-gate construction that
+caused a real `.control()` bug during RFC-0002's development — verifying
+this generalizes to larger powers, not just power `1`, mattered.
+
+`build_counting_circuit(n_qubits, oracle, n_count)`: `H^n_count` on the
+counting register, `H^n_qubits` on the search register (the same `|s>`
+`build_grover_circuit` starts from), controlled `Q^(2**k)` per counting
+qubit `k`, `arithmetic.qft.inverse_qft` on the counting register (a fifth
+consumer), measure the counting register. `count` reads off the measured
+integer `y` and converts it to `M` via `theta = pi * abs(y/2**n_count -
+0.5)` then `M = round(N * sin(theta)**2)` — see math.md's "Quantum
+counting" for why the `abs(... - 0.5)` term is there (a phase offset from
+`diffusion_operator`'s extra global phase, harmless in `search` but
+exposed here since `Q` is used under control).
+
 ## Known simplifications (v0.2)
 
 - `ZGate().control(n_qubits - 1)` is an exact multi-controlled-Z, not

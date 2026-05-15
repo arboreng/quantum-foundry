@@ -24,6 +24,8 @@ uv run python -m algorithms.grover.implementation
 - [circuit.py](circuit.py) — circuit construction
 - [execution.py](execution.py) — the `Executor` interface
 - [implementation.py](implementation.py) — end-to-end search routine
+- [counting.py](counting.py) — quantum counting: estimate the number of
+  marked items without knowing it in advance
 - [benchmark.py](benchmark.py) — resource/performance benchmarks (see
   [../../benchmarks/grover.md](../../benchmarks/grover.md) for results)
 - [visualization.py](visualization.py) — circuit and result visualization
@@ -41,4 +43,17 @@ exactly from `len(marked)`; benchmarks
 ([notebooks/grover_demo.ipynb](notebooks/grover_demo.ipynb)) are both in
 place. Done through v0.8 (documentation). See
 [RFC-0004](../../docs/rfcs/0004-grovers-algorithm.md) for v1.0 (public
-release, folded in alongside RFC-0001/0002/0003).
+release, folded in alongside every other RFC in this repo).
+
+**Beyond v0.8**: RFC-0004's "quantum counting" stretch goal is now
+implemented — `counting.count(n_qubits, oracle, n_count)` estimates the
+number of marked items via QPE applied to the Grover iteration operator,
+removing `search`'s biggest standing assumption (that the caller already
+knows `M`). Building this surfaced a genuine subtlety: `circuit.
+diffusion_operator` carries an extra global phase (relative to the
+textbook `2|s><s| - I`) that's unobservable in plain Grover search but
+becomes a real phase offset once the operator is used under control, as
+QPE requires — `counting.count` corrects for it rather than changing
+`diffusion_operator` itself (already correct for search, and not worth
+the refactor risk to already-tested code). See math.md's "Quantum
+counting" section.

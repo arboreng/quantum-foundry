@@ -99,6 +99,11 @@ So reviewers see these as deliberately deferred, not overlooked:
 
 ## Stretch Goals
 
-Quantum counting for unknown `M`, oracle compilation from an arbitrary
-boolean predicate/circuit, amplitude amplification beyond the
-uniform-superposition-initial-state case.
+-   ~~Quantum counting for unknown `M`~~ — **implemented**, beyond v0.8:
+    `counting.count`, see
+    [algorithms/grover/math.md](../algorithms/grover/math.md)'s "Quantum
+    counting" section (including a genuine phase-offset subtlety this
+    surfaced in `circuit.diffusion_operator`).
+-   Oracle compilation from an arbitrary boolean predicate/circuit.
+-   Amplitude amplification beyond the uniform-superposition-initial-
+    state case (RFC-0010's HHL now implements the general form of this).
