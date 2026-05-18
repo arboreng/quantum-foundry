@@ -59,6 +59,48 @@ Shor's algorithm needs the continued-fraction step and a retry loop
 (`algorithms/shor/implementation.py::factor`), while this module's
 `estimate_phase` (given a true, single eigenstate) does not.
 
+## Semiclassical (Kitaev iterative) phase estimation
+
+`semiclassical.estimate_phase_semiclassical` estimates the same `theta`
+using a single ancilla reused `n_count` times instead of `n_count`
+ancillas plus a coherent inverse QFT (Kitaev's original formulation,
+generalized by Griffiths-Niu's semiclassical QFT trick). Round `j`
+applies `H`, controlled-`U^(2**(n_count-1-j))`, a classical phase
+correction, `H`, then measures the ancilla and moves on.
+
+Deriving *which* bit each round measures, and the correction formula,
+directly from the eigenvalue equation: `U^power|psi> = e^(2*pi*i*theta*
+power)|psi>`, so a bare `H`-`CU^power`-`H` round (no correction) measures
+the ancilla as `1` with probability `sin^2(pi*theta*power)`. For `theta =
+0.theta_1 theta_2 ... theta_n` (`theta_1` the most significant bit) and
+`power = 2^(n-1)` (round `0`, the *largest* power), `theta*power mod 1 =
+theta_n / 2` — i.e. round `0` measures `theta_n`, the **least**
+significant bit, not the most significant one. Each subsequent round
+`j` (using power `2^(n-1-j)`) picks up contributions from all
+previously-measured (less significant) bits that need to be classically
+cancelled before that round's bit can be read off cleanly — the
+`-pi * sum(bit / 2**(j - j_prime) ...)` correction in `semiclassical.py`.
+The final estimate reassembles `theta` from all `n_count` measured bits,
+each weighted by `2**(j - n_count)` for the round `j` it came from
+(round `0`, the least significant bit, gets the smallest weight;
+the last round, the most significant bit, gets weight `1/2`).
+
+**Getting this backwards is an easy mistake to make** — an earlier
+attempt derived the round order and bit significance by tracing
+`arithmetic.qft.inverse_qft`'s own gate-by-gate structure (its leading
+qubit-reversing swap, then per-target `H`/controlled-phase), concluded
+(incorrectly) that round `0` measures the *most* significant bit, and
+that version passed for `theta=0.25, n_count=3` — but only by luck: at
+`n_count=3`, this specific instance happens to make the correct and
+incorrect reconstructions coincide for that one case, but the bug shows
+up immediately at other `(theta, n_count)` pairs. Caught by cross-
+validating against `implementation.estimate_phase` directly on all of
+`tests/test_qpe.py`'s exact instances, not by trusting either derivation
+in isolation — the same discipline this repo has followed since RFC-0001's
+QFT bit-ordering question, applied here to catch a mistake in *this*
+repo's own reasoning about its own established code, not just to confirm
+an external convention.
+
 ## Known limitations (v0.2)
 
 This implementation assumes `eigenstate_prep` exactly prepares an
@@ -73,4 +115,7 @@ this implementation actually guarantees.
 
 See [references.bib](references.bib). The algorithm follows Kitaev's
 original paper (`kitaev1995`); the precision analysis follows Nielsen &
-Chuang's textbook treatment (`nielsenchuang2010`), Section 5.2.
+Chuang's textbook treatment (`nielsenchuang2010`), Section 5.2. The
+semiclassical/iterative variant follows Griffiths-Niu's semiclassical
+Fourier transform (`griffithsniu1996`), combined with Kitaev's original
+iterative phase estimation (`kitaev1995`).

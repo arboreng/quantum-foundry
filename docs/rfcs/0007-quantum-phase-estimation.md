@@ -108,9 +108,15 @@ Python, Qiskit (same as RFC-0001 through 0006).
 
 ## Stretch Goals
 
-Precision/confidence analysis (relating `n_count` to estimation error and
-success probability, generalizing
-[algorithms/shor/math.md](../algorithms/shor/math.md)'s continued-fraction
-precision argument); semiclassical/iterative QPE (Kitaev's original,
-one-counting-qubit-at-a-time variant, using only 1 ancilla instead of
-`n_count`).
+-   Precision/confidence analysis (relating `n_count` to estimation
+    error and success probability, generalizing
+    [algorithms/shor/math.md](../algorithms/shor/math.md)'s continued-
+    fraction precision argument).
+-   ~~Semiclassical/iterative QPE (Kitaev's original, one-counting-
+    qubit-at-a-time variant, using only 1 ancilla instead of
+    `n_count`)~~ — **implemented**, beyond v0.8: `semiclassical.
+    estimate_phase_semiclassical`, see
+    [algorithms/qpe/math.md](../algorithms/qpe/math.md)'s "Semiclassical
+    (Kitaev iterative) phase estimation" section (including a genuine
+    wrong turn in deriving the bit order, caught by cross-validating
+    against `estimate_phase`).

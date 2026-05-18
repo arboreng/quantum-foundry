@@ -28,6 +28,9 @@ uv run python -m algorithms.qpe.implementation
   `arithmetic/qft.py`'s `inverse_qft`)
 - [execution.py](execution.py) — the `Executor` interface
 - [implementation.py](implementation.py) — end-to-end `estimate_phase`
+- [semiclassical.py](semiclassical.py) — `estimate_phase_semiclassical`
+  (Kitaev iterative phase estimation, a single reused ancilla instead of
+  `n_count`)
 - [benchmark.py](benchmark.py) — resource/performance benchmarks (see
   [../../benchmarks/qpe.md](../../benchmarks/qpe.md) for results)
 - [visualization.py](visualization.py) — circuit and result visualization
@@ -46,4 +49,14 @@ the same construction `algorithms/shor/circuit.py` uses, now independently
 validated by a second consumer. Benchmarks and a demo notebook are both in
 place. Done through v0.8 (documentation). See
 [RFC-0007](../../docs/rfcs/0007-quantum-phase-estimation.md) for v1.0
-(public release, folded in alongside RFC-0001/0002/0003/0004/0005/0006).
+(public release, folded in alongside every other RFC in this repo).
+
+**Beyond v0.8**: RFC-0007's "semiclassical/iterative QPE" stretch goal is
+now implemented — `semiclassical.estimate_phase_semiclassical` uses a
+single reused ancilla with classical feedback between rounds (Kitaev's
+iterative phase estimation) instead of `n_count` ancillas plus a coherent
+inverse QFT, verified to recover exactly the same `theta` as
+`estimate_phase` on every exact test instance. Getting the round order
+and bit-significance right took a genuine wrong turn first — see math.md's
+"Semiclassical (Kitaev iterative) phase estimation" section for how
+cross-validating against `estimate_phase` caught it.

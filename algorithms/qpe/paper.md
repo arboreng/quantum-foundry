@@ -35,6 +35,23 @@ recovers the exact value; for `theta = 0.1` (no exact finite binary
 expansion) at `n_count=8`, the estimate is off by less than `1/2^8`, matching
 math.md's precision bound.
 
+## `semiclassical.py`
+
+`_round_circuit` builds one round: `eigenstate_prep` on a fresh eigen
+register (equivalent to letting it persist across rounds, since only the
+ancilla is ever measured), `H` on a single ancilla, controlled
+`oracle.controlled_power_gate(power)`, a classical-feedback `P(
+feedback_angle)`, `H` again, then measure the ancilla.
+`estimate_phase_semiclassical` runs `n_count` such rounds in sequence,
+computing each round's `power` and `feedback_angle` from the bits
+measured so far (see math.md's derivation), and majority-votes each
+round's bit over `shots` repetitions before moving on. Verified against
+`implementation.estimate_phase` directly: both recover the exact same
+`theta` for every one of `tests/test_qpe.py`'s exact instances, and
+approximate the same non-terminating `theta=0.1` similarly — the two
+circuit shapes (one big coherent circuit vs. many small circuits plus
+classical bookkeeping between `Executor.run` calls) agree.
+
 ## Known simplifications
 
 - No refactor connecting this module's circuit-building code to
