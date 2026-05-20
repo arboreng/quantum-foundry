@@ -60,3 +60,11 @@ inverse QFT, verified to recover exactly the same `theta` as
 and bit-significance right took a genuine wrong turn first — see math.md's
 "Semiclassical (Kitaev iterative) phase estimation" section for how
 cross-validating against `estimate_phase` caught it.
+
+RFC-0007's "precision/confidence analysis" stretch goal is also done —
+[benchmarks/qpe-precision-confidence.md](../../benchmarks/qpe-precision-confidence.md)
+runs 300 trials at each of several extra-counting-qubit levels, confirming
+math.md's `4/pi^2` lower bound holds (comfortably, since it's a
+guarantee not a typical value) and that failure probability roughly
+halves per extra qubit — while being explicit about the sampling noise on
+that ratio's own tail.

@@ -43,6 +43,18 @@ qubit roughly doubles the "in-tolerance" probability's complement). This
 implementation does not add such margin qubits automatically; `n_count` is
 exactly the precision `estimate_phase`'s caller requests.
 
+**Confidence, empirically**: [benchmarks/qpe-precision-confidence.md](../../benchmarks/qpe-precision-confidence.md)
+runs 300 independent trials at each of `extra_qubits = 0, 1, 2, 3, 4`
+beyond a fixed target precision, for `theta = 0.1`. The `4/pi^2` bound
+holds comfortably (a *guaranteed minimum*, not a typical value — the
+empirical `extra_qubits=0` success rate, `0.883`, sits well above it,
+since `0.1`'s particular binary expansion happens to round favorably)
+and the failure probability roughly halves per extra qubit as claimed
+(`0.117 -> 0.053 -> 0.027 -> 0.017 -> 0.007`) — though the ratios get
+noisier at the tail, where only a handful of failures out of 300 trials
+means the failure *count itself* carries substantial sampling error (see
+that benchmark's "Reading this" for the honest caveat).
+
 ## Connection to Shor's order-finding
 
 `algorithms/shor/oracles.py`'s `Oracle` protocol

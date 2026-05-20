@@ -26,6 +26,12 @@ regressions over time.
 - [qpe.md](qpe.md) — estimation error vs. counting-qubit count for
   RFC-0007's `PhaseGateOracle`, the only benchmark here whose interesting
   axis is precision rather than search-space/oracle size.
+- [qpe-precision-confidence.md](qpe-precision-confidence.md) — empirical
+  success probability (over 300 trials per level) of landing within a
+  fixed target precision, as extra counting qubits are added beyond it —
+  confirms math.md's "failure probability roughly halves per extra
+  qubit" claim, with an honest look at the sampling noise on that claim's
+  own tail.
 - [qaoa.md](qaoa.md) — optimal-cut recovery and classical-optimization-loop
   wall-clock cost for RFC-0008's `MaxCutProblem`, the only benchmark here
   measuring a hybrid classical-quantum loop rather than a single circuit.
