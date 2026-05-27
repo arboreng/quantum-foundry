@@ -72,6 +72,22 @@ from an estimated success probability. `implementation.amplify_and_
 solve_linear_system` mirrors `solve_linear_system`'s postselection logic
 exactly (both now call a shared `_postselect_on_ancilla` helper).
 
+## `GeneralSingleQubitOracle`
+
+`oracles.GeneralSingleQubitOracle.controlled_power_gate` builds
+`exp(i*theta*(v_hat.sigma))` via `RZ(-phi)` -> `RY(-theta_p)` ->
+`RZ(-2*theta)` -> `RY(theta_p)` -> `RZ(phi)` (matrix order `W . RZ(-2*
+theta) . W^dagger` translates to circuit order right-to-left: `W^dagger`
+first, `RZ(-2*theta)` in the middle, `W` last) — the standard
+change-of-basis pattern for rotating about an arbitrary Bloch-sphere
+axis, applied here to a *time-evolution* gate rather than a state
+preparation. `v = 0` (pure global phase, `A = a*I`) is handled as a
+special case, skipping the (otherwise divide-by-zero) axis normalization
+entirely. Verified against `scipy.linalg.expm` across axis-aligned and
+general instances, against `DiagonalXOracle` directly for the `X`-only
+case, and end-to-end through `solve_linear_system` for a genuinely 3D
+axis, in `tests/test_oracles_general.py`.
+
 ## Qubit and gate count
 
 `n_clock + oracle.num_qubits + 1` qubits total. The multiplexed rotation

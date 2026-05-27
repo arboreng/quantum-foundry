@@ -23,7 +23,8 @@ uv run python -m algorithms.hhl.implementation
   eigenvalues, the conditional rotation, why success is postselected
 - [paper.md](paper.md) — circuit derivation (state prep -> QPE ->
   multiplexed rotation -> inverse QPE -> measure)
-- [oracles.py](oracles.py) — the `Oracle` interface and `DiagonalXOracle`
+- [oracles.py](oracles.py) — the `Oracle` interface, `DiagonalXOracle`,
+  and `GeneralSingleQubitOracle` (any single-qubit Hermitian matrix)
 - [circuit.py](circuit.py) — `build_hhl_circuit`,
   `build_amplified_hhl_circuit` (amplitude amplification)
 - [execution.py](execution.py) — the `Executor` interface
@@ -65,3 +66,15 @@ estimated success probability) without changing the b-register's
 conditional solution distribution — verified exactly (via `Statevector`,
 no shot noise) against the closed-form `sin((2k+1)*theta)**2` formula in
 `tests/test_hhl.py`. See math.md's "Amplitude amplification" section.
+
+RFC-0010's "general single-qubit oracle" stretch goal is also done —
+`oracles.GeneralSingleQubitOracle` implements `A = a*I + v.sigma` for any
+real 3-vector `v`, not just the `X`-aligned `DiagonalXOracle`, via an
+arbitrary-Bloch-axis rotation. Verified against `scipy.linalg.expm`,
+against `DiagonalXOracle` itself for the `X`-only case, and end to end
+through `solve_linear_system` for a genuinely 3D axis — which also
+caught a real assumption-that-didn't-generalize: `DiagonalXOracle`'s demo
+instance splits `|0>` exactly 50/50 across eigenvectors only because its
+axis happens to be orthogonal to `Z`; a general axis needs that overlap
+computed via diagonalization, not assumed. See math.md's "Generalizing
+beyond the `X` axis" section.

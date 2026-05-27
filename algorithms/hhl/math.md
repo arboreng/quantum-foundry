@@ -92,14 +92,47 @@ proportions) are untouched, so amplification changes *how often* a shot
 lands in the ancilla-`1` branch without changing *what's there* when it
 does (verified directly in `tests/test_hhl.py`).
 
+## Generalizing beyond the `X` axis
+
+`DiagonalXOracle`'s `A = a*I + b*X` is diagonal in the `|+>`/`|->` basis
+only — a special case. Any single-qubit Hermitian matrix is `A = a*I +
+v.sigma` for a real 3-vector `v = (vx, vy, vz)` (`v.sigma = vx*X + vy*Y +
+vz*Z`), with eigenvalues `a +- |v|` (since `(v.sigma)^2 = |v|^2 * I`, the
+same fact that makes `X`'s square `I` a special case of `v = (b,0,0)`).
+`GeneralSingleQubitOracle` implements the full family: writing `v`'s unit
+direction `v_hat`'s spherical coordinates as polar angle `theta_p` (from
+`Z`) and azimuthal angle `phi` (from `X` in the `XY` plane), the change-
+of-basis `W = RZ(phi).RY(theta_p)` rotates `Z` onto `v_hat`, so
+`exp(i*theta*(v_hat.sigma)) = W . RZ(-2*theta) . W^dagger` for `theta =
+|v|*t*power` (`RZ(-2*theta) = exp(i*theta*Z)` exactly). Verified against
+`scipy.linalg.expm`'s exact matrix exponential across axis-aligned and
+general-direction instances, and confirmed to exactly reproduce
+`DiagonalXOracle`'s own controlled gate when `v = (b, 0, 0)` — two
+independent constructions of the same physics — in
+`tests/test_oracles_general.py`.
+
+**A subtlety this surfaced**: the DiagonalXOracle demo's `|b>=|0>`
+splits *exactly* 50/50 across the two eigenvectors — but that's a
+consequence of the `X` axis being orthogonal to `Z` (the `|0>`/`|1>`
+basis), not a general fact. For an axis with a nonzero `Z` component
+(e.g. `v = (c,c,c)`), `|0>`'s overlap with each eigenvector is
+*unequal*, computed via exact diagonalization
+(`tests/test_oracles_general.py::test_solve_linear_system_with_
+genuinely_3d_axis` gets this from `numpy.linalg.eigh` directly rather
+than assuming the symmetric split) — an early version of that test
+assumed the same 50/50 split as the `X`-only case and failed
+immediately, a useful reminder that a validated instance's convenient
+symmetries don't automatically transfer to a more general one.
+
 ## Known limitations (v0.2)
 
 No condition-number analysis or success-probability bound beyond citing
 Harrow-Hassidim-Lloyd's original result (see paper.md's "Known
-simplifications"); only a 2x2 system (`A = a*I + b*X`) is implemented;
-`optimal_amplification_iterations` requires already knowing (or having
-separately estimated, e.g. via quantum counting — not implemented here)
-the unamplified success probability.
+simplifications"); only 2x2 systems are implemented (any single-qubit
+Hermitian matrix, via `GeneralSingleQubitOracle`, but no higher
+dimensions); `optimal_amplification_iterations` requires already knowing
+(or having separately estimated, e.g. via quantum counting — not
+implemented here) the unamplified success probability.
 
 ## References
 
