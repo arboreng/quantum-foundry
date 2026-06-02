@@ -25,8 +25,8 @@ uv run python -m algorithms.vqe.implementation
 - [paper.md](paper.md) — circuit derivation (hardware-efficient ansatz,
   per-term basis rotation) and the classical optimization loop
 - [hamiltonians.py](hamiltonians.py) — the `Hamiltonian` interface,
-  `TransverseFieldIsingHamiltonian`, and `group_qwc_terms` (measurement
-  grouping)
+  `TransverseFieldIsingHamiltonian`, `HeisenbergHamiltonian`, and
+  `group_qwc_terms` (measurement grouping)
 - [circuit.py](circuit.py) — `ansatz_circuit`, `measurement_circuit`,
   `group_measurement_circuit`
 - [execution.py](execution.py) — the `Executor` interface
@@ -66,3 +66,13 @@ term, cutting `TransverseFieldIsingHamiltonian`'s circuit executions from
 both for correctness (same expectation value as the ungrouped path) and
 for the actual execution-count reduction in `tests/test_vqe.py`. See
 math.md's "Measurement grouping" section.
+
+RFC-0009's "Heisenberg model" stretch goal is also done —
+`hamiltonians.HeisenbergHamiltonian` implements the isotropic Heisenberg
+(XXX) model, the first Hamiltonian in this repo whose terms genuinely
+exercise `measurement_circuit`'s `Y`-basis rotation (TFIM has no `Y`
+terms). It also splits into 3 measurement groups instead of TFIM's 2.
+Its 3-qubit open chain's doubly-degenerate ground energy needed more
+ansatz depth (`reps=3`) to reliably reach — a real property of the
+optimization landscape, not a bug, documented in math.md's "The
+Heisenberg model" section.

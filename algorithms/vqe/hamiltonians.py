@@ -56,6 +56,32 @@ class TransverseFieldIsingHamiltonian:
         return terms
 
 
+class HeisenbergHamiltonian:
+    """The isotropic Heisenberg (XXX) model on an open 1D chain:
+    `H = J * sum_i (X_i X_{i+1} + Y_i Y_{i+1} + Z_i Z_{i+1})`.
+
+    Unlike `TransverseFieldIsingHamiltonian` (`Z`/`X` terms only), this
+    Hamiltonian's `Y_i Y_{i+1}` terms genuinely exercise VQE's `Y`-basis
+    measurement rotation (`circuit.measurement_circuit`'s `Sdg` then `H`
+    path) — no Hamiltonian in this repo needed it before.
+    """
+
+    def __init__(self, n_qubits: int, j_coupling: float):
+        self.n_qubits = n_qubits
+        self.j_coupling = j_coupling
+
+    @property
+    def terms(self) -> list[PauliTerm]:
+        terms = []
+        for i in range(self.n_qubits - 1):
+            for pauli in ("X", "Y", "Z"):
+                paulis = ["I"] * self.n_qubits
+                paulis[i] = pauli
+                paulis[i + 1] = pauli
+                terms.append(PauliTerm(coefficient=self.j_coupling, paulis="".join(paulis)))
+        return terms
+
+
 def _qubit_wise_commutes(term_a: PauliTerm, term_b: PauliTerm) -> bool:
     """Two Pauli terms qubit-wise commute if, at every qubit, their
     single-qubit operators are equal or at least one is `I` — the

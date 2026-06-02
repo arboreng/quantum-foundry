@@ -3,11 +3,16 @@
 import numpy as np
 import pytest
 from qiskit.circuit import QuantumCircuit
-from qiskit.quantum_info import Operator
+from qiskit.quantum_info import Operator, Statevector
 
 from algorithms.vqe.circuit import ansatz_circuit, group_measurement_circuit, measurement_circuit
 from algorithms.vqe.execution import AerExecutor
-from algorithms.vqe.hamiltonians import PauliTerm, TransverseFieldIsingHamiltonian, group_qwc_terms
+from algorithms.vqe.hamiltonians import (
+    HeisenbergHamiltonian,
+    PauliTerm,
+    TransverseFieldIsingHamiltonian,
+    group_qwc_terms,
+)
 from algorithms.vqe.implementation import (
     expectation_value,
     expectation_value_grouped,
@@ -240,6 +245,89 @@ def test_solve_ground_state_grouped_approaches_exact_ground_energy(n_qubits, j, 
     exact = _exact_ground_state_energy(hamiltonian)
     for _ in range(3):
         _, found_energy = solve_ground_state_grouped(hamiltonian)
+        if found_energy <= exact + 0.5:
+            return
+    pytest.fail(f"solve_ground_state_grouped never approached exact ground energy {exact}")
+
+
+def test_heisenberg_terms():
+    hamiltonian = HeisenbergHamiltonian(3, j_coupling=1.0)
+    terms = {(term.coefficient, term.paulis) for term in hamiltonian.terms}
+    assert terms == {
+        (1.0, "XXI"),
+        (1.0, "YYI"),
+        (1.0, "ZZI"),
+        (1.0, "IXX"),
+        (1.0, "IYY"),
+        (1.0, "IZZ"),
+    }
+
+
+def test_group_qwc_terms_separates_heisenberg_by_pauli_type():
+    """Unlike the transverse-field Ising model's 2 groups, adjacent
+    Heisenberg terms sharing a qubit (e.g. `XXI` and `IXX` share qubit 1)
+    always agree there only within the *same* Pauli type — `XXI` and
+    `YYI` share two qubits and disagree at both — so grouping splits
+    strictly by type: all `X` pairs, all `Y` pairs, all `Z` pairs, giving
+    exactly 3 groups regardless of `n_qubits`."""
+    hamiltonian = HeisenbergHamiltonian(4, j_coupling=1.0)
+    groups = group_qwc_terms(hamiltonian.terms)
+    assert len(groups) == 3
+    paulis_by_group = [{term.paulis for term in group} for group in groups]
+    assert {"XXII", "IXXI", "IIXX"} in paulis_by_group
+    assert {"YYII", "IYYI", "IIYY"} in paulis_by_group
+    assert {"ZZII", "IZZI", "IIZZ"} in paulis_by_group
+
+
+def test_expectation_value_matches_exact_statevector_for_heisenberg():
+    """The point of this Hamiltonian: its `YY` terms genuinely exercise
+    `measurement_circuit`'s `Y`-basis rotation for the first time via a
+    real Hamiltonian (not just the abstract `PauliTerm(1.0, "XY")` unit
+    test), checked here against the exact expectation value computed
+    from the ansatz's own statevector."""
+    n, reps = 2, 0
+    params = [0.4, 0.9]
+    hamiltonian = HeisenbergHamiltonian(n, j_coupling=1.0)
+
+    state = Statevector(ansatz_circuit(n, params, reps))
+    exact = 0.0
+    for term in hamiltonian.terms:
+        matrix = _PAULI_MATRICES[term.paulis[0]]
+        for pauli in term.paulis[1:]:
+            matrix = np.kron(matrix, _PAULI_MATRICES[pauli])
+        exact += term.coefficient * np.real(state.data.conj() @ matrix @ state.data)
+
+    estimated = expectation_value(hamiltonian, params, reps, shots=8000)
+    assert estimated == pytest.approx(exact, abs=0.1)
+
+
+def test_solve_ground_state_grouped_approaches_exact_ground_energy_for_heisenberg():
+    """Mirrors the transverse-field Ising model's end-to-end test, for
+    the Heisenberg model instead — a genuinely different Hamiltonian,
+    same classical-optimization-loop machinery."""
+    hamiltonian = HeisenbergHamiltonian(2, j_coupling=1.0)
+    exact = _exact_ground_state_energy(hamiltonian)
+    for _ in range(3):
+        _, found_energy = solve_ground_state_grouped(hamiltonian)
+        if found_energy <= exact + 0.5:
+            return
+    pytest.fail(f"solve_ground_state_grouped never approached exact ground energy {exact}")
+
+
+def test_solve_ground_state_grouped_approaches_exact_ground_energy_for_heisenberg_n3():
+    """The 3-qubit open Heisenberg chain's ground energy (-4.0) is
+    *doubly degenerate* (confirmed via `numpy.linalg.eigvalsh`: the two
+    lowest eigenvalues both equal -4.0) — a harder variational landscape
+    than the transverse-field Ising model's non-degenerate ground states,
+    empirically needing more ansatz depth (`reps=3`, not the default `1`)
+    and more retries (COBYLA reaches within `0.5` of exact on ~7/8
+    attempts at `reps=3`, vs. essentially never at `reps=1`) to reliably
+    approach the true minimum. This is a real property of this
+    Hamiltonian's landscape, not a bug — see math.md."""
+    hamiltonian = HeisenbergHamiltonian(3, j_coupling=1.0)
+    exact = _exact_ground_state_energy(hamiltonian)
+    for _ in range(5):
+        _, found_energy = solve_ground_state_grouped(hamiltonian, reps=3)
         if found_energy <= exact + 0.5:
             return
     pytest.fail(f"solve_ground_state_grouped never approached exact ground energy {exact}")

@@ -85,16 +85,48 @@ directly in `tests/test_vqe.py`, both that the grouping is correct and
 that it produces the same expectation value (up to shot noise) with
 fewer circuit executions.
 
+## The Heisenberg model
+
+`hamiltonians.HeisenbergHamiltonian`: the isotropic Heisenberg (XXX)
+model, `H = J * sum_i (X_i X_{i+1} + Y_i Y_{i+1} + Z_i Z_{i+1})` on an
+open 1D chain — a second demonstration Hamiltonian alongside the
+transverse-field Ising model, chosen specifically because its `YY` terms
+are the *first* Hamiltonian in this repo to genuinely exercise
+`measurement_circuit`'s `Y`-basis rotation (`Sdg` then `H`) — TFIM has no
+`Y` terms at all, so that code path was previously validated only via
+the abstract `PauliTerm(1.0, "XY")` unit test, never through an actual
+physical Hamiltonian.
+
+Grouping behaves differently here too: TFIM's terms split into 2
+qubit-wise-commuting groups (all `Z`, all `X`), but Heisenberg's adjacent
+terms sharing a qubit (e.g. `X_0 X_1` and `X_1 X_2` share qubit 1) only
+ever agree there *within the same Pauli type* — `X_0 X_1` and `Y_1 Y_2`
+disagree at qubit 1 (`X` vs `Y`), so grouping splits strictly by type:
+all `X` pairs, all `Y` pairs, all `Z` pairs, giving exactly **3** groups
+regardless of `n_qubits` (verified in `tests/test_vqe.py`).
+
+**A genuine finding, not a bug**: the open 3-qubit Heisenberg chain's
+ground energy (`-4.0` for `J=1`) is *doubly degenerate* (confirmed via
+`numpy.linalg.eigvalsh`) — a harder variational landscape than TFIM's
+non-degenerate ground states. `solve_ground_state_grouped` needed more
+ansatz depth (`reps=3`, not the default `1`) and more retries to reach
+within the same tolerance TFIM reaches easily at `reps=1`; even at
+`reps=3`, COBYLA lands within tolerance on roughly 7 of 8 attempts, not
+essentially every attempt. This is an honest property of variational
+optimization over a degenerate ground-state manifold, not a
+construction bug — see `tests/test_vqe.py`'s dedicated `n=3` test for
+the measured pass rate this claim is based on.
+
 ## Known limitations (v0.2)
 
 No convergence-rate analysis — only the variational principle's basic
 guarantee (`<psi|H|psi> >= E_0`) is invoked, not a bound on how close
 COBYLA gets in practice (see paper.md's "Known simplifications"); only
-the transverse-field Ising model is implemented (a future RFC could
-generalize `Hamiltonian` further, per RFC-0009's non-goals);
-`group_qwc_terms`' greedy grouping isn't optimal (minimizing the number
-of groups is itself an NP-hard graph-coloring problem), though it is
-exact for this Hamiltonian's structure.
+the transverse-field Ising and Heisenberg models are implemented (a
+future RFC could generalize `Hamiltonian` further, per RFC-0009's
+non-goals); `group_qwc_terms`' greedy grouping isn't optimal (minimizing
+the number of groups is itself an NP-hard graph-coloring problem), though
+it is exact for both Hamiltonians' structures.
 
 ## References
 

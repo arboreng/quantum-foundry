@@ -68,6 +68,20 @@ costs exactly **2** circuit executions instead, regardless of `n_qubits`
 (one for the `ZZ` group, one for the `X` group) — see math.md's
 "Measurement grouping".
 
+## `HeisenbergHamiltonian`
+
+Three `PauliTerm`s per adjacent qubit pair (`XX`, `YY`, `ZZ`, all
+coefficient `J`) instead of TFIM's `ZZ` + `X`. Its `YY` terms are the
+first real exercise of `measurement_circuit`'s `Y`-basis rotation
+(`Sdg` then `H`) through an actual Hamiltonian, not just an isolated
+`PauliTerm` test. `group_qwc_terms` splits its terms into 3 groups (all
+`X` pairs, all `Y` pairs, all `Z` pairs) rather than TFIM's 2, since
+adjacent pairs sharing a qubit only agree there within the same Pauli
+type. Solving it end to end needed more ansatz depth (`reps=3`) than TFIM
+required (`reps=1`) to reliably approach the exact ground energy — traced
+to the 3-qubit open chain's ground energy being doubly degenerate, a
+harder variational landscape (see math.md).
+
 ## Known simplifications
 
 -   No convergence-rate analysis — only the variational principle's basic
