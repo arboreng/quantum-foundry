@@ -43,7 +43,11 @@ this is `implementation.solve_maxcut`'s objective (negated, since
 gradient-free: `expectation_value` is a noisy, finite-shots Monte Carlo
 estimate, so a gradient-based method would need to estimate gradients via
 finite differences anyway (adding more circuit evaluations for no clear
-benefit at this problem scale). After optimization, a final higher-shot-count
+benefit at this problem scale) — confirmed empirically, not just
+theorized, in
+[benchmarks/qaoa-optimizer-comparison.md](../../benchmarks/qaoa-optimizer-comparison.md)
+(BFGS costs ~3.3x more circuit evaluations than COBYLA for the same
+result on the same instance). After optimization, a final higher-shot-count
 run reads off the single most-frequent measured bitstring as the answer.
 
 ## Qubit and gate count
@@ -56,8 +60,9 @@ several layers on graphs with tens of vertices.
 ## Known simplifications
 
 - No approximation-ratio guarantee derived or checked (see math.md).
-- Fixed classical optimizer (`scipy.optimize.minimize`'s COBYLA) — no
-  comparison across optimizers.
+- `solve_maxcut` itself stays fixed to COBYLA (see math.md's "Why COBYLA
+  over a gradient-based optimizer" for the benchmark comparison that
+  justifies it) — no runtime option to select a different optimizer.
 - Fixed initial parameter guess (`0.5` for every angle) — no
   multi-start or problem-informed initialization.
 - Only `MaxCutProblem` — no other QUBO/Ising-encodable problems.

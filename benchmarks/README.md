@@ -35,6 +35,12 @@ regressions over time.
 - [qaoa.md](qaoa.md) — optimal-cut recovery and classical-optimization-loop
   wall-clock cost for RFC-0008's `MaxCutProblem`, the only benchmark here
   measuring a hybrid classical-quantum loop rather than a single circuit.
+- [qaoa-optimizer-comparison.md](qaoa-optimizer-comparison.md) — COBYLA
+  (gradient-free) vs. BFGS (gradient-based, finite-difference) on the
+  same MaxCut instance: both reach the optimum every trial, but BFGS
+  costs ~3.3x more circuit evaluations for no accuracy benefit, since
+  finite-difference gradients are expensive and unreliable against a
+  stochastic, sampling-noise-laden objective.
 - [vqe.md](vqe.md) — ground-state energy recovery and classical-
   optimization-loop wall-clock cost for RFC-0009's
   `TransverseFieldIsingHamiltonian`, including the counterintuitive

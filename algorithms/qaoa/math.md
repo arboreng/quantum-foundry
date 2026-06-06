@@ -56,6 +56,24 @@ not proven — the returned cut is the best one *found*, which for the small
 test graphs in `tests/test_qaoa.py` happens to be optimal, but that isn't
 guaranteed for larger or harder instances.
 
+## Why COBYLA over a gradient-based optimizer
+
+`solve_maxcut` uses COBYLA (gradient-free) rather than a gradient-based
+method like BFGS — not arbitrarily:
+[benchmarks/qaoa-optimizer-comparison.md](../../benchmarks/qaoa-optimizer-comparison.md)
+runs both on the same instance and finds BFGS costs **~3.3x more circuit
+evaluations** than COBYLA for *no better result* (both reach the true
+optimum on every trial here). Since no analytic gradient is supplied,
+BFGS estimates one via finite differences at every step — expensive on
+its own, and *doubly* unreliable here because `expectation_value` is a
+stochastic, finite-shots Monte Carlo estimate, not a smooth analytic
+function: perturbing a parameter by a small amount and re-measuring
+doesn't cleanly separate a real gradient signal from sampling noise. The
+standard fix in the literature is the *parameter-shift rule* (an exact,
+non-finite-difference gradient — [algorithms/vqe/](../vqe/)'s own
+stretch-goal list, not implemented here), not simply switching
+optimizers.
+
 ## Known limitations (v0.2)
 
 No approximation-ratio bound is derived or checked (see paper.md's "Known

@@ -46,4 +46,13 @@ best-measured cut. Finds the true optimal cut for the small test graphs in
 larger instances, since QAOA is approximate by construction (see math.md).
 Benchmarks and a demo notebook are both in place. Done through v0.8
 (documentation). See [RFC-0008](../../docs/rfcs/0008-qaoa.md) for v1.0
-(public release, folded in alongside RFC-0001/0002/0003/0004/0005/0006/0007).
+(public release, folded in alongside every other RFC in this repo).
+
+**Beyond v0.8**: RFC-0008's "optimizer comparison" stretch goal is now
+done — [benchmarks/qaoa-optimizer-comparison.md](../../benchmarks/qaoa-optimizer-comparison.md)
+runs COBYLA against BFGS (gradient-based, finite-difference) on the same
+instance: both reach the optimum every trial, but BFGS costs ~3.3x more
+circuit evaluations for no accuracy benefit, confirming empirically what
+paper.md's "classical optimization loop" section already argued
+theoretically. See math.md's "Why COBYLA over a gradient-based
+optimizer" section.
