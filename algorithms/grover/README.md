@@ -41,9 +41,11 @@ oracle (`oracles.MarkedBitstringOracle`), with iteration count computed
 exactly from `len(marked)`; benchmarks
 ([benchmarks/grover.md](../../benchmarks/grover.md)) and a demo notebook
 ([notebooks/grover_demo.ipynb](notebooks/grover_demo.ipynb)) are both in
-place. Done through v0.8 (documentation). See
-[RFC-0004](../../docs/rfcs/0004-grovers-algorithm.md) for v1.0 (public
-release, folded in alongside every other RFC in this repo).
+place. Done through v0.8 (documentation) and v1.0 (folded into the
+public release alongside every other RFC in this repo — see the root
+[CONTRIBUTING.md](../../CONTRIBUTING.md) and
+[LICENSE](../../LICENSE)). See
+[RFC-0004](../../docs/rfcs/0004-grovers-algorithm.md).
 
 **Beyond v0.8**: RFC-0004's "quantum counting" stretch goal is now
 implemented — `counting.count(n_qubits, oracle, n_count)` estimates the

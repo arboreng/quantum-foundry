@@ -43,6 +43,8 @@ Done through v0.8: `is_constant(n_qubits, oracle)` runs end to end on
 `AerSimulator`, deterministic in a single shot (no retry loop — see
 math.md). Three oracle types: `ConstantOracle`, an efficient
 always-balanced `ParityOracle`, and a general but exponential
-`BalancedOracle`; benchmarks and a demo notebook are both in place. See
-[RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md) for
-v1.0 (public release, folded in alongside RFC-0001/0002/0003/0004).
+`BalancedOracle`; benchmarks and a demo notebook are both in place. Done
+through v1.0 too (folded into the public release alongside every other
+RFC in this repo — see the root [CONTRIBUTING.md](../../CONTRIBUTING.md)
+and [LICENSE](../../LICENSE)). See
+[RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md).

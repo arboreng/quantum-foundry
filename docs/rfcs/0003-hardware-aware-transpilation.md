@@ -61,7 +61,9 @@ Python, Qiskit (same as RFC-0001/0002). No new dependencies.
     [benchmarks/shor-transpilation.md](../../benchmarks/shor-transpilation.md).
 -   [x] v0.8: Documentation — see [compiler/math.md](../../compiler/math.md)
     and [compiler/paper.md](../../compiler/paper.md).
--   [ ] v1.0: Folded into the public release alongside RFC-0001/0002.
+-   [x] v1.0: Folded into the public release alongside RFC-0001/0002
+    (LICENSE, CONTRIBUTING.md, and CI added; publishing to a public
+    GitHub remote is a manual step the repo owner performs).
 
 ## Explicit Non-goals (v0.2)
 

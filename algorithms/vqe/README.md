@@ -53,9 +53,10 @@ for larger instances, since VQE is variational/approximate by construction
 [benchmarks/vqe.md](../../benchmarks/vqe.md) found that a more expressive
 ansatz (`reps=2`) doesn't recover a better energy than `reps=1` here,
 since the classical loop's fixed initial guess and iteration budget don't
-scale with the parameter count. Done through v0.8 (documentation). See
-[RFC-0009](../../docs/rfcs/0009-vqe.md) for v1.0 (public release, folded
-in alongside RFC-0001/0002/0003/0004/0005/0006/0007/0008).
+scale with the parameter count. Done through v0.8 (documentation) and
+v1.0 (folded into the public release alongside every other RFC in this
+repo — see the root [CONTRIBUTING.md](../../CONTRIBUTING.md) and
+[LICENSE](../../LICENSE)). See [RFC-0009](../../docs/rfcs/0009-vqe.md).
 
 **Beyond v0.8**: RFC-0009's "measurement grouping" stretch goal is now
 implemented — `hamiltonians.group_qwc_terms` batches qubit-wise-commuting

@@ -22,7 +22,7 @@ uv sync
 # Run the test suite
 uv run pytest
 
-# Run an algorithm's example entry point (once implemented)
+# Run an algorithm's example entry point
 uv run python -m algorithms.shor.implementation
 ```
 
@@ -56,23 +56,37 @@ See each algorithm's own `README.md` and `notebooks/` directory, e.g.
 ## Benchmarks
 
 Benchmark harnesses live alongside each algorithm (`benchmark.py`) and are
-aggregated under [benchmarks/](benchmarks/). First results:
-[benchmarks/shor.md](benchmarks/shor.md) compares Shor's algorithm's two
-oracle implementations (RFC-0001's classically-computed permutation matrix
-vs. RFC-0002's gate-decomposed reversible arithmetic) on qubit count, gate
-count, circuit depth, and simulation time.
+aggregated under [benchmarks/](benchmarks/), including a cross-algorithm
+transpilation study ([benchmarks/cross-algorithm-transpilation.md](benchmarks/cross-algorithm-transpilation.md))
+comparing routing overhead across every algorithm's circuit shape. See
+[benchmarks/README.md](benchmarks/README.md) for the full index.
 
 ## Roadmap
 
-See [VISION.md](VISION.md#long-term-vision) for the target algorithm list.
-Shor's algorithm is in progress across
-[RFC-0001](docs/rfcs/0001-shors-algorithm.md) (core algorithm, done through
-v0.2) and [RFC-0002](docs/rfcs/0002-gate-decomposed-arithmetic.md)
-(gate-decomposed oracle, done through v0.2); both have a v0.5 benchmarking
-milestone in progress and v0.8/v1.0 (docs, public release) still ahead.
+All ten algorithms on [VISION.md](VISION.md#long-term-vision)'s long-term
+list — Shor ([RFC-0001](docs/rfcs/0001-shors-algorithm.md)/[0002](docs/rfcs/0002-gate-decomposed-arithmetic.md)/[0003](docs/rfcs/0003-hardware-aware-transpilation.md)),
+Grover ([RFC-0004](docs/rfcs/0004-grovers-algorithm.md)), Deutsch-Jozsa /
+Bernstein-Vazirani ([RFC-0005](docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md)),
+Simon ([RFC-0006](docs/rfcs/0006-simons-algorithm.md)), Quantum Phase
+Estimation ([RFC-0007](docs/rfcs/0007-quantum-phase-estimation.md)), QAOA
+([RFC-0008](docs/rfcs/0008-qaoa.md)), VQE ([RFC-0009](docs/rfcs/0009-vqe.md)),
+and HHL ([RFC-0010](docs/rfcs/0010-hhl.md)) — are implemented, tested,
+benchmarked, and documented through each RFC's v0.8 milestone. Several
+have stretch-goal extensions beyond v0.8 (amplitude amplification for
+HHL, measurement grouping for VQE, quantum counting for Grover,
+semiclassical phase estimation and precision/confidence analysis for
+QPE, a general single-qubit oracle for HHL, a Heisenberg model for VQE,
+and an optimizer comparison for QAOA) — see each algorithm's own
+`README.md` "Beyond v0.8" section. Cross-algorithm infrastructure
+(hardware-aware transpilation comparison, a known-answer cross-validation
+harness under [validation/](validation/)) is also in place.
+
+`hardware/` (Level 4, hardware-validated results) remains for a future
+algorithm reaching `incubating` maturity — see
+[algorithms/README.md](algorithms/README.md)'s maturity model.
 
 ## Contributing
 
-The project is pre-public-release; contribution guidelines will land before
-the v1.0 milestone. In the meantime, every algorithm begins with an RFC under
-`docs/rfcs/` describing motivation, design, validation, and success criteria.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, the RFC
+process for proposing a new algorithm, and pull request expectations.
+Licensed under the [MIT License](LICENSE).

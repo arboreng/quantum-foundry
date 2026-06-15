@@ -86,7 +86,9 @@ dependency).
 -   [x] v0.8: Documentation (References sections were already added to
     math.md/paper.md during v0.2 this time, learning from the retrofit
     needed in prior RFCs; README/references.bib were already current)
--   [ ] v1.0: Public release
+-   [x] v1.0: Public release (LICENSE, CONTRIBUTING.md, and CI added;
+    publishing to a public GitHub remote is a manual step the repo
+    owner performs, not tracked in commit history)
 
 ## Seed GitHub Issues
 

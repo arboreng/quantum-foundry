@@ -41,5 +41,8 @@ Done through v0.8: `find_hidden_string(n_qubits, oracle)` runs end to end on
 `AerSimulator`, deterministic in a single shot (no retry loop — see
 math.md), recovering the hidden string exactly for any `s` including the
 degenerate all-zeros case; benchmarks and a demo notebook are both in
-place. See [RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md)
-for v1.0 (public release, folded in alongside RFC-0001/0002/0003/0004).
+place. Done through v1.0 too (folded into the public release alongside
+every other RFC in this repo — see the root
+[CONTRIBUTING.md](../../CONTRIBUTING.md) and
+[LICENSE](../../LICENSE)). See
+[RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md).

@@ -39,7 +39,9 @@ Python, Qiskit
     doesn't block this one)
 -   [x] v0.8: Documentation (README/math.md/paper.md polish pass,
     references.bib fleshed out with the RFC-0002 citations)
--   [ ] v1.0: Public release
+-   [x] v1.0: Public release (LICENSE, CONTRIBUTING.md, and CI added;
+    publishing to a public GitHub remote is a manual step the repo
+    owner performs, not tracked in commit history)
 
 ## Seed GitHub Issues
 

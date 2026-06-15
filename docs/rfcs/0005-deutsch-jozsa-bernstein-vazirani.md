@@ -80,7 +80,9 @@ Python, Qiskit (same as RFC-0001/0002/0003/0004).
     [algorithms/bernstein_vazirani/notebooks/bernstein_vazirani_demo.ipynb](../../algorithms/bernstein_vazirani/notebooks/bernstein_vazirani_demo.ipynb))
 -   [x] v0.8: Documentation (References sections added to both math.md
     files; READMEs/references.bib were already current from v0.2/v0.5)
--   [ ] v1.0: Public release
+-   [x] v1.0: Public release (LICENSE, CONTRIBUTING.md, and CI added;
+    publishing to a public GitHub remote is a manual step the repo
+    owner performs, not tracked in commit history)
 
 ## Seed GitHub Issues
 

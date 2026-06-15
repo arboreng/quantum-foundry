@@ -43,6 +43,8 @@ from-scratch GF(2) Gaussian elimination — this repo's first algorithm
 needing genuine classical linear algebra rather than a bitstring read or a
 continued fraction. Two oracle types: an efficient `LinearOracle` and a
 general but exponential `PermutationOracle`; benchmarks and a demo notebook
-are both in place. Done through v0.8 (documentation). See
-[RFC-0006](../../docs/rfcs/0006-simons-algorithm.md) for v1.0 (public
-release, folded in alongside RFC-0001/0002/0003/0004/0005).
+are both in place. Done through v0.8 (documentation) and v1.0 (folded
+into the public release alongside every other RFC in this repo — see
+the root [CONTRIBUTING.md](../../CONTRIBUTING.md) and
+[LICENSE](../../LICENSE)). See
+[RFC-0006](../../docs/rfcs/0006-simons-algorithm.md).

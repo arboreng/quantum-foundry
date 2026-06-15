@@ -45,8 +45,10 @@ best-measured cut. Finds the true optimal cut for the small test graphs in
 `tests/test_qaoa.py` (a triangle, a 4-cycle, a path) — not a guarantee for
 larger instances, since QAOA is approximate by construction (see math.md).
 Benchmarks and a demo notebook are both in place. Done through v0.8
-(documentation). See [RFC-0008](../../docs/rfcs/0008-qaoa.md) for v1.0
-(public release, folded in alongside every other RFC in this repo).
+(documentation) and v1.0 (folded into the public release alongside
+every other RFC in this repo — see the root
+[CONTRIBUTING.md](../../CONTRIBUTING.md) and
+[LICENSE](../../LICENSE)). See [RFC-0008](../../docs/rfcs/0008-qaoa.md).
 
 **Beyond v0.8**: RFC-0008's "optimizer comparison" stretch goal is now
 done — [benchmarks/qaoa-optimizer-comparison.md](../../benchmarks/qaoa-optimizer-comparison.md)

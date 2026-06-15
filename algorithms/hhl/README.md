@@ -53,9 +53,10 @@ notably, [benchmarks/hhl.md](../../benchmarks/hhl.md) found that adding
 clock-register precision (`n_clock`) doesn't just cost more circuit: it
 also makes a successful (ancilla-`1`) shot rarer, since the multiplexed
 rotation's safety margin (`c_constant`) must shrink as `n_clock` grows.
-Done through v0.8 (documentation). See
-[RFC-0010](../../docs/rfcs/0010-hhl.md) for v1.0 (public release, folded
-in alongside RFC-0001/0002/0003/0004/0005/0006/0007/0008/0009).
+Done through v0.8 (documentation) and v1.0 (folded into the public
+release alongside every other RFC in this repo — see the root
+[CONTRIBUTING.md](../../CONTRIBUTING.md) and
+[LICENSE](../../LICENSE)). See [RFC-0010](../../docs/rfcs/0010-hhl.md).
 
 **Beyond v0.8**: RFC-0010's "amplitude amplification" stretch goal is now
 implemented — `build_amplified_hhl_circuit` / `amplify_and_solve_

@@ -47,9 +47,11 @@ otherwise (with the probabilistic guarantee math.md describes).
 `build_qpe_circuit` reuses `arithmetic/qft.py`'s `inverse_qft` directly —
 the same construction `algorithms/shor/circuit.py` uses, now independently
 validated by a second consumer. Benchmarks and a demo notebook are both in
-place. Done through v0.8 (documentation). See
-[RFC-0007](../../docs/rfcs/0007-quantum-phase-estimation.md) for v1.0
-(public release, folded in alongside every other RFC in this repo).
+place. Done through v0.8 (documentation) and v1.0 (folded into the
+public release alongside every other RFC in this repo — see the root
+[CONTRIBUTING.md](../../CONTRIBUTING.md) and
+[LICENSE](../../LICENSE)). See
+[RFC-0007](../../docs/rfcs/0007-quantum-phase-estimation.md).
 
 **Beyond v0.8**: RFC-0007's "semiclassical/iterative QPE" stretch goal is
 now implemented — `semiclassical.estimate_phase_semiclassical` uses a

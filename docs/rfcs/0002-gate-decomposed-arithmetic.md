@@ -70,7 +70,9 @@ Python, Qiskit (same as RFC-0001).
     [benchmarks/shor.md](../../benchmarks/shor.md).
 -   [x] v0.8: Documentation — see [arithmetic/math.md](../../arithmetic/math.md)
     and [arithmetic/paper.md](../../arithmetic/paper.md).
--   [ ] v1.0: Folded into the public release alongside RFC-0001.
+-   [x] v1.0: Folded into the public release alongside RFC-0001
+    (LICENSE, CONTRIBUTING.md, and CI added; publishing to a public
+    GitHub remote is a manual step the repo owner performs).
 
 ## Explicit Non-goals (v0.2)
 
