@@ -9,15 +9,14 @@ Generated via `uv run python -m algorithms.grover.benchmark` (RFC-0004's
 | 3        | 8                     | 2            | 22         | 10             | 0.09s             |
 | 4        | 16                    | 3            | 38         | 14             | 0.09s             |
 | 6        | 64                    | 6            | 96         | 26             | 0.09s             |
-| 8        | 256                   | 13           | 250        | 54             | 0.10s             |
+| 8        | 256                   | 12           | 232        | 50             | 0.10s             |
 | 10       | 1024                  | 25           | 570        | 102            | 0.11s             |
 
 ## Reading this
 
 Iteration count grows as `~sqrt(2^n)`, exactly as math.md predicts (doubling
-`n_qubits` from 4 to 8 roughly quadruples the search space's square root,
-and the measured iteration count goes 3 → 13, close to the theoretical
-`4x`). Gate count and circuit depth grow correspondingly, but stay small in
+`n_qubits` from 4 to 8 quadruples the search space's square root, and the
+measured iteration count goes 3 → 12 — exactly the theoretical `4x`). Gate count and circuit depth grow correspondingly, but stay small in
 absolute terms even at `n=10` (1024-item search space) — 570 gates, depth
 102 — nowhere near the scale of
 [Shor's algorithm's circuits](shor.md) (which need 12-23+ qubits and

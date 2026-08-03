@@ -16,7 +16,7 @@ uv run python -m algorithms.grover.implementation
 ## Layout
 
 - [math.md](math.md) — number-theoretic/probability foundations (amplitude
-  amplification, why ~pi/4*sqrt(N/M) iterations)
+  amplification, why `round(pi/(4*theta) - 1/2)` iterations)
 - [paper.md](paper.md) — circuit derivation from the math (oracle, diffusion
   operator)
 - [oracles.py](oracles.py) — the `Oracle` interface and

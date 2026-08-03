@@ -35,7 +35,7 @@ reflections, which is a rotation — specifically, a rotation by `2*theta`
 the marked subspace, and measuring in that state gives a marked outcome with
 probability `sin^2((2k+1)*theta)` after `k` iterations.
 
-## Why `~(pi/4) * sqrt(N/M)` iterations
+## Why `round(pi/(4*theta) - 1/2)` iterations
 
 Maximizing `sin^2((2k+1)*theta)` means getting `(2k+1)*theta` as close to
 `pi/2` as possible, i.e. `k = round(pi/(4*theta) - 1/2)` — exactly what
@@ -70,8 +70,9 @@ fresh shots on failure, rather than adding more iterations.
   post-quantum-cryptography key-size recommendations mostly just double key
   lengths to compensate for Grover, rather than replacing the underlying
   hard problem the way RSA/ECC need replacing against Shor).
-- **More iterations is not always better** — see "why ~(pi/4)*sqrt(N/M)"
-  above; this is a real, provable failure mode, not a simulator artifact.
+- **More iterations is not always better** — see "why
+  `round(pi/(4*theta) - 1/2)` iterations" above; this is a real, provable
+  failure mode, not a simulator artifact.
 
 ## The degenerate `n_qubits=1` case
 

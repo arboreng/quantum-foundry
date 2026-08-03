@@ -20,7 +20,9 @@ uv run mypy .               # type check
 
 All three (`pytest`, `ruff`, `mypy`) run in CI on every pull request
 (see `.github/workflows/ci.yml`) and are expected to be clean before a
-PR merges.
+PR merges. CI additionally executes every notebook in the repository
+(`uv run python scripts/execute_notebooks.py`), so a notebook that raises
+fails the build; run it locally if you have touched one.
 
 ## Adding a new algorithm
 
