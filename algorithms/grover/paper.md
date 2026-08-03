@@ -78,7 +78,7 @@ counting" for why the `abs(... - 0.5)` term is there (a phase offset from
 `diffusion_operator`'s extra global phase, harmless in `search` but
 exposed here since `Q` is used under control).
 
-## Known simplifications (v0.2)
+## Known simplifications
 
 - `ZGate().control(n_qubits - 1)` is an exact multi-controlled-Z, not
   synthesized from an arbitrary boolean predicate/circuit — marking an
@@ -92,7 +92,7 @@ exposed here since `Q` is used under control).
 - Simulator-oriented: validated against `AerSimulator` only.
 
 See [RFC-0004](../../docs/rfcs/0004-grovers-algorithm.md)'s "Explicit
-Non-goals" for the full list of what v0.2 deliberately defers.
+Non-goals" for the full list of what is deliberately deferred.
 
 ## References
 

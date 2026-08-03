@@ -1,6 +1,6 @@
 # RFC-0002: Gate-Decomposed Modular Arithmetic
 
-Status: Draft
+Status: Implemented
 
 ## Vision
 

@@ -78,7 +78,7 @@ small-`n_qubits` only (mirrors
 - Simulator-oriented: validated against `AerSimulator` only.
 
 See [RFC-0006](../../docs/rfcs/0006-simons-algorithm.md)'s "Explicit
-Non-goals" for the full list of what v0.2 deliberately defers.
+Non-goals" for the full list of what is deliberately deferred.
 
 ## References
 

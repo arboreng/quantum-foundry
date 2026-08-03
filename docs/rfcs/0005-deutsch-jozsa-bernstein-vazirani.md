@@ -1,6 +1,6 @@
 # RFC-0005: Deutsch-Jozsa and Bernstein-Vazirani From Scratch
 
-Status: Draft
+Status: Implemented
 
 ## Vision
 

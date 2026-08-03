@@ -1,6 +1,6 @@
 # RFC-0001: Shor's Algorithm From Scratch
 
-Status: Draft
+Status: Implemented
 
 ## Vision
 
@@ -8,8 +8,8 @@ Educational quantum computing reference implementation.
 
 ## Why This Should Exist
 
-A focused educational reference that demonstrates production-quality
-engineering rather than a toy implementation.
+A focused educational reference that demonstrates rigorous engineering
+rather than a toy implementation.
 
 ## Prior Art
 

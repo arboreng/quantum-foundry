@@ -1,4 +1,4 @@
-"""Tests for the v0.2 Bernstein-Vazirani algorithm implementation."""
+"""Tests for the Bernstein-Vazirani algorithm implementation."""
 
 import pytest
 from qiskit.quantum_info import Statevector

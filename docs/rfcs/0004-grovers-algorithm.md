@@ -1,6 +1,6 @@
 # RFC-0004: Grover's Algorithm From Scratch
 
-Status: Draft
+Status: Implemented
 
 ## Vision
 
@@ -10,8 +10,8 @@ algorithm for unstructured search, built with the same engineering rigor as
 
 ## Why This Should Exist
 
-A focused educational reference that demonstrates production-quality
-engineering rather than a toy implementation — most public Grover
+A focused educational reference that demonstrates rigorous engineering
+rather than a toy implementation — most public Grover
 implementations hardcode a single marked bitstring for a fixed small `N`;
 this one should work for an arbitrary search space size and an arbitrary set
 of marked items, the same "general, not hardcoded" differentiator RFC-0001

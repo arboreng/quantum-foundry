@@ -1,11 +1,11 @@
 # Bernstein-Vazirani Algorithm
 
-Maturity: **experimental** (v0.8 documentation)
+Maturity: **experimental**
 
 Implementation of the Bernstein-Vazirani algorithm: given an
 oracle for `f(x) = s.x mod 2` for a hidden bitstring `s`, recover `s` with a
-single query. Built to demonstrate production-quality engineering rather
-than a toy demo. See [RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md)
+single query. Built to demonstrate rigorous engineering rather than a toy
+implementation. See [RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md)
 for motivation, milestones, and success criteria (shared with
 [algorithms/deutsch_jozsa/](../deutsch_jozsa/), whose `circuit.py` this
 directory reuses — same circuit shape, different oracle/problem).
@@ -37,12 +37,20 @@ uv run python -m algorithms.bernstein_vazirani.implementation
 
 ## Status
 
-Done through v0.8: `find_hidden_string(n_qubits, oracle)` runs end to end on
-`AerSimulator`, deterministic in a single shot (no retry loop — see
-math.md), recovering the hidden string exactly for any `s` including the
-degenerate all-zeros case; benchmarks and a demo notebook are both in
-place. Done through v1.0 too (folded into the public release alongside
-every other RFC in this repo — see the root
-[CONTRIBUTING.md](../../CONTRIBUTING.md) and
-[LICENSE](../../LICENSE)). See
-[RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md).
+`find_hidden_string(n_qubits, oracle)` runs end to end on `AerSimulator`,
+deterministic in a single shot with no retry loop (see math.md), recovering
+the hidden string exactly for any `s` including the degenerate all-zeros
+case.
+
+`tests/test_bernstein_vazirani.py` checks `HiddenStringOracle` against its
+truth table and its input validation, and recovers `s` end to end across
+hidden strings. Benchmarks
+([benchmarks/deutsch-jozsa-bernstein-vazirani.md](../../benchmarks/deutsch-jozsa-bernstein-vazirani.md))
+and a demo notebook
+([notebooks/bernstein_vazirani_demo.ipynb](notebooks/bernstein_vazirani_demo.ipynb))
+are in place.
+
+Limitations: no transpiler-level circuit optimization beyond the default
+`transpile()` pass `execution.AerExecutor` applies, and execution is
+validated against `AerSimulator` only. See paper.md's "Known
+simplifications".

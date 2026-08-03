@@ -113,7 +113,7 @@ QFT bit-ordering question, applied here to catch a mistake in *this*
 repo's own reasoning about its own established code, not just to confirm
 an external convention.
 
-## Known limitations (v0.2)
+## Known limitations
 
 This implementation assumes `eigenstate_prep` exactly prepares an
 eigenstate of `oracle`'s unitary. If it only approximately does (or

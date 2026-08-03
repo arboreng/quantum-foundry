@@ -117,7 +117,7 @@ shape as the rest of QPE-based estimation.
     exact `Statevector`/`Operator` checks, not real hardware.
 
 See [RFC-0010](../../docs/rfcs/0010-hhl.md)'s "Explicit Non-goals" for the
-full list of what v0.2 deliberately defers.
+full list of what is deliberately deferred.
 
 ## References
 

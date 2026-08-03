@@ -74,7 +74,7 @@ non-finite-difference gradient — [algorithms/vqe/](../vqe/)'s own
 stretch-goal list, not implemented here), not simply switching
 optimizers.
 
-## Known limitations (v0.2)
+## Known limitations
 
 No approximation-ratio bound is derived or checked (see paper.md's "Known
 simplifications"); `p` and the initial parameter guess are fixed, not

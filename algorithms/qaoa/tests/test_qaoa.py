@@ -1,4 +1,4 @@
-"""Tests for the v0.2 QAOA implementation."""
+"""Tests for the QAOA implementation."""
 
 import itertools
 

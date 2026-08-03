@@ -1,4 +1,4 @@
-"""Tests for the v0.2 Simon's algorithm implementation."""
+"""Tests for Simon's algorithm implementation."""
 
 from collections import Counter
 

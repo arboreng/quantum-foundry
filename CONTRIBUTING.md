@@ -100,6 +100,18 @@ derivation "looks right."
   documenting the relationship, unless the refactor itself is the point
   of the PR.
 
+## Versioning
+
+An RFC's milestone numbers (`v0.1` through `v1.0`) track that RFC's own
+scope — `v1.0` means its work is complete and folded into the public
+release — and each RFC runs that scale independently. They are not the
+package version. `version` in `pyproject.toml` follows SemVer and tracks
+API stability instead, which is a separate question: it stays below
+`1.0.0` while every algorithm sits at `experimental`, a tier that makes no
+API-stability promise. See the maturity model in
+[algorithms/README.md](algorithms/README.md) for what each tier does
+promise.
+
 ## Code of conduct
 
 Be respectful and constructive. Disagreements about technical approach

@@ -6,8 +6,9 @@
 
 ## Motivation
 
-Most public quantum algorithm implementations are either toy demonstrations or
-buried inside framework example folders. Quantum Foundry aims to be neither:
+Many public quantum algorithm implementations are presented as toy
+demonstrations or embedded in framework examples. Quantum Foundry aims to be
+neither:
 each algorithm gets a rigorously documented, benchmarked, and tested
 implementation, organized under a consistent architecture. See [docs/rfcs/](docs/rfcs/) for the design record behind each algorithm.
 

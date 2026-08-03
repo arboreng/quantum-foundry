@@ -6,4 +6,5 @@ Per-algorithm citations live in each algorithm's `references.bib` (e.g.
 directory is for source material shared across algorithms or too large to
 duplicate per-algorithm.
 
-Nothing here yet.
+Reserved for that shared material; every citation so far has been
+per-algorithm.

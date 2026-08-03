@@ -98,7 +98,7 @@ harder variational landscape (see math.md).
 -   Simulator-oriented: validated against `AerSimulator` only.
 
 See [RFC-0009](../../docs/rfcs/0009-vqe.md)'s "Explicit Non-goals" for the
-full list of what v0.2 deliberately defers.
+full list of what is deliberately deferred.
 
 ## References
 

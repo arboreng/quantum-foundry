@@ -1,6 +1,6 @@
 # RFC-0003: Hardware-Aware Transpilation
 
-Status: Draft
+Status: Implemented
 
 ## Vision
 

@@ -1,4 +1,4 @@
-"""Tests for the v0.2 HHL implementation."""
+"""Tests for the HHL implementation."""
 
 import math
 

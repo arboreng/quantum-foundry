@@ -1,6 +1,6 @@
 # RFC-0006: Simon's Algorithm From Scratch
 
-Status: Draft
+Status: Implemented
 
 ## Vision
 

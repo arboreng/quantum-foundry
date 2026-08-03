@@ -48,7 +48,7 @@ doesn't grow with any search space at all, since it isn't searching;
 - Simulator-oriented: validated against `AerSimulator` only.
 
 See [RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md)'s
-"Explicit Non-goals" for the full list of what v0.2 deliberately defers.
+"Explicit Non-goals" for the full list of what is deliberately deferred.
 
 ## References
 

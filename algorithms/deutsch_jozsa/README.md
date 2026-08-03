@@ -1,11 +1,11 @@
 # Deutsch-Jozsa Algorithm
 
-Maturity: **experimental** (v0.8 documentation)
+Maturity: **experimental**
 
 Implementation of the Deutsch-Jozsa algorithm: given a boolean
 function promised to be constant or balanced, determine which with a single
-query. Built to demonstrate production-quality engineering rather than a
-toy demo. See [RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md)
+query. Built to demonstrate rigorous engineering rather than a toy
+implementation. See [RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md)
 for motivation, milestones, and success criteria (shared with
 [algorithms/bernstein_vazirani/](../bernstein_vazirani/), which reuses this
 directory's `circuit.py`).
@@ -39,12 +39,20 @@ uv run python -m algorithms.deutsch_jozsa.implementation
 
 ## Status
 
-Done through v0.8: `is_constant(n_qubits, oracle)` runs end to end on
-`AerSimulator`, deterministic in a single shot (no retry loop — see
-math.md). Three oracle types: `ConstantOracle`, an efficient
-always-balanced `ParityOracle`, and a general but exponential
-`BalancedOracle`; benchmarks and a demo notebook are both in place. Done
-through v1.0 too (folded into the public release alongside every other
-RFC in this repo — see the root [CONTRIBUTING.md](../../CONTRIBUTING.md)
-and [LICENSE](../../LICENSE)). See
-[RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md).
+`is_constant(n_qubits, oracle)` runs end to end on `AerSimulator`,
+deterministic in a single shot with no retry loop (see math.md). Three
+oracle types are available: `ConstantOracle`, an efficient always-balanced
+`ParityOracle`, and a general but exponential `BalancedOracle`.
+
+`tests/test_deutsch_jozsa.py` checks each oracle against its truth table and
+its input validation, and runs `is_constant` end to end against all three
+(including the single-qubit case). Benchmarks
+([benchmarks/deutsch-jozsa-bernstein-vazirani.md](../../benchmarks/deutsch-jozsa-bernstein-vazirani.md))
+and a demo notebook
+([notebooks/deutsch_jozsa_demo.ipynb](notebooks/deutsch_jozsa_demo.ipynb))
+are in place.
+
+Limitations: `BalancedOracle`'s explicit marked-set construction is exact
+but exponential — a balanced function on many qubits would in practice be
+given by a formula, as `ParityOracle`'s is. Execution is validated against
+`AerSimulator` only. See paper.md's "Known simplifications".

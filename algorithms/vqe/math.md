@@ -117,7 +117,7 @@ optimization over a degenerate ground-state manifold, not a
 construction bug — see `tests/test_vqe.py`'s dedicated `n=3` test for
 the measured pass rate this claim is based on.
 
-## Known limitations (v0.2)
+## Known limitations
 
 No convergence-rate analysis — only the variational principle's basic
 guarantee (`<psi|H|psi> >= E_0`) is invoked, not a bound on how close

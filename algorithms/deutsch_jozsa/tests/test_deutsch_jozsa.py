@@ -1,4 +1,4 @@
-"""Tests for the v0.2 Deutsch-Jozsa algorithm implementation."""
+"""Tests for the Deutsch-Jozsa algorithm implementation."""
 
 import pytest
 from qiskit.quantum_info import Statevector

@@ -1,4 +1,4 @@
-"""Tests for the v0.2 VQE implementation."""
+"""Tests for the VQE implementation."""
 
 import numpy as np
 import pytest

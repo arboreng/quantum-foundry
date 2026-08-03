@@ -63,7 +63,7 @@ for `N=15`, 15 qubits for `N=21` — well within reach of `AerSimulator`'s
 statevector method for the small `N` this implementation targets (see
 `algorithms/shor/README.md`).
 
-## Known simplifications (v0.2 default: `PermutationMatrixOracle`)
+## Known simplifications (default oracle: `PermutationMatrixOracle`)
 
 - Uses exact, classically-computed permutation matrices for the oracle (via
   `UnitaryGate`) rather than synthesizing modular multiplication from
@@ -77,7 +77,7 @@ statevector method for the small `N` this implementation targets (see
   `transpile()` pass used by `execution.AerExecutor`. Still true of both.
 
 See [RFC-0001](../../docs/rfcs/0001-shors-algorithm.md)'s "Explicit
-Non-goals" section for the full list of what v0.2 deliberately defers, and
+Non-goals" section for the full list of what is deliberately deferred, and
 [RFC-0002](../../docs/rfcs/0002-gate-decomposed-arithmetic.md)'s for what its
 gate-decomposed oracle still doesn't address.
 

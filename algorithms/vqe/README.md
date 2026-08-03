@@ -1,11 +1,11 @@
 # Variational Quantum Eigensolver (VQE)
 
-Maturity: **experimental** (v0.8 documentation)
+Maturity: **experimental**
 
 Implementation of VQE: a hybrid classical-quantum algorithm
 estimating a Hamiltonian's ground-state energy via a parameterized ansatz
-and a classical optimization loop. Built to demonstrate production-quality
-engineering rather than a toy demo. See [RFC-0009](../../docs/rfcs/0009-vqe.md)
+and a classical optimization loop. Built to demonstrate rigorous
+engineering rather than a toy implementation. See [RFC-0009](../../docs/rfcs/0009-vqe.md)
 for motivation, milestones, and success criteria — including how this
 generalizes [algorithms/qaoa/](../qaoa/)'s classical-optimization-loop
 pattern from a diagonal cost function to an arbitrary Pauli-sum
@@ -42,38 +42,39 @@ uv run python -m algorithms.vqe.implementation
 
 ## Status
 
-Done through v0.5: `solve_ground_state(hamiltonian, reps=1)` runs end to
-end on `AerSimulator`, using `scipy.optimize.minimize` (COBYLA) to tune the
-hardware-efficient ansatz's parameters against the sampled expectation
-value, then returns a ground-state energy estimate. Validated against
-exact diagonalization (`numpy`) of small transverse-field Ising chains in
-`tests/test_vqe.py` — not a guarantee of reaching the true ground energy
-for larger instances, since VQE is variational/approximate by construction
-(see math.md). Benchmarks and a demo notebook are both in place — notably,
-[benchmarks/vqe.md](../../benchmarks/vqe.md) found that a more expressive
-ansatz (`reps=2`) doesn't recover a better energy than `reps=1` here,
-since the classical loop's fixed initial guess and iteration budget don't
-scale with the parameter count. Done through v0.8 (documentation) and
-v1.0 (folded into the public release alongside every other RFC in this
-repo — see the root [CONTRIBUTING.md](../../CONTRIBUTING.md) and
-[LICENSE](../../LICENSE)). See [RFC-0009](../../docs/rfcs/0009-vqe.md).
+`solve_ground_state(hamiltonian, reps=1)` runs end to end on `AerSimulator`,
+using `scipy.optimize.minimize` (COBYLA) to tune the hardware-efficient
+ansatz's parameters against the sampled expectation value, then returns a
+ground-state energy estimate. `hamiltonians.group_qwc_terms` batches
+qubit-wise-commuting Pauli terms so
+`implementation.expectation_value_grouped` / `solve_ground_state_grouped`
+run one circuit per group instead of one per term, cutting
+`TransverseFieldIsingHamiltonian`'s circuit executions from
+`2*n_qubits - 1` down to exactly 2 regardless of `n_qubits`. Two
+Hamiltonians are implemented: the transverse-field Ising model and the
+isotropic Heisenberg (XXX) model, the latter exercising
+`measurement_circuit`'s `Y`-basis rotation and splitting into 3 measurement
+groups rather than 2.
 
-**Beyond v0.8**: RFC-0009's "measurement grouping" stretch goal is now
-implemented — `hamiltonians.group_qwc_terms` batches qubit-wise-commuting
-Pauli terms so `implementation.expectation_value_grouped` /
-`solve_ground_state_grouped` run one circuit per group instead of one per
-term, cutting `TransverseFieldIsingHamiltonian`'s circuit executions from
-`2*n_qubits - 1` down to exactly 2, regardless of `n_qubits` — verified
-both for correctness (same expectation value as the ungrouped path) and
-for the actual execution-count reduction in `tests/test_vqe.py`. See
-math.md's "Measurement grouping" section.
+`tests/test_vqe.py` checks the ansatz and measurement circuits against
+explicit constructions, validates the energy estimate against exact
+diagonalization (`numpy`) of small chains of both Hamiltonians, and checks
+the grouped path both for correctness (same expectation value as the
+ungrouped path) and for the actual execution-count reduction. Benchmarks
+([benchmarks/vqe.md](../../benchmarks/vqe.md)) and a demo notebook
+([notebooks/vqe_demo.ipynb](notebooks/vqe_demo.ipynb)) are in place.
 
-RFC-0009's "Heisenberg model" stretch goal is also done —
-`hamiltonians.HeisenbergHamiltonian` implements the isotropic Heisenberg
-(XXX) model, the first Hamiltonian in this repo whose terms genuinely
-exercise `measurement_circuit`'s `Y`-basis rotation (TFIM has no `Y`
-terms). It also splits into 3 measurement groups instead of TFIM's 2.
-Its 3-qubit open chain's doubly-degenerate ground energy needed more
-ansatz depth (`reps=3`) to reliably reach — a real property of the
-optimization landscape, not a bug, documented in math.md's "The
-Heisenberg model" section.
+Limitations: VQE is variational and approximate by construction, so matching
+exact diagonalization on small chains is not a guarantee of reaching the
+true ground energy for larger instances, and no convergence-rate analysis is
+offered beyond the variational principle's `<psi|H|psi> >= E_0`. A more
+expressive ansatz does not automatically help —
+[benchmarks/vqe.md](../../benchmarks/vqe.md) found `reps=2` recovering no
+better energy than `reps=1`, since the classical loop's fixed initial guess
+and iteration budget don't scale with the parameter count. The Heisenberg
+chain's doubly-degenerate ground energy needs more ansatz depth (`reps=3`)
+to reach reliably, a property of the optimization landscape rather than a
+bug. `group_qwc_terms`' greedy grouping is not optimal in general (that is
+an NP-hard graph-coloring problem), though it is exact for both
+Hamiltonians' structures. See math.md's "Known limitations", "Measurement
+grouping", and "The Heisenberg model" sections.

@@ -128,7 +128,7 @@ assumed the same 50/50 split as the `X`-only case and failed
 immediately, a useful reminder that a validated instance's convenient
 symmetries don't automatically transfer to a more general one.
 
-## Known limitations (v0.2)
+## Known limitations
 
 No condition-number analysis or success-probability bound beyond citing
 Harrow-Hassidim-Lloyd's original result (see paper.md's "Known

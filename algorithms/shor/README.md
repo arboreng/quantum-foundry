@@ -1,9 +1,9 @@
 # Shor's Algorithm
 
-Maturity: **experimental** (RFC-0001 v0.8, RFC-0002 v0.8)
+Maturity: **experimental**
 
 Implementation of Shor's algorithm for integer factorization,
-built to demonstrate production-quality engineering rather than a toy demo.
+built to demonstrate rigorous engineering rather than a toy implementation.
 See [RFC-0001](../../docs/rfcs/0001-shors-algorithm.md) (algorithm, default
 permutation-matrix oracle) and [RFC-0002](../../docs/rfcs/0002-gate-decomposed-arithmetic.md)
 (gate-decomposed alternative oracle) for motivation, milestones, and success
@@ -41,30 +41,34 @@ uv run python -m algorithms.shor.implementation
 
 ## Status
 
-**[RFC-0001](../../docs/rfcs/0001-shors-algorithm.md)** is done through v0.8:
 `factor(15)` / `factor(21)` run end to end on `AerSimulator` via a general
 (not hardcoded-per-N) permutation-matrix oracle
-(`oracles.PermutationMatrixOracle`, the default), with benchmarks
+(`oracles.PermutationMatrixOracle`, the default).
+`oracles.GateDecomposedOracle` is a drop-in alternative built from actual
+reversible adder circuits (`arithmetic/adders.py` — Draper's QFT-based
+constant adder, Beauregard's modular adder, controlled modular
+multiplication; see [../../arithmetic/math.md](../../arithmetic/math.md) and
+[../../arithmetic/paper.md](../../arithmetic/paper.md)), selected via
+`factor(n, oracle_cls=GateDecomposedOracle)`. `execution.Executor` is a
+third extension seam: swap `AerExecutor` for a real-hardware or noise-aware
+backend without touching the algorithm.
+
+`tests/test_shor.py` checks the permutation matrices against classical
+modular multiplication, the classical pre- and post-processing (perfect
+powers, even inputs, factor recovery from a known order), and `find_order` /
+`factor` end to end. `tests/test_gate_decomposed_oracle.py` checks the
+gate-decomposed oracle against the permutation-matrix one directly, runs it
+end to end at N=15/21, and confirms order finding survives
+[RFC-0003](../../docs/rfcs/0003-hardware-aware-transpilation.md)'s
+constrained, hardware-aware transpilation. Benchmarks
 ([benchmarks/shor.md](../../benchmarks/shor.md)) and a demo notebook
-([notebooks/shor_demo.ipynb](notebooks/shor_demo.ipynb)) both in place, plus
-a full README/math.md/paper.md documentation pass. Done through v1.0 too —
-see the repo root's [CONTRIBUTING.md](../../CONTRIBUTING.md) and
-[LICENSE](../../LICENSE).
+([notebooks/shor_demo.ipynb](notebooks/shor_demo.ipynb)) are in place.
 
-**[RFC-0002](../../docs/rfcs/0002-gate-decomposed-arithmetic.md)** is done
-through v0.8 (and v1.0, folded in alongside RFC-0001): `oracles.
-GateDecomposedOracle` is a drop-in alternative built from actual reversible
-adder circuits (`arithmetic/adders.py` — Draper's QFT-based constant adder,
-Beauregard's modular adder, controlled modular multiplication; see
-[../../arithmetic/math.md](../../arithmetic/math.md) and
-[../../arithmetic/paper.md](../../arithmetic/paper.md)), available via
-`factor(n, oracle_cls=GateDecomposedOracle)`. It is significantly slower to
-simulate than the default (that's the point — it's the elementary-gate
-construction the default oracle deliberately skips), so it isn't the default
-and its test coverage is narrower — see
-[../../benchmarks/shor.md](../../benchmarks/shor.md) for exactly how much
-(qubit count, gate count, circuit depth, simulation time at N=15/21).
-
-`execution.Executor` remains a third extension seam — swap `AerExecutor` for
-a real-hardware or noise-aware backend without touching the algorithm (no RFC
-yet).
+Limitations: `GateDecomposedOracle` is significantly slower to simulate than
+the default — it is the elementary-gate construction the permutation-matrix
+oracle deliberately skips — so it is not the default and its test coverage
+is narrower; [benchmarks/shor.md](../../benchmarks/shor.md) quantifies the
+gap (qubit count, gate count, circuit depth, simulation time at N=15/21).
+Neither oracle is NISQ-optimized for gate or T count, and both are validated
+against `AerSimulator` only, not against real hardware or a noise model. See
+paper.md's "Known simplifications".

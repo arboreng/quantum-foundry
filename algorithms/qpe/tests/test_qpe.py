@@ -1,4 +1,4 @@
-"""Tests for the v0.2 Quantum Phase Estimation implementation."""
+"""Tests for the Quantum Phase Estimation implementation."""
 
 import numpy as np
 import pytest

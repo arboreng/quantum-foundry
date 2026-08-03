@@ -1,12 +1,12 @@
 # Quantum Approximate Optimization Algorithm (QAOA)
 
-Maturity: **experimental** (v0.8 documentation)
+Maturity: **experimental**
 
 Implementation of QAOA: a hybrid classical-quantum algorithm
 approximating solutions to combinatorial optimization problems, targeting
 MaxCut (partition a graph's vertices to maximize edges crossing the
-partition). Built to demonstrate production-quality engineering rather
-than a toy demo. See [RFC-0008](../../docs/rfcs/0008-qaoa.md) for
+partition). Built to demonstrate rigorous engineering rather than a toy
+implementation. See [RFC-0008](../../docs/rfcs/0008-qaoa.md) for
 motivation, milestones, and success criteria — including how this is the
 first algorithm in this repo with a parameterized circuit and a classical
 optimization loop, rather than a fixed circuit with a bounded retry.
@@ -38,23 +38,25 @@ uv run python -m algorithms.qaoa.implementation
 
 ## Status
 
-Done through v0.5: `solve_maxcut(n_qubits, edges, p=1)` runs end to end on
-`AerSimulator`, using `scipy.optimize.minimize` (COBYLA) to tune the QAOA
-parameters against the sampled expectation value, then returns the
-best-measured cut. Finds the true optimal cut for the small test graphs in
-`tests/test_qaoa.py` (a triangle, a 4-cycle, a path) — not a guarantee for
-larger instances, since QAOA is approximate by construction (see math.md).
-Benchmarks and a demo notebook are both in place. Done through v0.8
-(documentation) and v1.0 (folded into the public release alongside
-every other RFC in this repo — see the root
-[CONTRIBUTING.md](../../CONTRIBUTING.md) and
-[LICENSE](../../LICENSE)). See [RFC-0008](../../docs/rfcs/0008-qaoa.md).
+`solve_maxcut(n_qubits, edges, p=1)` runs end to end on `AerSimulator`,
+using `scipy.optimize.minimize` (COBYLA) to tune the QAOA parameters against
+the sampled expectation value, then returns the best-measured cut.
 
-**Beyond v0.8**: RFC-0008's "optimizer comparison" stretch goal is now
-done — [benchmarks/qaoa-optimizer-comparison.md](../../benchmarks/qaoa-optimizer-comparison.md)
-runs COBYLA against BFGS (gradient-based, finite-difference) on the same
-instance: both reach the optimum every trial, but BFGS costs ~3.3x more
-circuit evaluations for no accuracy benefit, confirming empirically what
-paper.md's "classical optimization loop" section already argued
-theoretically. See math.md's "Why COBYLA over a gradient-based
-optimizer" section.
+`tests/test_qaoa.py` checks the cost and mixer gates against their exact
+unitaries, confirms the sampled expectation value is bounded by the optimal
+cost, and finds the true optimal cut for small graphs (a triangle, a
+4-cycle, a path). Benchmarks ([benchmarks/qaoa.md](../../benchmarks/qaoa.md))
+and a demo notebook ([notebooks/qaoa_demo.ipynb](notebooks/qaoa_demo.ipynb))
+are in place, alongside an optimizer comparison
+([benchmarks/qaoa-optimizer-comparison.md](../../benchmarks/qaoa-optimizer-comparison.md))
+running COBYLA against finite-difference BFGS on the same instance: both
+reach the optimum every trial, but BFGS costs ~3.3x more circuit evaluations
+for no accuracy benefit.
+
+Limitations: QAOA is approximate by construction, so reaching the optimum on
+these small graphs is not a guarantee for larger instances. No
+approximation-ratio bound is derived or checked; `p` and the initial
+parameter guess are fixed rather than tuned per instance; and MaxCut is the
+only problem implemented, though `Problem` could generalize to other
+QUBO/Ising-encodable ones. See math.md's "Known limitations" and "Why COBYLA
+over a gradient-based optimizer".

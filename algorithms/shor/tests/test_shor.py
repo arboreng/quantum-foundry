@@ -1,4 +1,4 @@
-"""Tests for the v0.2 Shor's algorithm implementation."""
+"""Tests for Shor's algorithm implementation."""
 
 import math
 import random

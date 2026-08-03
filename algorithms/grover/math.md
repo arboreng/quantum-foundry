@@ -127,5 +127,5 @@ Grover's original paper (`grover1996`); the geometric/rotation picture and
 the BBBV optimality argument follow Nielsen & Chuang's textbook treatment
 (`nielsenchuang2010`). Brassard-Høyer-Mosca (`brassard2000`)'s amplitude
 amplification generalizes Grover's algorithm to arbitrary initial-state
-rotations and to unknown-`M` search (quantum counting, now implemented in
-`counting.py`, beyond v0.8 — see "Quantum counting" above).
+rotations and to unknown-`M` search (quantum counting, implemented in
+`counting.py` — see "Quantum counting" above).

@@ -5,4 +5,6 @@ One file per significant architectural decision, numbered sequentially
 [docs/rfcs/](../rfcs/), which propose a whole algorithm, ADRs record a single
 narrower decision (e.g. "why uv over poetry", "why qiskit over cirq").
 
-Nothing here yet.
+No ADRs have been required so far — the decisions made to date are recorded
+in the RFCs themselves. Narrower architectural decisions will be recorded
+here as the project evolves.

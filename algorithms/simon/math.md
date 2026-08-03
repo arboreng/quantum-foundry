@@ -51,7 +51,7 @@ takes `O(n)` repetitions with high probability (a coupon-collector-style
 argument: the probability a fresh random `y` is dependent on the ones
 already collected shrinks geometrically as more are collected).
 
-## Known limitations (v0.2)
+## Known limitations
 
 This implementation assumes `oracle` is genuinely two-to-one — both
 `LinearOracle` and `PermutationOracle` guarantee this by construction, so

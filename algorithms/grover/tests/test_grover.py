@@ -1,4 +1,4 @@
-"""Tests for the v0.2 Grover's algorithm implementation."""
+"""Tests for Grover's algorithm implementation."""
 
 import math
 
