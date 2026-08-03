@@ -1,6 +1,6 @@
 # HHL — Circuit Derivation
 
-Level 2 of [VISION.md's understanding model](../../VISION.md#levels-of-understanding).
+Level 2 of the repository's documentation-level model.
 Builds on [math.md](math.md).
 
 ## `DiagonalXOracle.controlled_power_gate`

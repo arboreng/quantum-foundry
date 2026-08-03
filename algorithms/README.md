@@ -26,9 +26,15 @@ algorithm without touching its core logic; see
 [algorithms/shor/oracles.py](shor/oracles.py) and
 [algorithms/shor/execution.py](shor/execution.py) for the pattern.
 
-See [VISION.md](../VISION.md#levels-of-understanding) for what each level
-(engineer intuition → mathematics → circuit derivation → implementation →
-hardware behavior) is expected to cover.
+## Documentation levels
+
+Each algorithm should make the path from theory to executable software explicit:
+
+0. **Engineer intuition** — what the algorithm does and why it matters.
+1. **Mathematics** — the mathematical foundations and derivation.
+2. **Circuit derivation** — how the mathematics becomes a quantum circuit.
+3. **Implementation** — how the circuit and algorithm are expressed in software.
+4. **Hardware behavior** — what changes when the implementation reaches real hardware.
 
 ## Maturity model
 

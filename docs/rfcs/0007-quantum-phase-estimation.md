@@ -10,7 +10,7 @@ eigenstates `|psi>` with eigenvalue `e^(2*pi*i*theta)`, estimate `theta`.
 
 ## Why This Should Exist
 
-QPE is the general subroutine [algorithms/shor/](../algorithms/shor/)'s
+QPE is the general subroutine [algorithms/shor/](../../algorithms/shor/)'s
 order-finding circuit is a special case of: Shor's `Oracle` protocol
 (`controlled_power_gate(power) -> Gate`) is exactly "a unitary you can get
 controlled powers of" — QPE's core requirement — specialized to modular
@@ -26,7 +26,7 @@ a single-qubit phase gate's angle) that has nothing to do with factoring.
     (1995) — the original phase estimation algorithm.
 -   Nielsen & Chuang, *Quantum Computation and Quantum Information*,
     Section 5.2.
--   [algorithms/shor/](../algorithms/shor/), specifically
+-   [algorithms/shor/](../../algorithms/shor/), specifically
     `algorithms/shor/oracles.py`'s `Oracle` protocol and
     `algorithms/shor/circuit.py`'s `build_order_finding_circuit` — the
     special case this RFC generalizes. See "Architecture" for why this RFC
@@ -112,16 +112,16 @@ Python, Qiskit (same as RFC-0001 through 0006).
 
 -   ~~Precision/confidence analysis (relating `n_count` to estimation
     error and success probability, generalizing
-    [algorithms/shor/math.md](../algorithms/shor/math.md)'s continued-
+    [algorithms/shor/math.md](../../algorithms/shor/math.md)'s continued-
     fraction precision argument)~~ — **implemented**, beyond v0.8:
     [benchmarks/qpe-precision-confidence.md](../../benchmarks/qpe-precision-confidence.md),
-    see [algorithms/qpe/math.md](../algorithms/qpe/math.md)'s "Precision"
+    see [algorithms/qpe/math.md](../../algorithms/qpe/math.md)'s "Precision"
     section's "Confidence, empirically" note.
 -   ~~Semiclassical/iterative QPE (Kitaev's original, one-counting-
     qubit-at-a-time variant, using only 1 ancilla instead of
     `n_count`)~~ — **implemented**, beyond v0.8: `semiclassical.
     estimate_phase_semiclassical`, see
-    [algorithms/qpe/math.md](../algorithms/qpe/math.md)'s "Semiclassical
+    [algorithms/qpe/math.md](../../algorithms/qpe/math.md)'s "Semiclassical
     (Kitaev iterative) phase estimation" section (including a genuine
     wrong turn in deriving the bit order, caught by cross-validating
     against `estimate_phase`).

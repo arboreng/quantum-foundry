@@ -6,7 +6,7 @@ constructions (e.g. Beauregard's circuit or a semiclassical QFT) should add a
 new versioned section rather than rewriting this one — see [paper.md](paper.md)
 for the versioning rationale.
 
-Level 1 of [VISION.md's understanding model](../../VISION.md#levels-of-understanding).
+Level 1 of the repository's documentation-level model.
 
 ## Factoring reduces to order finding
 

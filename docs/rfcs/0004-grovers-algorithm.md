@@ -25,7 +25,7 @@ established for Shor's algorithm.
     Estimation" (2000) — the generalization Grover's algorithm is a special
     case of, and the standard reference for quantum counting (unknown-`M`
     search), out of scope for this RFC's v0.2 (see Non-goals).
--   [algorithms/shor/](../algorithms/shor/) — the `Oracle`/`Executor`
+-   [algorithms/shor/](../../algorithms/shor/) — the `Oracle`/`Executor`
     architectural seams this implementation reuses the *pattern* of (not the
     code — Grover's oracle is a different mathematical object from Shor's
     modular-multiplication oracle).
@@ -103,7 +103,7 @@ So reviewers see these as deliberately deferred, not overlooked:
 
 -   ~~Quantum counting for unknown `M`~~ — **implemented**, beyond v0.8:
     `counting.count`, see
-    [algorithms/grover/math.md](../algorithms/grover/math.md)'s "Quantum
+    [algorithms/grover/math.md](../../algorithms/grover/math.md)'s "Quantum
     counting" section (including a genuine phase-offset subtlety this
     surfaced in `circuit.diffusion_operator`).
 -   Oracle compilation from an arbitrary boolean predicate/circuit.

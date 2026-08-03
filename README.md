@@ -9,9 +9,19 @@
 Most public quantum algorithm implementations are either toy demonstrations or
 buried inside framework example folders. Quantum Foundry aims to be neither:
 each algorithm gets a rigorously documented, benchmarked, and tested reference
-implementation, organized under a consistent architecture. See
-[VISION.md](VISION.md) for the full project philosophy and
-[docs/rfcs/](docs/rfcs/) for the design record behind each algorithm.
+implementation, organized under a consistent architecture. See [docs/rfcs/](docs/rfcs/) for the design record behind each algorithm.
+
+## Project principles
+
+Each implementation should make the path from theory to executable software explicit: why the algorithm exists, its mathematical foundations, its circuit derivation, its software implementation, and—when available—its behavior on real hardware. Major algorithm additions begin with an RFC; architecture changes are recorded as ADRs. Tests, benchmarks, reproducible examples, CI, static analysis, versioning, and documentation are part of the engineering standard rather than post-release polish.
+
+The repository uses five documentation levels:
+
+0. **Engineer intuition** — what the algorithm does and why it matters.
+1. **Mathematics** — the mathematical foundations and derivation.
+2. **Circuit derivation** — how the mathematics becomes a quantum circuit.
+3. **Implementation** — how the circuit and algorithm are expressed in software.
+4. **Hardware behavior** — what changes when the implementation reaches real hardware.
 
 ## Quick Start
 
@@ -61,29 +71,11 @@ transpilation study ([benchmarks/cross-algorithm-transpilation.md](benchmarks/cr
 comparing routing overhead across every algorithm's circuit shape. See
 [benchmarks/README.md](benchmarks/README.md) for the full index.
 
-## Roadmap
+## Current scope
 
-All ten algorithms on [VISION.md](VISION.md#long-term-vision)'s long-term
-list — Shor ([RFC-0001](docs/rfcs/0001-shors-algorithm.md)/[0002](docs/rfcs/0002-gate-decomposed-arithmetic.md)/[0003](docs/rfcs/0003-hardware-aware-transpilation.md)),
-Grover ([RFC-0004](docs/rfcs/0004-grovers-algorithm.md)), Deutsch-Jozsa /
-Bernstein-Vazirani ([RFC-0005](docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md)),
-Simon ([RFC-0006](docs/rfcs/0006-simons-algorithm.md)), Quantum Phase
-Estimation ([RFC-0007](docs/rfcs/0007-quantum-phase-estimation.md)), QAOA
-([RFC-0008](docs/rfcs/0008-qaoa.md)), VQE ([RFC-0009](docs/rfcs/0009-vqe.md)),
-and HHL ([RFC-0010](docs/rfcs/0010-hhl.md)) — are implemented, tested,
-benchmarked, and documented through each RFC's v0.8 milestone. Several
-have stretch-goal extensions beyond v0.8 (amplitude amplification for
-HHL, measurement grouping for VQE, quantum counting for Grover,
-semiclassical phase estimation and precision/confidence analysis for
-QPE, a general single-qubit oracle for HHL, a Heisenberg model for VQE,
-and an optimizer comparison for QAOA) — see each algorithm's own
-`README.md` "Beyond v0.8" section. Cross-algorithm infrastructure
-(hardware-aware transpilation comparison, a known-answer cross-validation
-harness under [validation/](validation/)) is also in place.
+The repository currently contains nine algorithm implementations: Shor, Grover, Deutsch-Jozsa, Bernstein-Vazirani, Simon, Quantum Phase Estimation, QAOA, VQE, and HHL, with the Shor work also covering gate-decomposed arithmetic and hardware-aware transpilation. Each has tests, benchmarks, and mathematical/circuit documentation. Several also contain extensions beyond their original RFC milestone; see each algorithm's `README.md`. Cross-algorithm infrastructure includes hardware-aware transpilation comparison and a known-answer cross-validation harness under [validation/](validation/).
 
-`hardware/` (Level 4, hardware-validated results) remains for a future
-algorithm reaching `incubating` maturity — see
-[algorithms/README.md](algorithms/README.md)'s maturity model.
+`hardware/` remains reserved for Level 4 hardware-behavior results. No algorithm is currently classified as `reference`; the maturity table in [algorithms/README.md](algorithms/README.md) is authoritative.
 
 ## Contributing
 

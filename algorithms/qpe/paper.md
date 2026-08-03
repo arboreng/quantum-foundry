@@ -1,6 +1,6 @@
 # Quantum Phase Estimation — Circuit Derivation
 
-Level 2 of [VISION.md's understanding model](../../VISION.md#levels-of-understanding).
+Level 2 of the repository's documentation-level model.
 Builds on [math.md](math.md) (Math Version 1.0).
 
 ## The oracle gate: `PhaseGateOracle`

@@ -16,10 +16,10 @@ The same "general, not hardcoded" differentiator established in
 and [RFC-0005](0005-deutsch-jozsa-bernstein-vazirani.md): a general oracle
 abstraction for an arbitrary hidden period, not a single hardcoded example.
 Simon's algorithm is also the natural next stepping stone in the "hidden
-subgroup problem" family — [algorithms/bernstein_vazirani/math.md](../algorithms/bernstein_vazirani/math.md)
+subgroup problem" family — [algorithms/bernstein_vazirani/math.md](../../algorithms/bernstein_vazirani/math.md)
 already flags it as the link between Bernstein-Vazirani's single hidden
 string and the order-finding subroutine at the heart of
-[algorithms/shor/](../algorithms/shor/): Simon's is the first algorithm in
+[algorithms/shor/](../../algorithms/shor/): Simon's is the first algorithm in
 this repo where the oracle maps to a multi-qubit output register (`{0,1}^n
 -> {0,1}^n`, not `{0,1}^n -> {0,1}`), and where recovering the hidden
 structure needs genuine classical post-processing (linear algebra over
@@ -28,8 +28,8 @@ GF(2), not just reading a bitstring or a continued fraction).
 ## Prior Art
 
 -   D. Simon, "On the power of quantum computation" (1994).
--   [algorithms/bernstein_vazirani/](../algorithms/bernstein_vazirani/),
-    [algorithms/shor/](../algorithms/shor/) — the `Oracle`/`Executor`
+-   [algorithms/bernstein_vazirani/](../../algorithms/bernstein_vazirani/),
+    [algorithms/shor/](../../algorithms/shor/) — the `Oracle`/`Executor`
     architectural pattern this reuses, and the hidden-subgroup-problem
     lineage this continues.
 
@@ -42,7 +42,7 @@ GF(2), not just reading a bitstring or a continued fraction).
     -   `LinearOracle(s)` — `f(x) = Mx` for an `n x n` binary matrix `M`
         with kernel exactly `{0, s}`, built from `O(n^2)` CNOTs (one per set
         bit of `M`, generalizing
-        [algorithms/deutsch_jozsa/oracles.py](../algorithms/deutsch_jozsa/oracles.py)'s
+        [algorithms/deutsch_jozsa/oracles.py](../../algorithms/deutsch_jozsa/oracles.py)'s
         `ParityOracle`'s single linear functional to a full matrix of them).
         Efficient, exact for the broad class of linear/affine two-to-one
         functions.
@@ -55,7 +55,7 @@ GF(2), not just reading a bitstring or a continued fraction).
     input register, apply the oracle, `H^n` on the input register again,
     measure the input register only (the output register is never
     measured — same "prepare, apply, undo, measure the input side" shape as
-    [algorithms/deutsch_jozsa/circuit.py](../algorithms/deutsch_jozsa/circuit.py)'s
+    [algorithms/deutsch_jozsa/circuit.py](../../algorithms/deutsch_jozsa/circuit.py)'s
     `build_oracle_query_circuit`, but without the phase-kickback ancilla
     trick, since here the output register's *entanglement* with the input
     is the point, not a phase).

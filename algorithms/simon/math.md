@@ -2,7 +2,7 @@
 
 **Math Version 1.0.**
 
-Level 1 of [VISION.md's understanding model](../../VISION.md#levels-of-understanding).
+Level 1 of the repository's documentation-level model.
 
 ## The hidden-period problem
 

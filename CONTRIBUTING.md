@@ -2,8 +2,9 @@
 
 Thanks for considering a contribution. This project favors rigor over
 speed: every construction is expected to be verified, not just believed,
-before it's trusted by anything built on top of it. See
-[VISION.md](VISION.md) for the full philosophy.
+before it's trusted by anything built on top of it. Documentation, tests,
+benchmarks, reproducible examples, CI, static analysis, and versioning are
+part of the expected engineering standard.
 
 ## Development setup
 
@@ -53,9 +54,9 @@ algorithms/<name>/
 convention — this is what lets a follow-up RFC extend an algorithm
 (e.g. a gate-decomposed oracle, a hardware-aware executor) without
 touching its already-tested core logic. See
-[algorithms/README.md](algorithms/README.md) for the full pattern and
-the maturity model (`experimental` → `contrib` → `incubating` →
-`reference`) each algorithm progresses through.
+[algorithms/README.md](algorithms/README.md) for the full pattern,
+documentation levels, and maturity model (`experimental` → `contrib` →
+`incubating` → `reference`) each algorithm progresses through.
 
 If your contribution doesn't yet meet the bar for `experimental`
 status (e.g. it's missing tests or documentation), it belongs under

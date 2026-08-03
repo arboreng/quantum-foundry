@@ -53,7 +53,7 @@ regressions over time.
   shot rarer, since the multiplexed rotation's safety margin must shrink
   as `n_clock` grows.
 
-No cross-algorithm *simulation-cost* comparison yet (ten algorithms
+No cross-algorithm *simulation-cost* comparison yet (nine algorithms
 implemented, but at very different scales — see
 [grover.md](grover.md)'s comparison to [shor.md](shor.md), and
 [deutsch-jozsa-bernstein-vazirani.md](deutsch-jozsa-bernstein-vazirani.md)'s

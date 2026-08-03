@@ -4,7 +4,7 @@
 (gate-decomposed modular arithmetic); mirrors the versioning convention set
 by [algorithms/shor/math.md](../algorithms/shor/math.md).
 
-Level 1 of [VISION.md's understanding model](../VISION.md#levels-of-understanding),
+Level 1 of the repository's documentation-level model,
 for the constructions in [adders.py](adders.py).
 
 ## Addition is diagonal in the Fourier basis

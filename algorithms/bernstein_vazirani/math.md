@@ -2,7 +2,7 @@
 
 **Math Version 1.0.**
 
-Level 1 of [VISION.md's understanding model](../../VISION.md#levels-of-understanding).
+Level 1 of the repository's documentation-level model.
 
 ## The hidden-string problem
 
@@ -41,7 +41,7 @@ Shor's algorithm (`algorithms/shor/math.md`) — all three belong to the
 "hidden subgroup problem" family, where a hidden algebraic structure (a
 string, a period, a subgroup) is extracted via a similar
 Hadamard-oracle-Hadamard pattern applied to progressively richer oracles.
-See VISION.md's long-term algorithm list.
+See the repository's current algorithm scope.
 
 ## References
 

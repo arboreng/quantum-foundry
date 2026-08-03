@@ -26,7 +26,7 @@ in place of a constant/balanced one.
 -   D. Deutsch, R. Jozsa, "Rapid solution of problems by quantum
     computation" (1992).
 -   E. Bernstein, U. Vazirani, "Quantum Complexity Theory" (1993/1997).
--   [algorithms/shor/](../algorithms/shor/), [algorithms/grover/](../algorithms/grover/)
+-   [algorithms/shor/](../../algorithms/shor/), [algorithms/grover/](../../algorithms/grover/)
     — the `Oracle`/`Executor` architectural pattern this reuses (not the
     code — a new pair of algorithms with their own oracle types).
 
@@ -115,6 +115,5 @@ Python, Qiskit (same as RFC-0001/0002/0003/0004).
 
 ## Stretch Goals
 
-Simon's algorithm (the next step up in this family per VISION.md's
-long-term list — periodicity rather than a single hidden string), a
+Simon's algorithm (the next step up in this family in the repository's current algorithm scope — periodicity rather than a single hidden string), a
 gate-decomposed `BalancedOracle` alternative.
