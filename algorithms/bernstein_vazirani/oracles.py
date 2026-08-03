@@ -25,6 +25,8 @@ class HiddenStringOracle:
     bitstring `s` — `O(n)` gates (one `CX` per set bit of `s`) for any `s`."""
 
     def __init__(self, s: str):
+        if not s or any(bit not in "01" for bit in s):
+            raise ValueError("s must be a non-empty binary string")
         self.s = s
         self.n_qubits = len(s)
 

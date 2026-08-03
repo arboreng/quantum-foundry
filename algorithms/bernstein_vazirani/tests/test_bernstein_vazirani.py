@@ -25,3 +25,13 @@ def test_oracle_matches_truth_table(s):
 @pytest.mark.parametrize("s", ["101", "000", "111", "010", "1", "1010"])
 def test_find_hidden_string_recovers_s(s):
     assert find_hidden_string(len(s), HiddenStringOracle(s)) == s
+
+
+def test_hidden_string_oracle_rejects_nonbinary_string():
+    with pytest.raises(ValueError):
+        HiddenStringOracle("10x")
+
+
+def test_hidden_string_oracle_rejects_empty_string():
+    with pytest.raises(ValueError):
+        HiddenStringOracle("")

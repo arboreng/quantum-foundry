@@ -69,3 +69,8 @@ def test_is_constant_false_for_balanced_oracle():
 def test_is_constant_single_qubit():
     assert is_constant(1, ConstantOracle(1, 0)) is True
     assert is_constant(1, ParityOracle(1, {0})) is False
+
+
+def test_balanced_oracle_rejects_nonbinary_bitstring():
+    with pytest.raises(ValueError):
+        BalancedOracle(2, {"00", "0x"})

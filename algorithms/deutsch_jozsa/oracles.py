@@ -23,6 +23,8 @@ class ConstantOracle:
     """`Oracle` for `f(x) = value` (0 or 1) for all `x`."""
 
     def __init__(self, n_qubits: int, value: int):
+        if n_qubits < 1:
+            raise ValueError("n_qubits must be positive")
         if value not in (0, 1):
             raise ValueError(f"value must be 0 or 1, got {value}")
         self.n_qubits = n_qubits
@@ -40,6 +42,8 @@ class ParityOracle:
     (O(n)-gate), always-balanced linear function (for non-empty `subset`)."""
 
     def __init__(self, n_qubits: int, subset: set[int]):
+        if n_qubits < 1:
+            raise ValueError("n_qubits must be positive")
         if not subset:
             raise ValueError("subset must be non-empty (empty subset is the constant-0 function)")
         if any(i < 0 or i >= n_qubits for i in subset):
@@ -61,6 +65,8 @@ class BalancedOracle:
     `algorithms.shor.oracles.PermutationMatrixOracle`'s tradeoff)."""
 
     def __init__(self, n_qubits: int, marked: set[str]):
+        if n_qubits < 1:
+            raise ValueError("n_qubits must be positive")
         expected = 2 ** (n_qubits - 1)
         if len(marked) != expected:
             raise ValueError(
@@ -70,6 +76,8 @@ class BalancedOracle:
         for m in marked:
             if len(m) != n_qubits:
                 raise ValueError(f"marked bitstring {m!r} does not have length n_qubits={n_qubits}")
+            if any(bit not in "01" for bit in m):
+                raise ValueError(f"marked bitstring {m!r} must contain only 0 and 1")
         self.n_qubits = n_qubits
         self.marked = marked
 

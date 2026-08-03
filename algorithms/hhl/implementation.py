@@ -57,6 +57,10 @@ def optimal_amplification_iterations(success_probability: float) -> int:
     `k` rounds of `Q`, the success probability is `sin((2k+1)*theta)**2`
     for `theta = arcsin(sqrt(success_probability))`, maximized (nearest
     integer) at `k = round(pi / (4*theta) - 1/2)`, at least 0."""
+    if not 0.0 < success_probability <= 1.0:
+        raise ValueError(
+            f"success_probability must be in (0, 1], got {success_probability}"
+        )
     theta = math.asin(math.sqrt(success_probability))
     return max(0, round(math.pi / (4 * theta) - 0.5))
 

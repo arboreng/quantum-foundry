@@ -63,6 +63,8 @@ class LinearOracle:
     two-to-one functions."""
 
     def __init__(self, s: str):
+        if not s or any(bit not in "01" for bit in s):
+            raise ValueError("s must be a non-empty binary string")
         self.s = s
         self.n_qubits = len(s)
         self.matrix_rows = _linear_matrix_rows(s)
@@ -112,6 +114,8 @@ class PermutationOracle:
     but exponential in gate count — small `n_qubits` only."""
 
     def __init__(self, s: str):
+        if not s or any(bit not in "01" for bit in s):
+            raise ValueError("s must be a non-empty binary string")
         self.s = s
         self.n_qubits = len(s)
         self.labels = _permutation_labels(s)

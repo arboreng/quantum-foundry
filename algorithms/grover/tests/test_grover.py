@@ -69,3 +69,13 @@ def test_search_finds_marked_item(n, marked):
 def test_search_rejects_empty_marked_set():
     with pytest.raises(ValueError):
         search(3, set())
+
+
+def test_oracle_rejects_nonbinary_bitstring():
+    with pytest.raises(ValueError):
+        MarkedBitstringOracle(3, {"10x"})
+
+
+def test_oracle_rejects_nonpositive_qubit_count():
+    with pytest.raises(ValueError):
+        MarkedBitstringOracle(0, set())

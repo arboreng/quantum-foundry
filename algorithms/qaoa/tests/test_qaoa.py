@@ -88,3 +88,16 @@ def test_solve_maxcut_finds_optimal_cut(n, edges, p):
         if found_cost == optimal:
             return
     pytest.fail(f"solve_maxcut never found the optimal cost {optimal} for n={n}, edges={edges}")
+
+
+def test_maxcut_rejects_invalid_edges():
+    with pytest.raises(ValueError):
+        MaxCutProblem(3, [(0, 3)])
+    with pytest.raises(ValueError):
+        MaxCutProblem(3, [(1, 1)])
+
+
+def test_maxcut_rejects_invalid_bitstrings():
+    problem = MaxCutProblem(3, TRIANGLE)
+    with pytest.raises(ValueError):
+        problem.cost_value("01x")

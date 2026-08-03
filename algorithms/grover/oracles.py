@@ -29,9 +29,13 @@ class MarkedBitstringOracle:
     """
 
     def __init__(self, n_qubits: int, marked: set[str]):
+        if n_qubits < 1:
+            raise ValueError("n_qubits must be positive")
         for m in marked:
             if len(m) != n_qubits:
                 raise ValueError(f"marked bitstring {m!r} does not have length n_qubits={n_qubits}")
+            if any(bit not in "01" for bit in m):
+                raise ValueError(f"marked bitstring {m!r} must contain only 0 and 1")
         self.n_qubits = n_qubits
         self.marked = marked
 

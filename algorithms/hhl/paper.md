@@ -17,6 +17,9 @@ exponential of `A`, for the controlled 2-qubit unitary, across several
 
 ## `build_hhl_circuit`
 
+The clock phase is unwrapped onto the signed principal interval. The HHL instance therefore must choose `t` so every eigenvalue satisfies `|lambda_i * t| < pi`; without that spectral bound, phase wrapping cannot distinguish positive from negative eigenvalues.
+
+
 1. `b_state_prep` on the b-register.
 2. QPE: `H` on every clock qubit, controlled
    `oracle.controlled_power_gate(2**k)` per clock qubit `k` (entangling
@@ -27,8 +30,9 @@ exponential of `A`, for the controlled 2-qubit unitary, across several
    value `k` (`1` to `2**n_clock - 1`), `X` gates flip the clock qubits
    that should read `0` for that branch, a `RYGate(theta_k).control(
    n_clock)` targets the ancilla, then the `X` gates are undone.
-   `theta_k = 2*arcsin(c_constant / lambda_k)` for `lambda_k =
-   2*pi*k / (t * 2**n_clock)`; `k=0` is skipped entirely (angle `0`,
+   `theta_k = 2*arcsin(c_constant / lambda_k)` for the signed phase-unwrapped
+   estimate `lambda_k = 2*pi*k_signed / (t * 2**n_clock)`, where wrapped phase
+   values use `k_signed = k - 2**n_clock`; `k=0` is skipped entirely (angle `0`,
    avoiding division by the null eigenvalue).
 4. QPE's inverse: `inverse_qft`'s inverse (the forward QFT) on the clock
    register, each controlled power gate inverted in reverse order, then

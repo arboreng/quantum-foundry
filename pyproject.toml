@@ -3,10 +3,10 @@ name = "quantum-foundry"
 version = "0.1.0"
 description = "Open-source reference implementations of quantum algorithms, built with production engineering rigor."
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.15"
 dependencies = [
-    "qiskit>=1.2",
-    "qiskit-aer>=0.15",
+    "qiskit>=2.5,<3",
+    "qiskit-aer>=0.17,<1",
     "numpy>=1.26",
     "matplotlib>=3.8",
     "pylatexenc>=2.10",

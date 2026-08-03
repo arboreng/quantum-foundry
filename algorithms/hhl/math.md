@@ -24,8 +24,12 @@ eigenvector first.
 
 ## The conditional rotation
 
-For each clock-register branch `k` (interpreted as an eigenvalue estimate
-`lambda_k`), a multiplexed `RY(2*arcsin(C/lambda_k))` rotation on a fresh
+The phase is interpreted on the signed principal interval, so the instance must choose `t` such that the eigenvalues of `A` satisfy `|lambda_i * t| < pi`; otherwise positive and negative eigenvalues become ambiguous after phase wrapping.
+
+
+For each clock-register branch `k` (interpreted as a signed eigenvalue estimate
+`lambda_k`; phase values above one half of the clock range are unwrapped into
+negative eigenvalues), a multiplexed `RY(2*arcsin(C/lambda_k))` rotation on a fresh
 ancilla qubit encodes the desired `1/lambda_k` factor into the ancilla's
 `|1>` amplitude: `RY(theta)|0> = cos(theta/2)|0> + sin(theta/2)|1>`, so
 `sin(theta_k/2) = C/lambda_k` after the `2*arcsin(...)` angle choice. `C`

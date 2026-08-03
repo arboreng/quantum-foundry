@@ -194,3 +194,13 @@ def test_optimal_amplification_iterations_matches_expected_value():
     lambda_1, lambda_2 = _A + _B, _A - _B
     p = 0.5 * ((_C / lambda_1) ** 2 + (_C / lambda_2) ** 2)
     assert optimal_amplification_iterations(p) == 1
+
+
+def test_optimal_amplification_rejects_zero_probability():
+    with pytest.raises(ValueError):
+        optimal_amplification_iterations(0.0)
+
+
+def test_optimal_amplification_rejects_probability_above_one():
+    with pytest.raises(ValueError):
+        optimal_amplification_iterations(1.01)

@@ -29,6 +29,18 @@ def _build_state_prep(
     rotation on the ancilla conditioned on the clock register's value,
     QPE's inverse (uncomputing the clock register) — everything up to,
     but not including, measurement."""
+    if n_clock < 1:
+        raise ValueError("n_clock must be positive")
+    if t == 0:
+        raise ValueError("t must be nonzero")
+    if c_constant <= 0:
+        raise ValueError("c_constant must be positive")
+    if b_state_prep.num_qubits != oracle.num_qubits:
+        raise ValueError(
+            f"b_state_prep must act on {oracle.num_qubits} qubits, "
+            f"got {b_state_prep.num_qubits}"
+        )
+
     circuit = QuantumCircuit(clock_reg, b_reg, ancilla_reg, name="hhl_state_prep")
 
     circuit.append(b_state_prep.to_gate(label="b_prep"), b_reg)
@@ -47,7 +59,14 @@ def _build_state_prep(
     # avoiding division by the null eigenvalue).
     dim = 2**n_clock
     for k in range(1, dim):
-        lambda_k = 2 * math.pi * k / (t * dim)
+        signed_k = k if k < dim / 2 else k - dim
+        lambda_k = 2 * math.pi * signed_k / (t * dim)
+        ratio = c_constant / abs(lambda_k)
+        if ratio > 1.0:
+            raise ValueError(
+                f"c_constant={c_constant} is too large for eigenvalue estimate "
+                f"lambda_k={lambda_k}; require c_constant <= |lambda_k|"
+            )
         theta_k = 2 * math.asin(c_constant / lambda_k)
         zero_bits = [i for i in range(n_clock) if not (k >> i) & 1]
         for i in zero_bits:
@@ -122,6 +141,9 @@ def build_amplified_hhl_circuit(
     b_reg = QuantumRegister(oracle.num_qubits, name="b")
     ancilla_reg = QuantumRegister(1, name="ancilla")
     creg = ClassicalRegister(1 + oracle.num_qubits, name="c")
+
+    if num_iterations < 0:
+        raise ValueError("num_iterations must be non-negative")
 
     state_prep = _build_state_prep(
         clock_reg, b_reg, ancilla_reg, oracle, t, n_clock, c_constant, b_state_prep
