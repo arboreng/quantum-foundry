@@ -24,6 +24,15 @@ _X = np.array([[0, 1], [1, 0]], dtype=complex)
 # 2*pi (k=2 for lambda=4/3, k=1 for lambda=2/3).
 _A, _B, _T, _N_CLOCK, _C = 1.0, 1.0 / 3.0, 3 * math.pi / 8, 3, 0.5
 
+# A negative-eigenvalue instance: A = (1/4)I + (3/4)X has eigenvalues +1
+# (eigenvector |+>) and -1/2 (eigenvector |->). t = pi/2 puts both on exact
+# 3-bit binary fractions of 2*pi — k=2 for lambda=1, and k=7 for
+# lambda=-1/2, which unwraps to signed k=-1 — while keeping every
+# eigenvalue inside the |lambda*t| < pi spectral bound the signed
+# interpretation requires. c_constant stays below the smallest
+# representable |lambda_k| = 2*pi/(t*2**n_clock) = 1/2.
+_NEG_A, _NEG_B, _NEG_T, _NEG_C = 0.25, 0.75, math.pi / 2, 0.25
+
 
 def _exact_controlled_unitary(a: float, b: float, t: float, power: int) -> np.ndarray:
     """Controlled-U with control=qubit 0, target=qubit 1, matching
@@ -194,6 +203,86 @@ def test_optimal_amplification_iterations_matches_expected_value():
     lambda_1, lambda_2 = _A + _B, _A - _B
     p = 0.5 * ((_C / lambda_1) ** 2 + (_C / lambda_2) ** 2)
     assert optimal_amplification_iterations(p) == 1
+
+
+def test_negative_eigenvalue_solution_matches_classical_exactly():
+    """Regression test for the signed phase unwrapping, via `Statevector`
+    so no shot noise is involved: conditioned on the ancilla reading 1, the
+    b-register distribution should match |A^-1 b|^2 for an `A` with a
+    negative eigenvalue.
+
+    QPE encodes lambda=-1/2 as the wrapped clock value k=7. Reading that as
+    a positive eigenvalue 2*pi*7/(t*2**n_clock) = +7/2 rather than
+    unwrapping it to -1/2 inverts the sign of that branch's contribution
+    and shrinks its magnitude sevenfold, which moves this distribution from
+    [0.1, 0.9] to roughly [0.76, 0.24] — so this fails loudly against the
+    pre-fix interpretation."""
+    oracle = DiagonalXOracle(_NEG_A, _NEG_B, _NEG_T)
+    b_state_prep = QuantumCircuit(1)  # |0>
+
+    lambda_1, lambda_2 = _NEG_A + _NEG_B, _NEG_A - _NEG_B
+    assert lambda_2 < 0, "instance must actually exercise a negative eigenvalue"
+    assert abs(lambda_1 * _NEG_T) < math.pi and abs(lambda_2 * _NEG_T) < math.pi
+
+    matrix_a = np.array([[_NEG_A, _NEG_B], [_NEG_B, _NEG_A]])
+    x = np.linalg.solve(matrix_a, np.array([1.0, 0.0]))
+    expected_probs = (x**2) / np.sum(x**2)
+
+    circuit = build_hhl_circuit(oracle, _NEG_T, _N_CLOCK, _NEG_C, b_state_prep)
+    unitary_part = circuit.remove_final_measurements(inplace=False)
+    state = Statevector(unitary_part)
+
+    ancilla_mask = 1 << (_N_CLOCK + oracle.num_qubits)
+    conditional = [0.0, 0.0]
+    for index, amplitude in enumerate(state.data):
+        if index & ancilla_mask:
+            conditional[(index >> _N_CLOCK) & 1] += abs(amplitude) ** 2
+
+    success_probability = sum(conditional)
+    expected_success = 0.5 * ((_NEG_C / lambda_1) ** 2 + (_NEG_C / lambda_2) ** 2)
+    assert success_probability == pytest.approx(expected_success, abs=1e-9)
+
+    assert conditional[0] / success_probability == pytest.approx(expected_probs[0], abs=1e-9)
+    assert conditional[1] / success_probability == pytest.approx(expected_probs[1], abs=1e-9)
+
+
+def test_solve_linear_system_with_negative_eigenvalue():
+    """The same negative-eigenvalue instance end to end through the
+    sampled path, so the fix is covered through the public API and not
+    only at the statevector level."""
+    oracle = DiagonalXOracle(_NEG_A, _NEG_B, _NEG_T)
+    b_state_prep = QuantumCircuit(1)  # |0>
+
+    matrix_a = np.array([[_NEG_A, _NEG_B], [_NEG_B, _NEG_A]])
+    x = np.linalg.solve(matrix_a, np.array([1.0, 0.0]))
+    expected_probs = (x**2) / np.sum(x**2)
+
+    lambda_1, lambda_2 = _NEG_A + _NEG_B, _NEG_A - _NEG_B
+    expected_success = 0.5 * ((_NEG_C / lambda_1) ** 2 + (_NEG_C / lambda_2) ** 2)
+
+    success_probability, b_counts = solve_linear_system(
+        oracle, _NEG_T, _N_CLOCK, _NEG_C, b_state_prep, shots=4000
+    )
+    assert success_probability == pytest.approx(expected_success, abs=0.03)
+    total = sum(b_counts.values())
+    assert b_counts.get("0", 0) / total == pytest.approx(expected_probs[0], abs=0.05)
+    assert b_counts.get("1", 0) / total == pytest.approx(expected_probs[1], abs=0.05)
+
+
+def test_negative_eigenvalue_clock_register_uncomputes_to_zero():
+    """`test_clock_register_uncomputes_to_zero` for the negative-eigenvalue
+    instance: the wrapped clock branch must uncompute as cleanly as the
+    unwrapped ones."""
+    oracle = DiagonalXOracle(_NEG_A, _NEG_B, _NEG_T)
+    b_state_prep = QuantumCircuit(1)
+    circuit = build_hhl_circuit(oracle, _NEG_T, _N_CLOCK, _NEG_C, b_state_prep)
+    unitary_part = circuit.remove_final_measurements(inplace=False)
+    state = Statevector(unitary_part)
+
+    mask = 2**_N_CLOCK - 1
+    for index, amplitude in enumerate(state.data):
+        if abs(amplitude) > 1e-9:
+            assert index & mask == 0
 
 
 def test_optimal_amplification_rejects_zero_probability():
