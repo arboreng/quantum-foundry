@@ -3,6 +3,8 @@ name = "quantum-foundry"
 version = "0.1.0"
 description = "Open-source reference implementations of quantum algorithms, built with production engineering rigor."
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.12,<3.15"
 dependencies = [
     "qiskit>=2.5,<3",
@@ -12,6 +14,40 @@ dependencies = [
     "pylatexenc>=2.10",
     "scipy>=1.18.0",
 ]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# The repository is a flat layout whose top level also holds documentation
+# and placeholder directories (benchmarks/, docs/, hardware/, notebooks/,
+# papers/, contrib/, visualization/) that contain no Python. List the
+# shipped packages explicitly rather than relying on auto-discovery, which
+# cannot tell them apart.
+#
+# validation/ is deliberately not shipped: it is a known-answer
+# cross-validation harness for exercising this repository's own algorithms,
+# so it is development tooling rather than library surface. The dependency
+# runs one way — validation imports from algorithms, never the reverse — so
+# omitting it leaves the published package self-contained.
+[tool.hatch.build.targets.wheel]
+packages = ["algorithms", "arithmetic", "compiler"]
+
+# Leading slashes anchor to the project root, so "/README.md" does not also
+# match the per-algorithm READMEs.
+[tool.hatch.build.targets.sdist]
+include = [
+    "/algorithms",
+    "/arithmetic",
+    "/compiler",
+    "/README.md",
+    "/LICENSE",
+]
+
+# Tests and demo notebooks live inside the packages; they are part of the
+# repository, not of the distributed artifact.
+[tool.hatch.build]
+exclude = ["**/tests", "**/notebooks", "**/*.ipynb"]
 
 [dependency-groups]
 dev = [
