@@ -13,9 +13,19 @@ from algorithms.grover.oracles import MarkedBitstringOracle
 
 def _iteration_count(n_qubits: int, num_marked: int) -> int:
     """Optimal number of Grover iterations for a known number of marked
-    items (see math.md): `~(pi/4) * sqrt(N/M)`, at least 1."""
-    n = 2**n_qubits
-    return max(1, round((math.pi / 4) * math.sqrt(n / num_marked)))
+    items (see math.md): `round(pi/(4*theta) - 1/2)` for the rotation
+    half-angle `theta` with `sin(theta) = sqrt(M/N)`.
+
+    This is the exact maximizer of `sin((2k+1)*theta)**2`, not the
+    small-angle approximation `(pi/4)*sqrt(N/M)`. The two agree once
+    `M/N` is small, but the approximation over-rotates badly when it is
+    not — at `n_qubits=2, M=1` it gives `k=2` (success probability
+    `0.25`) where the exact count gives `k=1` (probability `1.0`), and at
+    `n_qubits=2, M=3` it gives `k=1`, whose success probability is
+    exactly `0`.
+    """
+    theta = math.asin(math.sqrt(num_marked / 2**n_qubits))
+    return max(0, round(math.pi / (4 * theta) - 0.5))
 
 
 def search(

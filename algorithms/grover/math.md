@@ -38,10 +38,18 @@ probability `sin^2((2k+1)*theta)` after `k` iterations.
 ## Why `~(pi/4) * sqrt(N/M)` iterations
 
 Maximizing `sin^2((2k+1)*theta)` means getting `(2k+1)*theta` as close to
-`pi/2` as possible, i.e. `k ~ pi/(4*theta) - 1/2`. For small `M/N`,
-`theta ~ sqrt(M/N)` (small-angle approximation of `sin(theta) = sqrt(M/N)`),
-giving the standard `k ~ (pi/4) * sqrt(N/M)` — exactly what
-`implementation._iteration_count` computes. Because `k` must be an integer,
+`pi/2` as possible, i.e. `k = round(pi/(4*theta) - 1/2)` — exactly what
+`implementation._iteration_count` computes. For small `M/N`, `theta ~
+sqrt(M/N)` (small-angle approximation of `sin(theta) = sqrt(M/N)`), which
+recovers the more commonly quoted `k ~ (pi/4) * sqrt(N/M)`.
+
+That approximation is **only** valid in that small-`M/N` limit, and this
+implementation deliberately does not use it: it drops the `-1/2` term,
+which over-rotates whenever `M/N` is not small. At `n=2, M=1` it gives
+`k=2` (success probability `0.25`) where the exact count gives `k=1`
+(probability `1.0`); at `n=2, M=3` it gives `k=1`, whose success
+probability is exactly `0` — the retry loop cannot rescue that, since
+every attempt runs the same circuit. Because `k` must be an integer,
 rounding introduces a small deviation from the theoretical optimum, and
 **overshooting past the optimal `k` rotates the state *past* `|s_marked>`
 and back toward `|s_unmarked>`** — more iterations is not always better,
@@ -68,8 +76,9 @@ fresh shots on failure, rather than adding more iterations.
 ## The degenerate `n_qubits=1` case
 
 At the smallest possible scale (`N=2`, `M=1`), `sin(theta) = sqrt(1/2)`, so
-`theta = pi/4` exactly. `_iteration_count(1, 1)` rounds to `k=1`, giving
-success probability `sin^2(3*theta) = sin^2(3*pi/4) = 0.5` — exactly a coin
+`theta = pi/4` exactly. `pi/(4*theta) - 1/2 = 1/2`, so `_iteration_count(1,
+1)` rounds to `k=0`, giving success probability `sin^2(theta) =
+sin^2(pi/4) = 0.5` — exactly a coin
 flip, not the near-certain success Grover's algorithm typically achieves at
 larger `N`. This is an inherent property of this specific tiny instance
 (confirmed empirically: 10,000 shots split ~50/50), not a bug — but it does

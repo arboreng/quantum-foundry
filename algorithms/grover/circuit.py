@@ -11,7 +11,14 @@ from algorithms.grover.oracles import Oracle
 
 def diffusion_operator(n_qubits: int) -> QuantumCircuit:
     """The Grover diffusion operator: reflection about the uniform
-    superposition's average amplitude (`2|s><s| - I`)."""
+    superposition's average amplitude.
+
+    The matrix this actually produces is `I - 2|s><s|`, the negation of
+    the textbook `2|s><s| - I`. The two are the same physical reflection
+    and the global phase is unobservable for plain Grover search, but it
+    becomes a real relative phase once this is applied *under control* —
+    see `counting.count`, which corrects for it. See paper.md.
+    """
     circuit = QuantumCircuit(n_qubits, name="diffusion")
     circuit.h(range(n_qubits))
     circuit.x(range(n_qubits))
