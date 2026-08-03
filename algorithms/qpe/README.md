@@ -2,7 +2,7 @@
 
 Maturity: **experimental** (v0.8 documentation)
 
-Reference implementation of Quantum Phase Estimation (QPE): given a unitary
+Implementation of Quantum Phase Estimation (QPE): given a unitary
 `U` and one of its eigenstates `|psi>` with eigenvalue `e^(2*pi*i*theta)`,
 estimate `theta`. Built to demonstrate production-quality engineering
 rather than a toy demo. See

@@ -1,14 +1,14 @@
 # Quantum Foundry
 
-> Quantum Foundry is an open collection of reference implementations for quantum
-> algorithms, built with the engineering rigor expected of production software
-> and the transparency expected of scientific computing.
+> Quantum Foundry is an open collection of quantum algorithm implementations,
+> documented and tested with the engineering rigor expected of production
+> software and the transparency expected of scientific computing.
 
 ## Motivation
 
 Most public quantum algorithm implementations are either toy demonstrations or
 buried inside framework example folders. Quantum Foundry aims to be neither:
-each algorithm gets a rigorously documented, benchmarked, and tested reference
+each algorithm gets a rigorously documented, benchmarked, and tested
 implementation, organized under a consistent architecture. See [docs/rfcs/](docs/rfcs/) for the design record behind each algorithm.
 
 ## Project principles
@@ -81,4 +81,7 @@ The repository currently contains nine algorithm implementations: Shor, Grover, 
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, the RFC
 process for proposing a new algorithm, and pull request expectations.
+To report a vulnerability, see [SECURITY.md](SECURITY.md); suspected
+algorithmic *correctness* bugs are normal issues, and that document
+explains the difference.
 Licensed under the [MIT License](LICENSE).

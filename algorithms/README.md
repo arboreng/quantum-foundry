@@ -43,6 +43,16 @@ Each algorithm should make the path from theory to executable software explicit:
 3. **incubating** — full test/benchmark coverage, API may still shift
 4. **reference** — stable API, full documentation, hardware-validated
 
+`reference` here is a maturity tier with the specific requirements listed
+above, not the general sense of "a reference implementation" (a canonical,
+well-documented example). The distinction matters because the two readings
+disagree: the repository aims for the second everywhere, while the table
+below shows nothing has yet earned the first. Prose describing an
+algorithm should say "implementation" unless that algorithm actually sits
+in the `reference` tier — the RFCs are the exception, since a Vision
+section describes what the work is meant to become rather than its current
+status.
+
 ## Status
 
 | Algorithm | Maturity     | RFC                                                     |

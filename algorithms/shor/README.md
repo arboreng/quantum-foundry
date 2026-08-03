@@ -2,7 +2,7 @@
 
 Maturity: **experimental** (RFC-0001 v0.8, RFC-0002 v0.8)
 
-Reference implementation of Shor's algorithm for integer factorization,
+Implementation of Shor's algorithm for integer factorization,
 built to demonstrate production-quality engineering rather than a toy demo.
 See [RFC-0001](../../docs/rfcs/0001-shors-algorithm.md) (algorithm, default
 permutation-matrix oracle) and [RFC-0002](../../docs/rfcs/0002-gate-decomposed-arithmetic.md)

@@ -2,7 +2,7 @@
 
 Maturity: **experimental** (v0.8 documentation)
 
-Reference implementation of QAOA: a hybrid classical-quantum algorithm
+Implementation of QAOA: a hybrid classical-quantum algorithm
 approximating solutions to combinatorial optimization problems, targeting
 MaxCut (partition a graph's vertices to maximize edges crossing the
 partition). Built to demonstrate production-quality engineering rather

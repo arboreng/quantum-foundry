@@ -8,14 +8,22 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    # pyproject.toml declares requires-python = ">=3.12,<3.15", so every
+    # version in that range is exercised rather than only the lowest or
+    # the newest. A support claim without CI evidence behind it is a guess.
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.12", "3.13", "3.14"]
+    name: test (Python ${{ matrix.python }})
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Install uv
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
           enable-cache: true
-          python-version: "3.13"
+          python-version: ${{ matrix.python }}
 
       - name: Install dependencies
         run: uv sync --locked --all-extras --dev

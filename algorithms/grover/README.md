@@ -2,7 +2,7 @@
 
 Maturity: **experimental** (v0.8 documentation)
 
-Reference implementation of Grover's algorithm for unstructured search,
+Implementation of Grover's algorithm for unstructured search,
 built to demonstrate production-quality engineering rather than a toy demo.
 See [RFC-0004](../../docs/rfcs/0004-grovers-algorithm.md) for motivation,
 milestones, and success criteria.

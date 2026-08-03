@@ -2,7 +2,7 @@
 
 Maturity: **experimental** (v0.8 documentation)
 
-Reference implementation of the Bernstein-Vazirani algorithm: given an
+Implementation of the Bernstein-Vazirani algorithm: given an
 oracle for `f(x) = s.x mod 2` for a hidden bitstring `s`, recover `s` with a
 single query. Built to demonstrate production-quality engineering rather
 than a toy demo. See [RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md)

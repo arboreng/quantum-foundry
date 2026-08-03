@@ -2,7 +2,7 @@
 
 Maturity: **experimental** (v0.8 documentation)
 
-Reference implementation of Simon's algorithm: given an oracle for a
+Implementation of Simon's algorithm: given an oracle for a
 function `f: {0,1}^n -> {0,1}^n` promised to be one-to-one or exactly
 two-to-one with `f(x) = f(x XOR s)` for an unknown nonzero hidden period
 `s`, find `s`. Built to demonstrate production-quality engineering rather

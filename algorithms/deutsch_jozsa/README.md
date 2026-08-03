@@ -2,7 +2,7 @@
 
 Maturity: **experimental** (v0.8 documentation)
 
-Reference implementation of the Deutsch-Jozsa algorithm: given a boolean
+Implementation of the Deutsch-Jozsa algorithm: given a boolean
 function promised to be constant or balanced, determine which with a single
 query. Built to demonstrate production-quality engineering rather than a
 toy demo. See [RFC-0005](../../docs/rfcs/0005-deutsch-jozsa-bernstein-vazirani.md)

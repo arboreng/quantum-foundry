@@ -2,7 +2,7 @@
 
 Maturity: **experimental** (v0.8 documentation)
 
-Reference implementation of VQE: a hybrid classical-quantum algorithm
+Implementation of VQE: a hybrid classical-quantum algorithm
 estimating a Hamiltonian's ground-state energy via a parameterized ansatz
 and a classical optimization loop. Built to demonstrate production-quality
 engineering rather than a toy demo. See [RFC-0009](../../docs/rfcs/0009-vqe.md)

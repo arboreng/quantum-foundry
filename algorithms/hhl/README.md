@@ -2,7 +2,7 @@
 
 Maturity: **experimental** (v0.8 documentation)
 
-Reference implementation of HHL: given a Hermitian matrix `A` and
+Implementation of HHL: given a Hermitian matrix `A` and
 efficient preparation of `|b>`, produce (conditioned on a postselected
 ancilla measurement) the quantum state proportional to the solution
 `x = A^-1 b`. Built to demonstrate production-quality engineering rather

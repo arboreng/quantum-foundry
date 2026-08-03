@@ -20,9 +20,17 @@ uv run mypy .               # type check
 
 All three (`pytest`, `ruff`, `mypy`) run in CI on every pull request
 (see `.github/workflows/ci.yml`) and are expected to be clean before a
-PR merges. CI additionally executes every notebook in the repository
+PR merges. CI runs them on Python 3.12, 3.13, and 3.14 — the full range
+`pyproject.toml` declares support for — so a change that depends on a
+version-specific behavior fails on the versions that lack it. CI
+additionally executes every notebook in the repository
 (`uv run python scripts/execute_notebooks.py`), so a notebook that raises
 fails the build; run it locally if you have touched one.
+
+`uv run pytest --cov` enforces a coverage floor (`fail_under` in
+`pyproject.toml`), measured over the algorithm code rather than the test
+files. New code is expected to arrive with tests, so the floor should rise
+over time; lowering it to make a build pass is the wrong fix.
 
 ## Adding a new algorithm
 
