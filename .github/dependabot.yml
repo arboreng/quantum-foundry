@@ -17,8 +17,17 @@ updates:
   # Grouping the non-major updates keeps that from turning into a steady drip
   # of one-line PRs; majors stay separate because qiskit in particular gates
   # on a `<3` constraint that a human should look at before it moves.
+  #
+  # lockfile-only stops Dependabot from also raising the lower bounds declared
+  # in pyproject.toml. Its default is to lift each floor to whatever version it
+  # just resolved, which quietly narrows the set of environments the repository
+  # runs in — the first such PR proposed matplotlib>=3.8 -> >=3.11.1 with no
+  # motivation beyond 3.11.1 being current. The floors state the oldest version
+  # the code is known to work against, which is a claim about compatibility that
+  # only a human should change.
   - package-ecosystem: "uv"
     directory: "/"
+    versioning-strategy: lockfile-only
     schedule:
       interval: "monthly"
     commit-message:
