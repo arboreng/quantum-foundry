@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using these metadata."
+type: software
+title: "Quantum Foundry"
+abstract: >-
+  Open-source implementations of quantum algorithms, documented and tested
+  with production engineering rigor. Each algorithm is developed through an
+  RFC, and carries mathematical foundations, circuit derivation, software
+  implementation, tests, and benchmarks.
+authors:
+  - family-names: "O'Hara"
+    given-names: "Sean"
+repository-code: "https://github.com/arboreng/quantum-foundry"
+license: MIT
+version: 0.9.0
+date-released: "2026-08-03"
+keywords:
+  - quantum computing
+  - quantum algorithms
+  - qiskit
+  - scientific software

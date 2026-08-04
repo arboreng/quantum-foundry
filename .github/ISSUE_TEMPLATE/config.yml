@@ -1,0 +1,15 @@
+blank_issues_enabled: true
+
+contact_links:
+  - name: Report a vulnerability
+    url: https://github.com/arboreng/quantum-foundry/security/advisories/new
+    about: >-
+      Report privately if the flaw is exploitable against something other than
+      this repository. An algorithm that returns a wrong answer is a normal
+      public issue — use the Correctness problem template for that.
+
+  - name: Contributing guide and RFC process
+    url: https://github.com/arboreng/quantum-foundry/blob/main/CONTRIBUTING.md
+    about: >-
+      Development setup, the RFC process for proposing a new algorithm, and what
+      a pull request is expected to include.

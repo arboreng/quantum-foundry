@@ -1,0 +1,91 @@
+name: Correctness problem
+description: An algorithm, circuit, or gate construction returns a wrong result
+labels: ["correctness"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Correctness problems are the highest-priority defects in this repository —
+        a plausible-looking derivation that is subtly wrong propagates into
+        whatever a reader builds next.
+
+        These are normal public issues, **not** security reports. If the flaw is
+        exploitable against something other than this repository, use
+        [private reporting](https://github.com/arboreng/quantum-foundry/security/advisories/new)
+        instead.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where
+      description: Which implementation is producing the wrong answer?
+      options:
+        - algorithms/shor
+        - algorithms/grover
+        - algorithms/deutsch-jozsa
+        - algorithms/bernstein-vazirani
+        - algorithms/simon
+        - algorithms/qpe
+        - algorithms/qaoa
+        - algorithms/vqe
+        - algorithms/hhl
+        - arithmetic
+        - compiler
+        - validation
+        - Not sure / spans several
+    validations:
+      required: true
+
+  - type: textarea
+    id: claim
+    attributes:
+      label: What is wrong
+      description: >-
+        The construction involved and what it produces instead of what it should.
+        Be specific about which gate, circuit, or step you believe is incorrect.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: >-
+        The part that matters most. Show that the result is wrong rather than
+        asserting it — a `Statevector` or `Operator` equivalence check against a
+        hand-derived or brute-force classical result is the standard this
+        repository holds itself to. See
+        [CONTRIBUTING.md](https://github.com/arboreng/quantum-foundry/blob/main/CONTRIBUTING.md#validate-as-you-go).
+      placeholder: |
+        from qiskit.quantum_info import Operator
+        ...
+        # expected: ...
+        # actual:   ...
+      render: python
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Smallest reproduction
+      description: The fewest qubits and simplest input that still shows the problem.
+    validations:
+      required: false
+
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: "0.9.0, or a commit SHA"
+    validations:
+      required: true
+
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: Python and Qiskit versions, and whether this was simulated or run on hardware.
+      placeholder: "Python 3.13, qiskit 2.5.0, qiskit-aer 0.17, Aer simulator"
+    validations:
+      required: false

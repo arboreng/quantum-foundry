@@ -115,4 +115,6 @@ promise.
 ## Code of conduct
 
 Be respectful and constructive. Disagreements about technical approach
-are welcome; personal attacks are not.
+are welcome; personal attacks are not. That is the whole rule;
+[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) covers what it means for code
+review here and how to report a problem.

@@ -1,0 +1,30 @@
+version: 2
+
+updates:
+  # CI pins every action by commit SHA rather than by tag, which is the right
+  # default for a public repository — a tag can be moved, a SHA cannot. The
+  # cost of that choice is that a pinned SHA never picks up a security fix on
+  # its own, so it needs something watching it. This is that something.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "build"
+
+  # uv.lock is committed and CI installs with `uv sync --locked`, so the lock
+  # file is the single source of truth for what actually gets built and tested.
+  # Grouping the non-major updates keeps that from turning into a steady drip
+  # of one-line PRs; majors stay separate because qiskit in particular gates
+  # on a `<3` constraint that a human should look at before it moves.
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "build"
+    groups:
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"

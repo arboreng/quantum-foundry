@@ -1,0 +1,54 @@
+name: Bug report
+description: Something crashes, fails to install, or behaves differently than documented
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For an algorithm that runs fine but returns the *wrong answer*, use the
+        **Correctness problem** template instead — those are triaged differently.
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: Include the full traceback if there is one.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+      description: >-
+        If the documentation led you to expect something else, link to the part
+        that did — documentation describing what the code used to do is itself a bug.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. uv sync
+        2. uv run python -m algorithms.shor.implementation
+        3. ...
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: "0.9.0, or a commit SHA"
+    validations:
+      required: true
+
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      placeholder: "macOS 15, Python 3.13, qiskit 2.5.0"
+    validations:
+      required: true

@@ -7,8 +7,8 @@ fixes; there are no maintained backport branches.
 
 | Version | Supported |
 | ------- | --------- |
-| 0.1.x   | ✅        |
-| < 0.1   | ❌        |
+| 0.9.x   | ✅        |
+| < 0.9   | ❌        |
 
 ## Reporting a vulnerability
 

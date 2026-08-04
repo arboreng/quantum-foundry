@@ -5,6 +5,14 @@ on:
     branches: [main]
   pull_request:
 
+# Pull requests from forks trigger this workflow, so the token it runs with is
+# reachable by anyone who can open a PR. Nothing here writes to the repository
+# — it checks out, installs, and runs the suite — so read access to contents is
+# the whole requirement. Declaring it explicitly also stops the job from
+# silently widening if the repository-level default is ever loosened.
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
