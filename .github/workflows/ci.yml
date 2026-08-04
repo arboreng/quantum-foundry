@@ -5,6 +5,22 @@ on:
     branches: [main]
   pull_request:
 
+  # Push and pull_request only prove the suite passed against the dependency
+  # versions available on the day someone happened to commit. A repository that
+  # goes quiet for a month has no signal at all in between, and the things most
+  # likely to break here break without anyone touching the code: a new Python
+  # 3.14 patch release, a qiskit release inside the `<3` constraint, or a
+  # transitive dependency moving under a lock file that Dependabot's
+  # lockfile-only strategy deliberately leaves alone.
+  schedule:
+    # Mondays, 06:17 UTC. Deliberately off the hour: scheduled jobs cluster at
+    # :00 and GitHub drops runs it cannot service during a spike.
+    - cron: "17 6 * * 1"
+
+  # Lets the same matrix be run on demand without an empty commit, which is
+  # what you want when investigating whether a failure is real or transient.
+  workflow_dispatch:
+
 # Pull requests from forks trigger this workflow, so the token it runs with is
 # reachable by anyone who can open a PR. Nothing here writes to the repository
 # — it checks out, installs, and runs the suite — so read access to contents is
