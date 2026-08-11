@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-Quantum Foundry is pre-1.0. Only the latest released version receives
+quantum-foundry is pre-1.0. Only the latest released version receives
 fixes; there are no maintained backport branches.
 
 | Version | Supported |
