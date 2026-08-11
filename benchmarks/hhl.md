@@ -40,8 +40,14 @@ the last). **More precision costs more circuit *and* makes a successful
 construction, not a quirk of this particular demo instance: adding clock
 qubits without also adjusting `t` (to keep `lambda_min` from shrinking)
 always pushes `c_constant` down and success probability down with it.
-This is exactly the gap [amplitude amplification](../docs/rfcs/0010-hhl.md#stretch-goals)
-(a stretch goal, not implemented here) exists to close.
+This is exactly the gap amplitude amplification exists to close —
+implemented beyond [RFC-0010](../docs/rfcs/0010-hhl.md#stretch-goals)'s
+v0.8 milestone as `circuit.build_amplified_hhl_circuit` /
+`implementation.amplify_and_solve_linear_system` (see
+[algorithms/hhl/math.md](../algorithms/hhl/math.md)'s "Amplitude
+amplification" section). Every row above measures the *unamplified* path
+(`solve_linear_system`), so these are the success probabilities
+amplification starts from, not the ones it ends at.
 
 ## Reproducing
 
