@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it using these metadata."
 type: software
-title: "Quantum Foundry"
+title: "quantum-foundry"
 abstract: >-
   Open-source implementations of quantum algorithms, documented and tested
   with production engineering rigor. Each algorithm is developed through an
@@ -10,7 +10,12 @@ abstract: >-
 authors:
   - family-names: "O'Hara"
     given-names: "Sean"
+    affiliation: "Arbor Engineering Group"
+    email: sean@arboreng.com
 repository-code: "https://github.com/arboreng/quantum-foundry"
+# Point this at the field note once it is published; it is still an
+# unlisted draft, and this file is public metadata.
+url: "https://arboreng.com"
 license: MIT
 version: 0.9.0
 date-released: "2026-08-04"

@@ -1,13 +1,13 @@
-# Quantum Foundry
+# quantum-foundry
 
-> Quantum Foundry is an open collection of quantum algorithm implementations,
+> quantum-foundry is an open collection of quantum algorithm implementations,
 > documented and tested with the engineering rigor expected of production
 > software and the transparency expected of scientific computing.
 
 ## Motivation
 
 Many public quantum algorithm implementations are presented as toy
-demonstrations or embedded in framework examples. Quantum Foundry aims to be
+demonstrations or embedded in framework examples. quantum-foundry aims to be
 neither:
 each algorithm gets a rigorously documented, benchmarked, and tested
 implementation, organized under a consistent architecture. See [docs/rfcs/](docs/rfcs/) for the design record behind each algorithm.

@@ -1,4 +1,4 @@
-# Contributing to Quantum Foundry
+# Contributing to quantum-foundry
 
 Thanks for considering a contribution. This project favors rigor over
 speed: every construction is expected to be verified, not just believed,
